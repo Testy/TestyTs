@@ -7,7 +7,7 @@
     "scripts": {
         "build": "tsc"
     },
-    "bin": "testy.js",
+    "bin": "build/testy.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Aboisier/testy.git"
