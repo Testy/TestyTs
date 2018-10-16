@@ -1,24 +1,26 @@
 {
-  "name": "testy",
-  "version": "1.0.0",
-  "description": "Modern test framework for TypeScript.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Aboisier/testy.git"
-  },
-  "keywords": [
-    "test",
-    "testing",
-    "tdd"
-  ],
-  "author": "Antoine Boisier-Michaud",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Aboisier/testy/issues"
-  },
-  "homepage": "https://github.com/Aboisier/testy#readme"
+    "name": "testy",
+    "version": "1.0.0",
+    "description": "Modern test framework for TypeScript.",
+    "main": "index.js",
+    "preferGlobal": true,
+    "scripts": {
+        "build": "tsc"
+    },
+    "bin": "testy.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Aboisier/testy.git"
+    },
+    "keywords": [
+        "test",
+        "testing",
+        "tdd"
+    ],
+    "author": "Antoine Boisier-Michaud",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Aboisier/testy/issues"
+    },
+    "homepage": "https://github.com/Aboisier/testy#readme"
 }
