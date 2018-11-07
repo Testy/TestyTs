@@ -5,8 +5,7 @@
     "main": "index.js",
     "preferGlobal": true,
     "scripts": {
-        "build": "tsc",
-        "postinstall": "build"
+        "build": "tsc"
     },
     "bin": "build/testy.js",
     "repository": {
