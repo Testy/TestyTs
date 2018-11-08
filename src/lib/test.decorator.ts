@@ -1,72 +1,52 @@
-export function test(name: string, timeout: number = 2000) {
+import { TestCase } from './testCase';
+
+export function test(name: string, testCases: TestCase[] = undefined, timeout: number = 2000) {
     return (target, key, descriptor) => {
-        if (!target.tests) {
-            target.tests = {};
-        }
-
-        if (descriptor === undefined) {
-            descriptor = Object.getOwnPropertyDescriptor(target, key);
-        }
-
-        const originalMethod = descriptor.value;
-
-        const test = async function () {
-            await new Promise(async (resolve, reject) => {
-                setTimeout(() => reject('Test has timed out.'), timeout);
-                await originalMethod.bind(this)();
-                resolve();
-            });
-        }
+        if (!target.tests) { target.tests = {}; }
 
         if (target.tests[name] !== undefined) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
 
-        target.tests[name] = test;
+        if (descriptor === undefined) {
+            descriptor = Object.getOwnPropertyDescriptor(target, key);
+        }
+
+        const testMethod = descriptor.value;
+        if (testCases) {
+            const tests = generateTestsFromTestCases(testMethod, testCases, timeout);
+            target.tests[name] = tests;
+        }
+        else {
+            const test = generateTest(testMethod, timeout);
+            target.tests[name] = test;
+        }
 
         return descriptor;
     }
 };
 
-export class TestCase {
-    constructor(public name: string, public args: any[] | any, public timeout: number = 2000) { }
+function generateTest(testMethod: Function, timeout: number) {
+    return async function () {
+        await new Promise(async (resolve, reject) => {
+            setTimeout(() => reject('Test has timed out.'), timeout);
+            await testMethod.bind(this)();
+            resolve();
+        });
+    }
 }
 
-export function testCases(cases: TestCase[]) {
-    return (target, key, descriptor) => {
-        if (!target.tests) {
-            target.tests = {};
+function generateTestsFromTestCases(testMethod: Function, testCases: TestCase[] = undefined, timeout: number) {
+    const tests: { [name: string]: Function } = {};
+    for (const testCase of testCases) {
+        tests[testCase.name] = async function () {
+            await new Promise(async (resolve, reject) => {
+                setTimeout(() => reject('Test has timed out.'), timeout);
+                await testMethod.bind(this)();
+                resolve();
+            });
         }
-
-        if (descriptor === undefined) {
-            descriptor = Object.getOwnPropertyDescriptor(target, key);
-        }
-
-        const originalMethod = descriptor.value;
-
-        for (const testCase of cases) {
-            const test = async function () {
-                await new Promise(async (resolve, reject) => {
-                    setTimeout(() => reject('Test has timed out.'), testCase.timeout);
-
-                    if (testCase.args instanceof Array) {
-                        await originalMethod.bind(this)(...testCase.args);
-                    }
-                    else {
-                        await originalMethod.bind(this)(testCase.args);
-                    }
-
-                    resolve();
-                });
-            }
-
-            if (target.tests[testCase.name] !== undefined) {
-                throw new Error(`A test named "${testCase.name}" is already registered. Copy pasta much?`);
-            }
-
-            target.tests[testCase.name] = test;
-        }
-
-        return descriptor;
     }
+
+    return tests;
 }
