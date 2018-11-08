@@ -1,2 +1,3 @@
 #!/usr/bin/env node
-console.log('lel');
+import { TestRunner } from './lib/testRunner';
+TestRunner.testRunner.runTests();
