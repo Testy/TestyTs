@@ -22,5 +22,8 @@
     "bugs": {
         "url": "https://github.com/Aboisier/testy/issues"
     },
-    "homepage": "https://github.com/Aboisier/testy#readme"
+    "homepage": "https://github.com/Aboisier/testy#readme",
+    "devDependencies": {
+        "@types/node": "^10.12.2"
+    }
 }
