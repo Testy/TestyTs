@@ -3,6 +3,7 @@
         "module": "commonjs",
         "target": "es5",
         "noImplicitAny": false,
+        "experimentalDecorators": true,
         "outDir": "./build",
         "sourceMap": false
     },
