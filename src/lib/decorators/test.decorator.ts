@@ -30,7 +30,13 @@ function generateTest(testMethod: Function, timeout: number) {
     return async function () {
         await new Promise(async (resolve, reject) => {
             setTimeout(() => reject('Test has timed out.'), timeout);
-            await testMethod.bind(this)();
+            try {
+                await testMethod.bind(this)();
+            }
+            catch (err) {
+                reject(err);
+            }
+
             resolve();
         });
     }
@@ -39,10 +45,16 @@ function generateTest(testMethod: Function, timeout: number) {
 function generateTestsFromTestCases(testMethod: Function, testCases: TestCase[] = undefined, timeout: number) {
     const tests: { [name: string]: Function } = {};
     for (const testCase of testCases) {
-        tests[testCase.name] = async function () {
+        tests[testCase.name] = async () => {
             await new Promise(async (resolve, reject) => {
                 setTimeout(() => reject('Test has timed out.'), timeout);
-                await testMethod.bind(this)();
+                try {
+                    await testMethod.bind(this)();
+                }
+                catch (err) {
+                    reject(err);
+                }
+
                 resolve();
             });
         }
