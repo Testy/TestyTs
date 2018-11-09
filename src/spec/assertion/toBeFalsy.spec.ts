@@ -1,89 +1,50 @@
 import { test, testSuite, expect } from '../../testy';
+import { TestCase } from '../../lib/testCase';
 
 @testSuite('Expect ToBeFalsy Tests')
 class ExpectToBeFalsy {
-    
-    @test('false to be falsy')
-    private falseToBeFalsy() {
-        expect.toBeFalsy(false);
+
+    @test('To be falsy, should succeed', [
+        new TestCase('false', false),
+        new TestCase('zero', 0),
+        new TestCase('empty string', ''),
+        new TestCase('null', null),
+        new TestCase('undefined', undefined),
+        new TestCase('NaN', NaN),
+    ])
+    private toBeFalsySuccess(arg) {
+        expect.toBeFalsy(arg);
     }
 
-    @test('true to be falsy to fail')
-    private trueToBeFalsyFails() {
+    @test('To be falsy, should fail', [
+        new TestCase('true', true),
+        new TestCase('Object', { a: 1 })
+    ])
+    private toBeFalsyFail(arg) {
         expect.toThrow(() => {
-            expect.toBeFalsy(true);
+            expect.toBeFalsy(arg);
         });
     }
 
-    @test('0 to be falsy')
-    private zeroToBeFalsy() {
-        expect.toBeFalsy(0);
+    @test('Not to be falsy, should succeed', [
+        new TestCase('true', true),
+        new TestCase('Object', { a: 1 }),
+    ])
+    private notToBeFalsySuccess(arg) {
+        expect.not.toBeFalsy(arg);
     }
 
-    @test(`'' to be falsy`)
-    private emptyStringToBeFalsy() {
-        expect.toBeFalsy('');
-    }
-
-    @test(`null to be falsy`)
-    private nullStringToBeFalsy() {
-        expect.toBeFalsy(null);
-    }
-
-    @test(`undefined to be falsy`)
-    private undefinedStringToBeFalsy() {
-        expect.toBeFalsy(undefined);
-    }
-
-    @test(`NaN to be falsy`)
-    private naNStringToBeFalsy() {
-        expect.toBeFalsy(NaN);
-    }
-
-    @test('false not to be falsy to fail')
-    private falseNotToBeFalsyFails() {
+    @test('Not to be falsy, should fail', [
+        new TestCase('false', false),
+        new TestCase('zero', 0),
+        new TestCase('empty string', ''),
+        new TestCase('null', null),
+        new TestCase('undefined', undefined),
+        new TestCase('NaN', NaN),
+    ])
+    private notToBeFalsyFail(arg) {
         expect.toThrow(() => {
-            expect.not.toBeFalsy(false);
-        });
-    }
-
-    @test('true not to be falsy')
-    private trueNotToBeFalsy() {
-        expect.not.toBeFalsy(true);
-    }
-
-    @test('0 to be falsy to fail')
-    private zeroNotToBeFalsyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeFalsy(0);
-        });
-    }
-
-    @test(`'' to be falsy to fail`)
-    private emptyStringNotToBeFalsyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeFalsy('');
-        });
-    }
-
-    @test(`null to be falsy to fail`)
-    private nullStringNotToBeFalsyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeFalsy(null);
-        });
-    }
-
-    @test(`undefined to be falsy to fail`)
-    private undefinedStringNotToBeFalsyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeFalsy(undefined);
-        });
-    }
-
-    @test(`NaN to be falsy to fail`)
-    private naNStringNotToBeFalsyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeFalsy(NaN);
+            expect.not.toBeFalsy(arg);
         });
     }
 }
