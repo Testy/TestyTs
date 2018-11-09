@@ -1,89 +1,58 @@
 import { test, testSuite, expect } from '../../testy';
+import { TestCase } from '../../lib/testCase';
 
 @testSuite('Expect ToBeTruthy Tests')
 class ExpectToBeTruthy {
-    
-    @test('true to be truthy')
-    private trueToBeTruthy() {
-        expect.toBeTruthy(true);
+
+    @test('To be truthy, should succeed', [
+        new TestCase('true', true),
+        new TestCase(`'0'`, '0'),
+        new TestCase(`'false'`, 'false'),
+        new TestCase(`empty object`, {}),
+        new TestCase(`empty array`, []),
+        new TestCase(`empty function`, function () { }),
+    ])
+    private toBeTruthySuccess(arg) {
+        expect.toBeTruthy(arg);
     }
 
-    @test('false to be truthy to fail')
-    private falseToBeTruthyFails() {
+    @test('To be truthy, should fail', [
+        new TestCase('false', false),
+        new TestCase('zero', 0),
+        new TestCase('empty string', ''),
+        new TestCase('null', null),
+        new TestCase('undefined', undefined),
+        new TestCase('NaN', NaN),
+    ])
+    private toBeTruthyFail(arg) {
         expect.toThrow(() => {
-            expect.toBeTruthy(false);
+            expect.toBeTruthy(arg);
         });
     }
 
-    @test(`'0' to be truthy`)
-    private stringContainingZeroToBeTruthy() {
-        expect.toBeTruthy('0');
-    }
-
-    @test(`'false' to be truthy`)
-    private stringContainingFalseToBeTruthy() {
-        expect.toBeTruthy('false');
-    }
-
-    @test(`[] to be truthy`)
-    private emptyArrayToBeTruthy() {
-        expect.toBeTruthy([]);
-    }
-
-    @test(`{} to be truthy`)
-    private emptyObjectToBeTruthy() {
-        expect.toBeTruthy({});
-    }
-
-    @test(`function(){} to be truthy`)
-    private emptyFunctionToBeTruthy() {
-        expect.toBeTruthy(function () { });
-    }
-
-    @test('true not to be truthy fails')
-    private trueNotToBeTruthyFails() {
+    @test('Not to be truthy, should fail', [
+        new TestCase('true', true),
+        new TestCase(`'0'`, '0'),
+        new TestCase(`'false'`, 'false'),
+        new TestCase(`empty object`, {}),
+        new TestCase(`empty array`, []),
+        new TestCase(`empty function`, function () { }),
+    ])
+    private notToBeTruthyFail(arg) {
         expect.toThrow(() => {
-            expect.not.toBeTruthy(true);
+            expect.not.toBeTruthy(arg);
         });
     }
 
-    @test('false not to be truthy')
-    private falseNotToBeTruthy() {
-        expect.not.toBeTruthy(false);
-    }
-
-    @test(`'0' not to be truthy fails`)
-    private stringContainingZeroNotToBeTruthyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeTruthy('0');
-        });
-    }
-
-    @test(`'false' not to be truthy to fail`)
-    private stringContainingFalseNotToBeTruthyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeTruthy('false');
-        });
-    }
-
-    @test(`[] not to be truthy to fail`)
-    private emptyArrayNotToBeTruthyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeTruthy([]);
-        });
-    }
-
-    @test(`{} not to be truthy to fail`)
-    private emptyObjectNotToBeTruthyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeTruthy({});
-        });
-    }
-
-    @test(`function(){} not to be truthy to fail`)
-    private emptyFunctionNotToBeTruthyFails() {
-        expect.toThrow(() => {
-            expect.not.toBeTruthy(function () { });
-        });
+    @test('Not to be truthy, should succeed', [
+        new TestCase('false', false),
+        new TestCase('zero', 0),
+        new TestCase('empty string', ''),
+        new TestCase('null', null),
+        new TestCase('undefined', undefined),
+        new TestCase('NaN', NaN)
+    ])
+    private notToBeTruthySuccess(arg) {
+        expect.not.toBeTruthy(arg);
     }
 }
