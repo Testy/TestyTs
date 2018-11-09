@@ -1,4 +1,7 @@
 import { TestRunner } from '../testRunner';
+import { LoggerFactory } from '../logger/loggerFactory';
+
+const logger = LoggerFactory.create();
 
 export function testSuite(name: string) {
     return (constructor: Function) => {
@@ -24,23 +27,28 @@ async function run(): Promise<void> {
     }
 }
 
-async function runTest(name: string, test: Function, isTestCase: boolean = false) {
-    const indentation = isTestCase ? '    ' : '  ';
+async function runTest(name: string, test: Function) {
+    logger.increaseIndentation();
+
     try {
         await test.bind(this)();
-        console.log(`${indentation}√ ${name}`);
+        logger.success(`√ ${name}`);
     }
     catch (err) {
-        console.log(`${indentation}x ${name} - ${err.message}`);
+        logger.failure(`x ${name} - ${err.message}`);
     }
+
+    logger.decreaseIndentation();
 }
 
 async function runTestcases(name: string, testCases: { [name: string]: Function }) {
-    console.log('  ' + name)
+    logger.increaseIndentation();
+    logger.info(name)
     for (const testCaseName in testCases) {
         const testCase = testCases[testCaseName];
-        await runTest(testCaseName, testCase, true);
+        await runTest(testCaseName, testCase);
     }
+    logger.decreaseIndentation();
 }
 
 function hasTestcases(test: Function | { [name: string]: Function }) {
