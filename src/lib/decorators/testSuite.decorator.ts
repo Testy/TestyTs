@@ -1,4 +1,4 @@
-import { TestRunner } from './testRunner';
+import { TestRunner } from '../testRunner';
 
 export function testSuite(name: string) {
     return (constructor: Function) => {

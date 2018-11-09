@@ -1,4 +1,4 @@
-import { TestCase } from './testCase';
+import { TestCase } from '../testCase';
 
 export function test(name: string, testCases: TestCase[] = undefined, timeout: number = 2000) {
     return (target, key, descriptor) => {
