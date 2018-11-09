@@ -1,6 +1,4 @@
-import { testSuite } from '../../lib/decorators/testSuite.decorator';
-import { test } from '../../lib/decorators/test.decorator';
-import { expect } from '../../lib/assertion/expect';
+import { test, testSuite, expect } from '../../testy';
 
 @testSuite('Expect ToBeEqual Test Suite')
 class ExpectToBeEqualTestSuite {
