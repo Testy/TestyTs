@@ -1,4 +1,5 @@
 import { ExpectationError } from './expectationError';
+import { ToBeSorted } from './toBeSorted';
 
 class Expect {
     private notFlag: boolean;
@@ -7,6 +8,10 @@ class Expect {
         const expect = new Expect();
         expect.notFlag = !this.notFlag;
         return expect;
+    }
+
+    public get toBeSorted(): ToBeSorted {
+        return new ToBeSorted(this.notFlag);
     }
 
     public toBeEqual<T>(actual: T, expected: T, message?: string) {
@@ -77,29 +82,6 @@ class Expect {
         }
     }
 
-    public toBeInAscendingOrder<T>(array: T[], selector?: ((T) => any), message?: string) {
-        this.toBeOrdered(array, selector, Order.Ascending, message);
-    }
-
-    public toBeInDescendingOrder<T>(array: T[], selector?: ((T) => any), message?: string) {
-        this.toBeOrdered(array, selector, Order.Descending, message);
-    }
-
-    private toBeOrdered<T>(array: T[], selector: ((T) => any), order: Order, message?: string, ) {
-        if (!selector) selector = x => x;
-
-        const compare = (a, b) => {
-            return order === Order.Ascending
-                ? selector(a) <= selector(b)
-                : selector(b) <= selector(a)
-        };
-
-        const isOrdered = array.every((val, i, arr) => i === 0 || compare(arr[i - 1], val));
-        if (this.notFlag ? isOrdered : !isOrdered) {
-            throw new ExpectationError(message || `Expected ${array} to be be sorted ${order === Order.Ascending ? 'from low to high' : 'from high to low'}.`);
-        }
-    }
-
     public toMatch(str: string, regex: RegExp, message?: string) {
         const matches = regex.test(str);
         if (this.notFlag ? matches : !matches) {
@@ -115,6 +97,5 @@ class Expect {
     }
 }
 
-enum Order { Ascending, Descending }
 
 export const expect = new Expect();
