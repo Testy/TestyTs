@@ -21,6 +21,13 @@ class ExpectToBeTrue {
         });
     }
 
+    @test('null to be true to fail')
+    private nullToBeTrueFails() {
+        expect.toThrow(() => {
+            expect.toBeTrue(null);
+        });
+    }
+
     @test('false not to be true')
     private falseNotToBeTrue() {
         expect.not.toBeTrue(false);
@@ -36,5 +43,10 @@ class ExpectToBeTrue {
     @test('undefined not to be true')
     private undefinedNotToBeTrue() {
         expect.not.toBeTrue(undefined);
+    }
+
+    @test('null not to be true')
+    private nullNotToBeTrue() {
+        expect.not.toBeTrue(null);
     }
 }
