@@ -2,6 +2,7 @@ import { test, testSuite, expect } from '../../testy';
 
 @testSuite('Expect ToBeFalsy Tests')
 class ExpectToBeFalsy {
+    
     @test('false to be falsy')
     private falseToBeFalsy() {
         expect.toBeFalsy(false);

@@ -2,6 +2,7 @@ import { test, testSuite, expect } from '../../testy';
 
 @testSuite('Expect ToThrow Test Suite')
 class ExpectToThrowTestSuite {
+    
     @test('error to throw')
     private errorToThrow() {
         expect.toThrow(() => {

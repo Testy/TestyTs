@@ -2,6 +2,7 @@ import { test, testSuite, expect } from '../../testy';
 
 @testSuite('Expect ToBeDefined Test Suite')
 class ExpectToBeDefinedTestSuite {
+    
     @test(`'a' to be defined`)
     private aToBeDefined() {
         expect.toBeDefined('a');

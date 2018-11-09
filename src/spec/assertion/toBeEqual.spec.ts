@@ -2,6 +2,7 @@ import { test, testSuite, expect } from '../../testy';
 
 @testSuite('Expect ToBeEqual Test Suite')
 class ExpectToBeEqualTestSuite {
+    
     @test(`'a' to equal 'a'`)
     private equal() {
         expect.toBeEqual('a', 'a');
