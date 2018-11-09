@@ -1,4 +1,4 @@
-import { TestSuite } from './testSuite';
+import { TestSuite } from './interfaces/testSuite';
 
 export class TestRunner {
     private static _testRunner: TestRunner;
