@@ -6,8 +6,9 @@ import { Config } from './lib/interfaces/config';
 import { test } from './lib/decorators/test.decorator';
 import { testSuite } from './lib/decorators/testSuite.decorator';
 import { expect } from './lib/assertion/expect';
+import { TestCase } from './lib/testCase';
 
-export { test, testSuite, expect };
+export { test, testSuite, expect, TestCase };
 
 const testsLoader = new TestsLoader();
 const testRunner = TestRunner.testRunner;
