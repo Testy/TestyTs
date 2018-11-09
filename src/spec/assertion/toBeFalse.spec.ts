@@ -3,7 +3,7 @@ import { test } from '../../lib/decorators/test.decorator';
 import { expect } from '../../lib/assertion/expect';
 
 @testSuite('Expect ToBeFalse Test Suite')
-class ExpectFalseTestSuite {
+class ExpectToBeFalseTestSuite {
     @test('false to be false')
     private expectFalseToBeFalse() {
         expect.toBeFalse(false);

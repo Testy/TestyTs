@@ -3,7 +3,7 @@ import { test } from '../../lib/decorators/test.decorator';
 import { expect } from '../../lib/assertion/expect';
 
 @testSuite('Expect ToBeEqual Test Suite')
-class ExpectEqualTestSuite {
+class ExpectToBeEqualTestSuite {
     @test(`'a' to equal 'a'`)
     private equal() {
         expect.toBeEqual('a', 'a');
