@@ -14,7 +14,7 @@ class Expect {
             throw new ExpectationError(message || `Expected ${JSON.stringify(actual)} ${this.notFlag ? 'not' : ''} to equal ${JSON.stringify(expected)}.`);
     }
 
-    public defined<T>(value: T, message?: string) {
+    public toBeDefined<T>(value: T, message?: string) {
         if (this.notFlag ? value !== undefined : value === undefined)
             throw new ExpectationError(message || `Expected value ${this.notFlag ? 'not' : ''} to be defined.`);
     }
