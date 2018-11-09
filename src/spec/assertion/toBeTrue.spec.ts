@@ -33,6 +33,6 @@ class ExpectToBeTrue {
         new TestCase('null', null),
     ])
     private notToBeTrueSuccess(arg) {
-        expect.toBeTrue(arg);
+        expect.not.toBeTrue(arg);
     }
 }
