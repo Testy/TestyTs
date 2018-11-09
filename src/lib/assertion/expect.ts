@@ -30,6 +30,9 @@ class Expect {
             return;
         }
 
+        if (this.notFlag)
+            return;
+
         throw new ExpectationError(message || 'Expected function to throw');
     }
 
