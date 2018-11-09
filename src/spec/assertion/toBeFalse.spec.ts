@@ -5,7 +5,7 @@ import { expect } from '../../lib/assertion/expect';
 @testSuite('Expect ToBeFalse Test Suite')
 class ExpectToBeFalseTestSuite {
     @test('false to be false')
-    private expectFalseToBeFalse() {
+    private falseToBeFalse() {
         expect.toBeFalse(false);
     }
 
