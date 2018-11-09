@@ -3,6 +3,12 @@ import { TestRunner } from './lib/testRunner';
 import { TestsLoader } from './lib/utils/testsLoader';
 import { Config } from './lib/interfaces/config';
 
+import { test } from './lib/decorators/test.decorator';
+import { testSuite } from './lib/decorators/testSuite.decorator';
+import { expect } from './lib/assertion/expect';
+
+export { test, testSuite, expect };
+
 const testsLoader = new TestsLoader();
 const testRunner = TestRunner.testRunner;
 
