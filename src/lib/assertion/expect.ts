@@ -65,13 +65,13 @@ class Expect {
         }
     }
 
-    public toBeTruthy(value: boolean, message?: string) {
+    public toBeTruthy<T>(value: T, message?: string) {
         if (this.notFlag ? value : !value) {
             throw new ExpectationError(message || `Expected ${value} to be truthy.`);
         }
     }
 
-    public toBeFalsy(value: boolean, message?: string) {
+    public toBeFalsy<T>(value: T, message?: string) {
         if (this.notFlag ? !value : value) {
             throw new ExpectationError(message || `Expected ${value} to be falsy.`);
         }
