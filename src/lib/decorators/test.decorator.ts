@@ -49,7 +49,7 @@ function generateTestsFromTestCases(testMethod: Function, testCases: TestCase[] 
             await new Promise(async (resolve, reject) => {
                 setTimeout(() => reject('Test has timed out.'), timeout);
                 try {
-                    await testMethod.bind(this)();
+                    await testMethod.bind(this)(...testCase.args);
                 }
                 catch (err) {
                     reject(err);
