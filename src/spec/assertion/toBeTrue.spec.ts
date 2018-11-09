@@ -1,37 +1,12 @@
 import { test, testSuite, expect } from '../../testy';
+import { TestCase } from '../../lib/testCase';
 
 @testSuite('Expect ToBeTrue Tests')
 class ExpectToBeTrue {
-    
+
     @test('true to be true')
     private trueToBeTrue() {
         expect.toBeTrue(true);
-    }
-
-    @test('false to be true to fail')
-    private falseToBeTrueFails() {
-        expect.toThrow(() => {
-            expect.toBeTrue(false);
-        });
-    }
-
-    @test('undefined to be true to fail')
-    private undefinedToBeTrueFails() {
-        expect.toThrow(() => {
-            expect.toBeTrue(undefined);
-        });
-    }
-
-    @test('null to be true to fail')
-    private nullToBeTrueFails() {
-        expect.toThrow(() => {
-            expect.toBeTrue(null);
-        });
-    }
-
-    @test('false not to be true')
-    private falseNotToBeTrue() {
-        expect.not.toBeTrue(false);
     }
 
     @test('true not to be true to fail')
@@ -41,13 +16,23 @@ class ExpectToBeTrue {
         });
     }
 
-    @test('undefined not to be true')
-    private undefinedNotToBeTrue() {
-        expect.not.toBeTrue(undefined);
+    @test('To be true, should fail', [
+        new TestCase('false', false),
+        new TestCase('undefined', undefined),
+        new TestCase('null', null),
+    ])
+    private toBeTrueFail(arg) {
+        expect.toThrow(() => {
+            expect.toBeTrue(arg);
+        });
     }
 
-    @test('null not to be true')
-    private nullNotToBeTrue() {
-        expect.not.toBeTrue(null);
+    @test('Not to be true, should succeed', [
+        new TestCase('false', false),
+        new TestCase('undefined', undefined),
+        new TestCase('null', null),
+    ])
+    private notToBeTrueSuccess(arg) {
+        expect.toBeTrue(arg);
     }
 }
