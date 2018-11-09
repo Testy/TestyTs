@@ -2,40 +2,40 @@ import { testSuite } from '../../lib/decorators/testSuite.decorator';
 import { test } from '../../lib/decorators/test.decorator';
 import { expect } from '../../lib/assertion/expect';
 
-@testSuite('ToBeFalse Test Suite')
+@testSuite('Expect ToBeFalse Test Suite')
 class ExpectFalseTestSuite {
-    @test('Expect false to be false')
+    @test('false to be false')
     private expectFalseToBeFalse() {
         expect.toBeFalse(false);
     }
 
-    @test('Expect true to be false, should fail')
-    private expectTrueToBeFalseFails() {
+    @test('true to be false to fail')
+    private trueToBeFalseFails() {
         expect.toThrow(() => {
             expect.toBeFalse(true);
         });
     }
 
-    @test('Expect undefined to be false, should fail')
-    private expectUndefinedToBeFalseFails() {
+    @test('undefined to be false to fail')
+    private undefinedToBeFalseFails() {
         expect.toThrow(() => {
             expect.toBeFalse(undefined);
         });
     }
 
-    @test('Expect true not to be false')
-    private expectTrueNotToBeFalse() {
+    @test('true not to be false')
+    private trueNotToBeFalse() {
         expect.not.toBeFalse(true);
     }
 
-    @test('Expect false not to be false, should fail')
-    private expectFalseNotToBeFalse() {
+    @test('false not to be false to fail')
+    private falseNotToBeFalse() {
         expect.toThrow(() => {
             expect.not.toBeFalse(false);
         });
     }
 
-    @test('Expect undefined not to be false')
+    @test('undefined not to be false')
     private undefinedNotToBeFalse() {
         expect.not.toBeFalse(undefined);
     }

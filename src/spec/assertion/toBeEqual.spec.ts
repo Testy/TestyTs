@@ -2,26 +2,26 @@ import { testSuite } from '../../lib/decorators/testSuite.decorator';
 import { test } from '../../lib/decorators/test.decorator';
 import { expect } from '../../lib/assertion/expect';
 
-@testSuite('ToBeEqual Test Suite')
+@testSuite('Expect ToBeEqual Test Suite')
 class ExpectEqualTestSuite {
-    @test('Equals')
+    @test(`'a' to equal 'a'`)
     private equal() {
         expect.toBeEqual('a', 'a');
     }
 
-    @test('Not Equal')
+    @test(`'a' not to equal 'b'`)
     private notEqual() {
         expect.not.toBeEqual('a', 'b');
     }
 
-    @test('Equals Fails')
+    @test(`'a' to equal 'b' to fail`)
     private equalFails() {
         expect.toThrow(() => {
             expect.toBeEqual('a', 'b');
         });
     }
 
-    @test('Not Equal Fails')
+    @test(`'a' not to equal 'a' to fail`)
     private notEqualFails() {
         expect.toThrow(() => {
             expect.not.toBeEqual('a', 'a');
