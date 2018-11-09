@@ -1,5 +1,5 @@
 {
     "include": [
-        "src/*/**.spec.ts"
+        "src/**/*.spec.ts"
     ]
 }
