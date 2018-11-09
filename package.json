@@ -22,6 +22,10 @@
     },
     "homepage": "https://github.com/Aboisier/testy#readme",
     "devDependencies": {
+        "@types/glob": "^7.1.1",
         "@types/node": "^10.12.2"
+    },
+    "dependencies": {
+        "glob": "^7.1.3"
     }
 }
