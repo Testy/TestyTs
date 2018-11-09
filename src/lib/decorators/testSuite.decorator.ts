@@ -31,7 +31,7 @@ async function runTest(name: string, test: Function, isTestCase: boolean = false
         console.log(`${indentation}√ ${name}`);
     }
     catch (err) {
-        console.log(`${indentation}x ${name}`);
+        console.log(`${indentation}x ${name} - ${err.message}`);
     }
 }
 
