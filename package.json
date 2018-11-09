@@ -4,10 +4,8 @@
     "description": "Modern test framework for TypeScript.",
     "main": "index.js",
     "preferGlobal": true,
-    "scripts": {
-        "build": "tsc"
-    },
-    "bin": "build/testy.js",
+    "scripts": {},
+    "bin": "testy.bat",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Aboisier/testy.git"
