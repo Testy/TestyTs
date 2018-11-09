@@ -18,6 +18,7 @@ class ExpectToBeFalsy {
 
     @test('To be falsy, should fail', [
         new TestCase('true', true),
+        new TestCase(`'0'`, '0'),
         new TestCase('Object', { a: 1 })
     ])
     private toBeFalsyFail(arg) {
@@ -28,6 +29,7 @@ class ExpectToBeFalsy {
 
     @test('Not to be falsy, should succeed', [
         new TestCase('true', true),
+        new TestCase(`'0'`, '0'),
         new TestCase('Object', { a: 1 }),
     ])
     private notToBeFalsySuccess(arg) {
