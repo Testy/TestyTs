@@ -1,13 +1,27 @@
 import { TestRunner } from '../testRunner';
 import { LoggerFactory } from '../logger/loggerFactory';
+import { TestFlags } from '../interfaces/testSuite';
 
 const logger = LoggerFactory.create();
 
 export function testSuite(name: string) {
+    return createTestSuiteDecoratorFactory(name, TestFlags.None);
+}
+
+export function ftestSuite(name: string) {
+    return createTestSuiteDecoratorFactory(name, TestFlags.Focused);
+}
+
+export function xtestSuite(name: string) {
+    return createTestSuiteDecoratorFactory(name, TestFlags.Ignored);
+}
+
+function createTestSuiteDecoratorFactory(name: string, flag: TestFlags) {
     return (constructor: Function) => {
         const testSuite = Object.create(constructor.prototype);
         testSuite.run = run;
         testSuite.name = name;
+        testSuite.flag = flag;
 
         TestRunner.testRunner.addTestSuite(testSuite);
     }
