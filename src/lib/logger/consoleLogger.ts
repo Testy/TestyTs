@@ -5,11 +5,15 @@ export class ConsoleLogger extends Logger {
         console.log(this.color(this.indentation + message, ForegroundColors.Green));
     }
 
-    public failure(message: string): void {
+    public warn(message: string = ''): void {
+        console.log(this.color(this.indentation + message, ForegroundColors.Yellow));
+    }
+
+    public failure(message: string = ''): void {
         console.log(this.color(this.indentation + message, ForegroundColors.Red));
     }
 
-    public info(message: string): void {
+    public info(message: string = ''): void {
         console.log(this.indentation + message);
     }
 
@@ -21,5 +25,6 @@ export class ConsoleLogger extends Logger {
 enum ForegroundColors {
     Red = '\x1b[31m',
     Green = '\x1b[32m',
+    Yellow = '\x1b[93m',
     Reset = '\x1b[0m'
 }

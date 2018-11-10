@@ -14,7 +14,8 @@ export abstract class Logger {
         --this.indentationLevel;
     }
 
-    abstract success(message: string): void;
-    abstract failure(message: string): void;
-    abstract info(message: string): void;
+    abstract success(message?: string): void;
+    abstract warn(message?: string): void;
+    abstract failure(message?: string): void;
+    abstract info(message?: string): void;
 }
