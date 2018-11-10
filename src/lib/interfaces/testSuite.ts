@@ -3,3 +3,5 @@ export interface TestSuite {
 
     run(): Promise<void>;
 }
+
+export enum TestFlags { None, Focused, Ignored }
