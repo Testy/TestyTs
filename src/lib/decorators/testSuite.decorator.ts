@@ -1,6 +1,7 @@
 import { TestRunner } from '../testRunner';
 import { LoggerFactory } from '../logger/loggerFactory';
-import { TestFlags } from '../interfaces/testSuite';
+import { TestFlags, TestSuite } from '../interfaces/testSuite';
+import { TestSuitePropertiesAndMethodNamesError } from '../exceptions/TestSuitePropertiesAndMethodNamesError';
 
 const logger = LoggerFactory.create();
 
@@ -19,7 +20,13 @@ export function xtestSuite(name: string) {
 function createTestSuiteDecoratorFactory(name: string, flag: TestFlags) {
     return (constructor: Function) => {
         const testSuite = Object.create(constructor.prototype);
-        testSuite.run = run;
+        const testSuiteBase = new TestSuite(logger);
+        assertTestSuiteValidity(testSuite, testSuiteBase);
+
+        for (const key in testSuiteBase) {
+            testSuite[key] = testSuiteBase[key];
+        }
+
         testSuite.name = name;
         testSuite.flag = flag;
 
@@ -27,44 +34,15 @@ function createTestSuiteDecoratorFactory(name: string, flag: TestFlags) {
     }
 }
 
-async function run(): Promise<void> {
-    if (!this.tests) {
-        throw new Error(`No tests found for ${this.name}. Did you forget to add the @test decorator?`);
+/** 
+ * Ensures that the user did not use the same properties and method names as the TestSuite class 
+ */
+function assertTestSuiteValidity(testSuite: any, testSuiteBase: TestSuite) {
+    const testSuitePropAndMethodNames = Object.keys(testSuite.constructor.prototype);
+    const basePropAndMethodNames = Object.keys(testSuiteBase.constructor.prototype);
+
+    const conflicts = testSuitePropAndMethodNames.filter(value => -1 !== basePropAndMethodNames.indexOf(value));
+    if (conflicts.length > 0) {
+        throw new TestSuitePropertiesAndMethodNamesError(conflicts);
     }
-
-    for (const testName in this.tests) {
-        const test = this.tests[testName];
-
-        hasTestcases(test)
-            ? await runTestcases(testName, test)
-            : await runTest(testName, test);
-    }
-}
-
-async function runTest(name: string, test: Function) {
-    logger.increaseIndentation();
-
-    try {
-        await test.bind(this)();
-        logger.success(`√ ${name}`);
-    }
-    catch (err) {
-        logger.failure(`x ${name} - ${err.message}`);
-    }
-
-    logger.decreaseIndentation();
-}
-
-async function runTestcases(name: string, testCases: { [name: string]: Function }) {
-    logger.increaseIndentation();
-    logger.info(name)
-    for (const testCaseName in testCases) {
-        const testCase = testCases[testCaseName];
-        await runTest(testCaseName, testCase);
-    }
-    logger.decreaseIndentation();
-}
-
-function hasTestcases(test: Function | { [name: string]: Function }) {
-    return !(test instanceof Function);
 }
