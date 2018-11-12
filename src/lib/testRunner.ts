@@ -52,7 +52,7 @@ export class TestRunner {
     }
 
     private hasIgnoredTests() {
-        return this.testSuites.find(x => x.flag === TestFlags.Ignored) !== undefined;
+        return this.getIgnoredTests().length > 0;
     }
 }
 
