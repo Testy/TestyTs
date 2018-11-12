@@ -1,5 +1,11 @@
 import { TestCase } from '../testCase';
 
+/** 
+ * Marks a method inside a @testSuite decorated class as a test.
+ * @param name Name of the test, displayed in the test report.
+ * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
+ * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
+ */
 export function test(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         if (!target.tests) { target.tests = {}; }
