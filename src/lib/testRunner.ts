@@ -2,6 +2,9 @@ import { TestSuite, TestFlags } from './testSuite';
 import { LoggerFactory } from './logger/loggerFactory';
 import { Logger } from './logger/logger';
 
+/**
+ * Runs all tests decorated with @testSuite and @ftestSuite.
+ */
 export class TestRunner {
     private static _testRunner: TestRunner;
     public static get testRunner(): TestRunner { return TestRunner._testRunner; }
