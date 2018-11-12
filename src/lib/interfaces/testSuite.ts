@@ -7,7 +7,8 @@ import { Logger } from '../logger/logger';
 export class TestSuite {
     readonly name: string;
     readonly flag: TestFlags;
-    private tests: {};
+    private tests: { [name: string]: any };
+    private ignoredTests: string[];
 
     constructor(private logger: Logger) { }
 
@@ -24,7 +25,10 @@ export class TestSuite {
                 ? await this._runTestcases(testName, test)
                 : await this._runTest(testName, test);
         }
+
+        this._reportIgnoredTests();
         this.logger.decreaseIndentation();
+        this.logger.info();
     }
 
     private async _runTest(name: string, test: Function) {
@@ -48,8 +52,24 @@ export class TestSuite {
         this.logger.decreaseIndentation();
     }
 
+    private async _reportIgnoredTests() {
+        if (!this._hasIgnoresTests())
+            return;
+
+        this.logger.warn('Some tests were ignored.');
+        this.logger.increaseIndentation();
+        for (const test of this.ignoredTests) {
+            this.logger.info(test);
+        }
+        this.logger.decreaseIndentation();
+    }
+
     private _hasTestcases(test: Function | { [name: string]: Function }) {
         return !(test instanceof Function);
+    }
+
+    private _hasIgnoresTests() {
+        return this.ignoredTests && this.ignoredTests.length > 0;
     }
 }
 

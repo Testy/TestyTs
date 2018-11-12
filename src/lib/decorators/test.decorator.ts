@@ -33,6 +33,21 @@ export function test(name: string, testCases?: TestCase[], timeout: number = 200
     };
 }
 
+/** 
+ * Marks a method inside a @testSuite decorated class as an ignored test.
+ * Ignored tests will not be ran, but they will still appear in test reports.
+ * 
+ * @param name Name of the test, displayed in the test report.
+ * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
+ * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
+ */
+export function xtest(name: string, testCases?: TestCase[], timeout: number = 2000) {
+    return (target, key, descriptor) => {
+        if (!target.ignoredTests) { target.ignoredTests = []; }
+        target.ignoredTests.push(name);
+    };
+}
+
 function generateTest(testMethod: Function, timeout: number) {
     return async function () {
         await new Promise(async (resolve, reject) => {
