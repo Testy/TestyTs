@@ -2,20 +2,21 @@ import { TestRunner } from '../testRunner';
 import { LoggerFactory } from '../logger/loggerFactory';
 import { TestFlags, TestSuite } from '../interfaces/testSuite';
 import { TestSuitePropertiesAndMethodNamesError } from '../exceptions/TestSuitePropertiesAndMethodNamesError';
-import { test } from './test.decorator';
 
 const logger = LoggerFactory.create();
 
 /** 
  * Marks a class as a test suite. 
+ * 
  * @param name Name of the test suite, displayed in the test report.
-*/
+ */
 export function testSuite(name: string) {
     return createTestSuiteDecoratorFactory(name, TestFlags.None);
 }
 
 /** 
- * Marks a class as a focused test suite. When one or more test suites are marked as focused, only the those will be ran.
+ * Marks a class as a focused test suite. If one or more test suites are marked as focused, only the those will be ran.
+ * 
  * @param name Name of the test suite, displayed in the test report.
  */
 export function ftestSuite(name: string) {
@@ -24,6 +25,7 @@ export function ftestSuite(name: string) {
 
 /**
  * Marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
+ * 
  * @param name Name of the test suite, displayed in the test report.
  */
 export function xtestSuite(name: string) {
