@@ -41,7 +41,7 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
  */
 export function xtest(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
-        if (!target.ignoredTests) { target.ignoredTests = []; }
+        initializeTarget(target);
         target.ignoredTests.push(name);
     };
 }
@@ -49,6 +49,7 @@ export function xtest(name: string, testCases?: TestCase[], timeout: number = 20
 function initializeTarget(target: any) {
     if (!target.tests) { target.tests = {}; }
     if (!target.focusedTests) { target.focusedTests = {}; }
+    if (!target.ignoredTests) { target.ignoredTests = []; }
 }
 
 function assertTestIsUnique(name: string, target: any) {
