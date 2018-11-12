@@ -24,6 +24,13 @@ export class TestRunner {
 
         }
 
+        this.reportIgnoredTestSuites();
+    }
+
+    private reportIgnoredTestSuites() {
+        if (!this.hasIgnoredTests())
+            return;
+
         this.logger.warn('\nSome tests were ignored.');
         this.logger.increaseIndentation();
         for (const testSuite of this.getIgnoredTests()) {
