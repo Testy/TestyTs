@@ -49,7 +49,7 @@ export function xtest(name: string, testCases?: TestCase[], timeout: number = 20
 }
 
 function generateTest(testMethod: Function, timeout: number) {
-    return async function () {
+    return async () => {
         await new Promise(async (resolve, reject) => {
             setTimeout(() => reject('Test has timed out.'), timeout);
             try {
