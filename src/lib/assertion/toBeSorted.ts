@@ -11,13 +11,13 @@ export class ToBeSorted {
         this.toBeOrdered(array, selector, Order.Descending, message);
     }
 
-    private toBeOrdered<T>(array: T[], selector: ((T) => any), order: Order, message?: string, ) {
+    private toBeOrdered<T>(array: T[], selector: ((T) => any), order: Order, message?: string) {
         if (!selector) selector = x => x;
 
         const compare = (a, b) => {
             return order === Order.Ascending
                 ? selector(a) <= selector(b)
-                : selector(b) <= selector(a)
+                : selector(b) <= selector(a);
         };
 
         const isOrdered = array.every((val, i, arr) => i === 0 || compare(arr[i - 1], val));

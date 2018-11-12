@@ -1,6 +1,6 @@
 import { TestCase } from '../testCase';
 
-export function test(name: string, testCases: TestCase[] = undefined, timeout: number = 2000) {
+export function test(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         if (!target.tests) { target.tests = {}; }
 
@@ -23,8 +23,8 @@ export function test(name: string, testCases: TestCase[] = undefined, timeout: n
         }
 
         return descriptor;
-    }
-};
+    };
+}
 
 function generateTest(testMethod: Function, timeout: number) {
     return async function () {
@@ -39,10 +39,10 @@ function generateTest(testMethod: Function, timeout: number) {
 
             resolve();
         });
-    }
+    };
 }
 
-function generateTestsFromTestCases(testMethod: Function, testCases: TestCase[] = undefined, timeout: number) {
+function generateTestsFromTestCases(testMethod: Function, testCases: TestCase[], timeout: number) {
     const tests: { [name: string]: Function } = {};
     for (const testCase of testCases) {
         tests[testCase.name] = async () => {
@@ -57,7 +57,7 @@ function generateTestsFromTestCases(testMethod: Function, testCases: TestCase[] 
 
                 resolve();
             });
-        }
+        };
     }
 
     return tests;

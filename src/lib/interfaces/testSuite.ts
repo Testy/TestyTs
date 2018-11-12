@@ -1,10 +1,9 @@
 import { Logger } from '../logger/logger';
 
-/** The @testSuite decorator adds all this classe's properties and methods to
- *  the target class to create inheritance. This is why some method names break
- *  the style convention and start by an underscore; we want to minimise 
- *  conflicts with the user's methods.
- **/
+/** The @testSuite decorator adds all this classe's properties and methods to the target
+ * class to create inheritance. This is why some method names break the style convention
+ * and start by an underscore; we want to minimise conflicts with the user's methods.
+ */
 export class TestSuite {
     readonly name: string;
     readonly flag: TestFlags;
@@ -42,7 +41,7 @@ export class TestSuite {
 
     private async _runTestcases(name: string, testCases: { [name: string]: Function }) {
         this.logger.increaseIndentation();
-        this.logger.info(name)
+        this.logger.info(name);
         for (const testCaseName in testCases) {
             const testCase = testCases[testCaseName];
             await this._runTest(testCaseName, testCase);

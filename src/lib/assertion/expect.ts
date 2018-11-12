@@ -85,7 +85,7 @@ class Expect {
     public toMatch(str: string, regex: RegExp, message?: string) {
         const matches = regex.test(str);
         if (this.notFlag ? matches : !matches) {
-            throw new ExpectationError(message || `Expected "${str}" to match ${regex}.`)
+            throw new ExpectationError(message || `Expected "${str}" to match ${regex}.`);
         }
     }
 

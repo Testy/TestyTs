@@ -2,12 +2,12 @@ import { test, testSuite, expect } from '../../testy';
 
 @testSuite('Expect ToThrow Test Suite')
 class ExpectToThrowTestSuite {
-    
+
     @test('error to throw')
     private errorToThrow() {
         expect.toThrow(() => {
             throw new Error('I threw.');
-        })
+        });
     }
 
     @test('no error to throw to fail')
@@ -22,8 +22,8 @@ class ExpectToThrowTestSuite {
         expect.toThrow(() => {
             expect.not.toThrow(() => {
                 throw new Error('I threw.');
-            })
-        })
+            });
+        });
     }
 
     @test('no error not to throw')
@@ -35,7 +35,7 @@ class ExpectToThrowTestSuite {
     private async errorToThrowAsync() {
         await expect.toThrowAsync(async () => {
             throw new Error('I threw.');
-        })
+        });
     }
 
     @test('no error to throw to fail async')
@@ -50,8 +50,8 @@ class ExpectToThrowTestSuite {
         await expect.toThrow(() => {
             expect.not.toThrow(() => {
                 throw new Error('I threw.');
-            })
-        })
+            });
+        });
     }
 
     @test('no error not to throw async')

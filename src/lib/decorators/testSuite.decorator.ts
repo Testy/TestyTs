@@ -31,11 +31,11 @@ function createTestSuiteDecoratorFactory(name: string, flag: TestFlags) {
         testSuite.flag = flag;
 
         TestRunner.testRunner.addTestSuite(testSuite);
-    }
+    };
 }
 
-/** 
- * Ensures that the user did not use the same properties and method names as the TestSuite class 
+/**
+ * Ensures that the user did not use the same properties and method names as the TestSuite class
  */
 function assertTestSuiteValidity(testSuite: any, testSuiteBase: TestSuite) {
     const testSuitePropAndMethodNames = Object.keys(testSuite.constructor.prototype);
