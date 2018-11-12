@@ -1,4 +1,4 @@
-import { TestSuite, TestFlags } from './interfaces/testSuite';
+import { TestSuite, TestFlags } from './testSuite';
 import { LoggerFactory } from './logger/loggerFactory';
 import { Logger } from './logger/logger';
 

@@ -1,4 +1,4 @@
-import { Logger } from '../logger/logger';
+import { Logger } from './logger/logger';
 
 /** The @testSuite decorator adds all this classe's properties and methods to the target
  * class to create inheritance. This is why some method names break the style convention

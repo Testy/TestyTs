@@ -1,6 +1,6 @@
 import { TestRunner } from '../testRunner';
 import { LoggerFactory } from '../logger/loggerFactory';
-import { TestFlags, TestSuite } from '../interfaces/testSuite';
+import { TestFlags, TestSuite } from '../testSuite';
 import { TestSuitePropertiesAndMethodNamesError } from '../exceptions/TestSuitePropertiesAndMethodNamesError';
 
 const logger = LoggerFactory.create();
