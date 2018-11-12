@@ -159,5 +159,7 @@ class Expect {
     }
 }
 
-
+/**
+ * Utilitary class with assertion methods.
+ */
 export const expect = new Expect();
