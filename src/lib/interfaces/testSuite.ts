@@ -16,6 +16,7 @@ export class TestSuite {
             throw new Error(`No tests found for ${this.name}. Did you forget to add the @test decorator?`);
         }
 
+        this.logger.increaseIndentation();
         for (const testName in this.tests) {
             const test = this.tests[testName];
 
@@ -23,10 +24,10 @@ export class TestSuite {
                 ? await this._runTestcases(testName, test)
                 : await this._runTest(testName, test);
         }
+        this.logger.decreaseIndentation();
     }
 
     private async _runTest(name: string, test: Function) {
-        this.logger.increaseIndentation();
 
         try {
             await test.bind(this)();
@@ -35,8 +36,6 @@ export class TestSuite {
         catch (err) {
             this.logger.failure(`x ${name} - ${err.message}`);
         }
-
-        this.logger.decreaseIndentation();
     }
 
     private async _runTestcases(name: string, testCases: { [name: string]: Function }) {
