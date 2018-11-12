@@ -6,7 +6,8 @@
     "preferGlobal": true,
     "scripts": {
         "test": "testy",
-        "lint": "tslint -c tslint.json 'src/**/*.ts'"
+        "lint": "tslint -c tslint.json 'src/**/*.ts'",
+        "lint-fix": "tslint -c tslint.json 'src/**/*.ts' --fix"
     },
     "bin": "testy.bat",
     "repository": {
