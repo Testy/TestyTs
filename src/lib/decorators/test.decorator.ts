@@ -9,27 +9,25 @@ import { TestCase } from '../testCase';
  */
 export function test(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
-        if (!target.tests) { target.tests = {}; }
+        initializeTarget(target);
+        assertTestIsUnique(name, target);
+        target.tests[name] = generateTest(name, testCases, descriptor.value, timeout);
+    };
+}
 
-        if (target.tests[name] !== undefined) {
-            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
-        }
-
-        if (descriptor === undefined) {
-            descriptor = Object.getOwnPropertyDescriptor(target, key);
-        }
-
-        const testMethod = descriptor.value;
-        if (testCases) {
-            const tests = generateTestsFromTestCases(testMethod, testCases, timeout);
-            target.tests[name] = tests;
-        }
-        else {
-            const test = generateTest(testMethod, timeout);
-            target.tests[name] = test;
-        }
-
-        return descriptor;
+/**
+ * Marks a method inside a @testSuite decorated class as a focused test.
+ * If one or more tests are marked as focused, only those will be ran.
+ *
+ * @param name Name of the test, displayed in the test report.
+ * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
+ * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
+ */
+export function ftest(name: string, testCases?: TestCase[], timeout: number = 2000) {
+    return (target, key, descriptor) => {
+        initializeTarget(target);
+        assertTestIsUnique(name, target);
+        target.focusedTests[name] = generateTest(name, testCases, descriptor.value, timeout);
     };
 }
 
@@ -48,7 +46,25 @@ export function xtest(name: string, testCases?: TestCase[], timeout: number = 20
     };
 }
 
-function generateTest(testMethod: Function, timeout: number) {
+function initializeTarget(target: any) {
+    if (!target.tests) { target.tests = {}; }
+    if (!target.focusedTests) { target.focusedTests = {}; }
+}
+
+function assertTestIsUnique(name: string, target: any) {
+    if (target.focusedTests[name] === undefined && target.tests[name] === undefined)
+        return;
+
+    throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
+}
+
+function generateTest(name: string, testCases: TestCase[], testMethod: any, timeout: number) {
+    return testCases
+        ? decorateTestWithTestcases(testMethod, testCases, timeout)
+        : decorateStandaloneTest(testMethod, timeout);
+}
+
+function decorateStandaloneTest(testMethod: Function, timeout: number) {
     return async () => {
         await new Promise(async (resolve, reject) => {
             setTimeout(() => reject('Test has timed out.'), timeout);
@@ -64,7 +80,7 @@ function generateTest(testMethod: Function, timeout: number) {
     };
 }
 
-function generateTestsFromTestCases(testMethod: Function, testCases: TestCase[], timeout: number) {
+function decorateTestWithTestcases(testMethod: Function, testCases: TestCase[], timeout: number) {
     const tests: { [name: string]: Function } = {};
     for (const testCase of testCases) {
         tests[testCase.name] = async () => {
