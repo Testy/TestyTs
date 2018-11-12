@@ -32,16 +32,20 @@ export class TestRunner {
         this.logger.decreaseIndentation();
     }
 
-    private hasFocusedTests() {
-        return this.testSuites.find(x => x.flag === TestFlags.Focused) !== undefined;
-    }
-
     private getActiveTests() {
         return this.testSuites.filter(x => this.hasFocusedTests() && x.flag === TestFlags.Focused || !this.hasFocusedTests() && x.flag !== TestFlags.Ignored);
     }
 
     private getIgnoredTests() {
         return this.testSuites.filter(x => this.hasFocusedTests() && x.flag !== TestFlags.Focused || x.flag === TestFlags.Ignored);
+    }
+
+    private hasFocusedTests() {
+        return this.testSuites.find(x => x.flag === TestFlags.Focused) !== undefined;
+    }
+
+    private hasIgnoredTests() {
+        return this.testSuites.find(x => x.flag === TestFlags.Ignored) !== undefined;
     }
 }
 
