@@ -4,7 +4,10 @@
     "description": "Modern test framework for TypeScript.",
     "main": "index.js",
     "preferGlobal": true,
-    "scripts": {},
+    "scripts": {
+        "test": "testy",
+        "lint": "tslint -c tslint.json 'src/**/*.ts'"
+    },
     "bin": "testy.bat",
     "repository": {
         "type": "git",
