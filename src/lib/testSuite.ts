@@ -33,7 +33,11 @@ export class TestSuite<T> {
             throw new Error(`No tests found for ${this.name}. Did you forget to add the @test decorator?`);
         }
 
-        await this.beforeAll.bind(this.context)();
+        try {
+            await this.beforeAll.bind(this.context)();
+        } catch (err) {
+            return new FailedTestReport(this.name, err.message, 0);
+        }
 
         const report = new CompositeReport(this.name);
         for (const testName in activeTests) {
@@ -46,7 +50,11 @@ export class TestSuite<T> {
             report.addReport(testReport);
         }
 
-        await this.afterAll.bind(this.context)();
+        try {
+            await this.afterAll.bind(this.context)();
+        } catch (err) {
+            return new FailedTestReport(this.name, err.message, 0);
+        }
 
         this.reportIgnoredTests(report);
         return report;

@@ -6,7 +6,7 @@ export class FailedTestReport implements Report {
     public get name() { return this._name; }
     public get message() { return this._message; }
     public get duration(): number { return this._duration; }
-    public get result(): TestResult { return TestResult.Success; }
+    public get result(): TestResult { return TestResult.Failure; }
 
     constructor(private _name: string, private _message: string, private _duration: number) { }
 
