@@ -9,8 +9,23 @@ import { expect } from './lib/assertion/expect';
 import { TestCase } from './lib/testCase';
 import { ConsoleReporter } from './lib/reporting/reporters/consoleReporter';
 import { ConsoleLogger } from './lib/logger/consoleLogger';
+import { afterAll } from './lib/decorators/afterAll.decorator';
+import { afterEach } from './lib/decorators/afterEach.decorator';
+import { beforeEach } from './lib/decorators/beforeEach.decorator';
+import { beforeAll } from './lib/decorators/beforeAll.decorator';
 
-export { test, testSuite, ftestSuite, xtestSuite, expect, TestCase };
+export {
+    test,
+    testSuite,
+    ftestSuite,
+    xtestSuite,
+    beforeAll,
+    beforeEach,
+    afterEach,
+    afterAll,
+    expect,
+    TestCase
+};
 
 const testsLoader = new TestsLoader();
 const testRunner = TestRunner.testRunner;
