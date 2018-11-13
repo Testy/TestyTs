@@ -8,5 +8,5 @@ export interface Report {
     name: string;
     result: TestResult;
     duration: number;
-    acceptReporter(reporter: ReporterVisitor)
+    acceptReporter(reporter: ReporterVisitor);
 }
