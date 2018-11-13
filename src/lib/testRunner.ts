@@ -1,6 +1,4 @@
 import { TestSuite } from './testSuite';
-import { LoggerFactory } from './logger/loggerFactory';
-import { Logger } from './logger/logger';
 import { TestStatus } from './testStatus';
 import { CompositeReport } from './reporting/report/compositeReport';
 import { SkippedTestReport } from './reporting/report/skippedTestReport';
@@ -14,10 +12,10 @@ export class TestRunner {
     public static get testRunner(): TestRunner { return TestRunner._testRunner; }
     private testSuites: TestSuite[] = [];
 
-    public constructor(private logger: Logger) { }
+    public constructor() { }
 
     static initialize() {
-        TestRunner._testRunner = new TestRunner(LoggerFactory.create());
+        TestRunner._testRunner = new TestRunner();
     }
 
     public addTestSuite(testSuite: TestSuite) {
