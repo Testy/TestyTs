@@ -1,4 +1,5 @@
 import { test, beforeAll, TestCase } from '../../../testy';
+import { xtest } from '../../../lib/decorators/test.decorator';
 
 export class ThrowsDuringBeforeAllTestSuite {
     @beforeAll()
@@ -18,4 +19,7 @@ export class ThrowsDuringBeforeAllTestSuite {
         new TestCase('c.3'),
     ])
     private c() { }
+
+    @xtest('d')
+    private d() { }
 }

@@ -8,5 +8,6 @@ export interface Report {
     name: string;
     result: TestResult;
     duration: number;
+    numberOfTests: number;
     acceptReporter(reporter: ReporterVisitor);
 }

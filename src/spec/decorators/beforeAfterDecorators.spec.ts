@@ -1,4 +1,4 @@
-import { createTestSuite, testSuite } from '../../lib/decorators/testSuite.decorator';
+import { createTestSuite, testSuite, ftestSuite } from '../../lib/decorators/testSuite.decorator';
 import { test } from '../../lib/decorators/test.decorator';
 import { TestStatus } from '../../lib/testStatus';
 import { expect } from '../../testy';
@@ -10,7 +10,7 @@ import { ThrowsDuringBeforeEachTestSuite } from './dummyTestSuite/throwsDuringBe
 import { ThrowsDuringAfterEachTestSuite } from './dummyTestSuite/throwsDuringAfterEachTestSuite';
 import { ThrowsDuringAfterAllTestSuite } from './dummyTestSuite/throwsDuringAfterAllTestSuite';
 
-@testSuite('Before and After Decorators Test Suite')
+@ftestSuite('Before and After Decorators Test Suite')
 class BeforeAfterDecoratorsTestSuite {
 
     @test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
@@ -19,31 +19,33 @@ class BeforeAfterDecoratorsTestSuite {
         const testSuite = createTestSuite(NormalBeforeAfterTestSuite, 'Dummy Test Suite', TestStatus.Normal);
 
         // Act
-        await testSuite.run();
+        const report = await testSuite.run();
 
         // Assert
         expect.toBeEqual(testSuite.context.numberOfBeforeAllExecutions, 1);
         expect.toBeEqual(testSuite.context.numberOfBeforeEachExecutions, 5);
         expect.toBeEqual(testSuite.context.numberOfAfterEachExecutions, 5);
         expect.toBeEqual(testSuite.context.numberOfAfterAllExecutions, 1);
+        expect.toBeEqual(report.numberOfTests, 6);
     }
 
     @test('Before and after methods failures', [
-        new TestCase('beforeAll throws, should return a failed test report', ThrowsDuringBeforeAllTestSuite),
-        new TestCase('beforeEach throws, should return a failed test report', ThrowsDuringBeforeEachTestSuite),
-        new TestCase('afterEach throws, should return a failed test report', ThrowsDuringAfterEachTestSuite),
-        new TestCase('afterAll throws, should return a failed test report', ThrowsDuringAfterAllTestSuite),
+        new TestCase('beforeAll throws, should return a failed test report', ThrowsDuringBeforeAllTestSuite, 6),
+        new TestCase('beforeEach throws, should return a failed test report', ThrowsDuringBeforeEachTestSuite, 6),
+        new TestCase('afterEach throws, should return a failed test report', ThrowsDuringAfterEachTestSuite, 6),
+        new TestCase('afterAll throws, should return a failed test report', ThrowsDuringAfterAllTestSuite, 6),
     ])
-    private async beforeOfAfterMethodFails(testSuiteType: any) {
+    private async beforeOfAfterMethodFails(testSuiteType: any, numberOfTests: number) {
         // Arrange
         const testSuite = createTestSuite(testSuiteType, 'Dummy Test Suite', TestStatus.Normal);
 
         // Act
         const report = await testSuite.run();
-        console.log(report);
+
         // Assert
         expect.toBeDefined(report);
         expect.toBeEqual(report.result, TestResult.Failure);
+        expect.toBeEqual(report.numberOfTests, numberOfTests, 'Expected all tests to be part of the report.');
     }
 }
 

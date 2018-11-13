@@ -36,7 +36,7 @@ export class TestSuite<T> {
         try {
             await this.beforeAll.bind(this.context)();
         } catch (err) {
-            return new FailedTestReport(this.name, err.message, 0);
+            return this.getFailureReport(err.message);
         }
 
         const report = new CompositeReport(this.name);
@@ -53,7 +53,7 @@ export class TestSuite<T> {
         try {
             await this.afterAll.bind(this.context)();
         } catch (err) {
-            return new FailedTestReport(this.name, err.message, 0);
+            return this.getFailureReport(err.message);
         }
 
         this.reportIgnoredTests(report);
@@ -115,6 +115,29 @@ export class TestSuite<T> {
     }
 
     private hasFocusedTests() {
-        return this.focusedTests && Object.keys(this.focusedTests).length > 0;
+        return this.focusedTests && this.focusedTests.length > 0;
+    }
+
+    private getFailureReport(reason: string) {
+        const report = new CompositeReport(this.name);
+
+        for (const testName in this.getActiveTests()) {
+            const test = this.tests[testName];
+
+            if (this.hasTestcases(test)) {
+                for (const subTestName in test) {
+                    report.addReport(new FailedTestReport(subTestName, reason, 0));
+                }
+            }
+            else {
+                report.addReport(new FailedTestReport(testName, reason, 0));
+            }
+        }
+
+        for (const testName in this.getIgnoredTests()) {
+            report.addReport(new SkippedTestReport(testName));
+        }
+
+        return report;
     }
 }

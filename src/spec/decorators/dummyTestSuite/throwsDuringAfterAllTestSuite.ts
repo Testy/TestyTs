@@ -1,4 +1,5 @@
 import { test, afterAll, TestCase } from '../../../testy';
+import { xtest } from '../../../lib/decorators/test.decorator';
 
 export class ThrowsDuringAfterAllTestSuite {
     @afterAll()
@@ -18,4 +19,7 @@ export class ThrowsDuringAfterAllTestSuite {
         new TestCase('c.3'),
     ])
     private c() { }
+
+    @xtest('d')
+    private d() { }
 }
