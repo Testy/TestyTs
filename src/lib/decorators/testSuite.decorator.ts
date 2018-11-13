@@ -1,7 +1,8 @@
 import { TestRunner } from '../testRunner';
 import { LoggerFactory } from '../logger/loggerFactory';
-import { TestFlags, TestSuite } from '../testSuite';
+import { TestSuite } from '../testSuite';
 import { TestSuitePropertiesAndMethodNamesError } from '../exceptions/TestSuitePropertiesAndMethodNamesError';
+import { TestStatus } from '../testStatus';
 
 const logger = LoggerFactory.create();
 
@@ -11,7 +12,7 @@ const logger = LoggerFactory.create();
  * @param name Name of the test suite, displayed in the test report.
  */
 export function testSuite(name: string) {
-    return createTestSuiteDecoratorFactory(name, TestFlags.None);
+    return createTestSuiteDecoratorFactory(name, TestStatus.None);
 }
 
 /** 
@@ -20,7 +21,7 @@ export function testSuite(name: string) {
  * @param name Name of the test suite, displayed in the test report.
  */
 export function ftestSuite(name: string) {
-    return createTestSuiteDecoratorFactory(name, TestFlags.Focused);
+    return createTestSuiteDecoratorFactory(name, TestStatus.Focused);
 }
 
 /**
@@ -29,10 +30,10 @@ export function ftestSuite(name: string) {
  * @param name Name of the test suite, displayed in the test report.
  */
 export function xtestSuite(name: string) {
-    return createTestSuiteDecoratorFactory(name, TestFlags.Ignored);
+    return createTestSuiteDecoratorFactory(name, TestStatus.Ignored);
 }
 
-function createTestSuiteDecoratorFactory(name: string, flag: TestFlags) {
+function createTestSuiteDecoratorFactory(name: string, status: TestStatus) {
     return (constructor: Function) => {
         const testSuite = Object.create(constructor.prototype);
         const testSuiteBase = new TestSuite(logger);
@@ -43,7 +44,7 @@ function createTestSuiteDecoratorFactory(name: string, flag: TestFlags) {
         }
 
         testSuite.name = name;
-        testSuite.flag = flag;
+        testSuite.status = status;
 
         TestRunner.testRunner.addTestSuite(testSuite);
     };

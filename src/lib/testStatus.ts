@@ -1,0 +1,1 @@
+export enum TestStatus { None, Focused, Ignored }

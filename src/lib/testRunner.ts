@@ -1,6 +1,10 @@
-import { TestSuite, TestFlags } from './testSuite';
+import { TestSuite } from './testSuite';
 import { LoggerFactory } from './logger/loggerFactory';
 import { Logger } from './logger/logger';
+import { TestStatus } from './testStatus';
+import { CompositeReport } from './reporting/report/compositeReport';
+import { SkippedTestReport } from './reporting/report/skippedTestReport';
+import { Report } from './reporting/report/report';
 
 /**
  * Runs all tests decorated with @testSuite and @ftestSuite.
@@ -20,38 +24,37 @@ export class TestRunner {
         this.testSuites.push(testSuite);
     }
 
-    public async runTests() {
+    public async runTests(): Promise<Report> {
+        const report = new CompositeReport('Test Runner');
         for (const testSuite of this.getActiveTests()) {
-            this.logger.info(`Running ${testSuite.name}`);
-            await testSuite.run();
+            report.addReport(await testSuite.run());
 
         }
 
-        this.reportIgnoredTestSuites();
+        this.reportIgnoredTestSuites(report);
+
+        return report;
     }
 
-    private reportIgnoredTestSuites() {
+    private reportIgnoredTestSuites(report: CompositeReport) {
         if (!this.hasIgnoredTests())
             return;
 
-        this.logger.warn('\nSome tests were ignored.');
-        this.logger.increaseIndentation();
         for (const testSuite of this.getIgnoredTests()) {
-            this.logger.info(`Ignoring ${testSuite.name}`);
+            report.addReport(new SkippedTestReport(testSuite.name));
         }
-        this.logger.decreaseIndentation();
     }
 
     private getActiveTests() {
-        return this.testSuites.filter(x => this.hasFocusedTests() && x.flag === TestFlags.Focused || !this.hasFocusedTests() && x.flag !== TestFlags.Ignored);
+        return this.testSuites.filter(x => this.hasFocusedTests() && x.status === TestStatus.Focused || !this.hasFocusedTests() && x.status !== TestStatus.Ignored);
     }
 
     private getIgnoredTests() {
-        return this.testSuites.filter(x => this.hasFocusedTests() && x.flag !== TestFlags.Focused || x.flag === TestFlags.Ignored);
+        return this.testSuites.filter(x => this.hasFocusedTests() && x.status !== TestStatus.Focused || x.status === TestStatus.Ignored);
     }
 
     private hasFocusedTests() {
-        return this.testSuites.find(x => x.flag === TestFlags.Focused) !== undefined;
+        return this.testSuites.find(x => x.status === TestStatus.Focused) !== undefined;
     }
 
     private hasIgnoredTests() {
