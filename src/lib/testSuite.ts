@@ -11,7 +11,7 @@ import { FailedTestReport } from './reporting/report/failedTestReport';
  * class to create inheritance. This is why some method names break the style convention
  * and start by an underscore; we want to minimise conflicts with the user's methods.
  */
-export abstract class TestSuite {
+export class TestSuite {
     readonly name: string;
     readonly status: TestStatus;
     private tests: { [name: string]: any };
@@ -27,7 +27,7 @@ export abstract class TestSuite {
             throw new Error(`No tests found for ${this.name}. Did you forget to add the @test decorator?`);
         }
 
-        if (this._beforeAll) await this._beforeAll();
+        await this._beforeAll();
 
         const report = new CompositeReport(this.name);
         for (const testName in activeTests) {
@@ -40,7 +40,7 @@ export abstract class TestSuite {
             report.addReport(testReport);
         }
 
-        if (this._afterAll) await this._afterAll();
+        await this._afterAll();
 
         this._reportIgnoredTests(report);
         return report;
@@ -50,9 +50,9 @@ export abstract class TestSuite {
 
         const t0 = performance.now();
         try {
-            if (this._beforeEach) await this._beforeEach();
+            await this._beforeEach();
             await test.bind(this)();
-            if (this._afterEach) await this._afterEach();
+            await this._afterEach();
             return new SuccessfulTestReport(name, performance.now() - t0);
         }
         catch (err) {
@@ -104,8 +104,8 @@ export abstract class TestSuite {
         return this.focusedTests && Object.keys(this.focusedTests).length > 0;
     }
 
-    protected abstract _beforeAll();
-    protected abstract _beforeEach();
-    protected abstract _afterEach();
-    protected abstract _afterAll();
+    protected _beforeAll() { }
+    protected _beforeEach() { }
+    protected _afterEach() { }
+    protected _afterAll() { }
 }
