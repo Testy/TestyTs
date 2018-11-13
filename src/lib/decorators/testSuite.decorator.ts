@@ -44,7 +44,7 @@ function createTestSuiteDecoratorFactory(name: string, status: TestStatus) {
 /** 
  * [WARNING] This class should be used for internal testing. 
  */
-export function createTestSuite<T>(constructor: new () => any, name: string, status: TestStatus) {
+export function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus) {
     const testSuite = new constructor();
     const metadata = TestSuiteMetadata.getMetadataStore(testSuite);
     return new TestSuite<T>(
