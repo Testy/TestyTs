@@ -33,24 +33,16 @@ class DummyTestSuite {
     public numberOfAfterAllExecutions = 0;
 
     @beforeAll()
-    private beforeAll() {
-        ++this.numberOfBeforeAllExecutions;
-    }
+    private beforeAll() { ++this.numberOfBeforeAllExecutions; }
 
     @beforeEach()
-    private beforeEach() {
-        ++this.numberOfBeforeEachExecutions;
-    }
+    private beforeEach() { ++this.numberOfBeforeEachExecutions; }
 
     @afterEach()
-    private afterEach() {
-        ++this.numberOfAfterEachExecutions;
-    }
+    private afterEach() { ++this.numberOfAfterEachExecutions; }
 
     @afterAll()
-    private afterAll() {
-        ++this.numberOfAfterAllExecutions;
-    }
+    private afterAll() { ++this.numberOfAfterAllExecutions; }
 
     @test('a')
     private a() { }
