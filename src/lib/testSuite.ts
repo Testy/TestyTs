@@ -17,6 +17,10 @@ export class TestSuite {
     private tests: { [name: string]: any };
     private focusedTests: { [name: string]: any };
     private ignoredTests: string[];
+    private beforeAll = () => { };
+    private beforeEach = () => { }
+    private afterEach = () => { }
+    private afterAll = () => { }
 
     constructor(private logger: Logger) { }
 
@@ -27,7 +31,7 @@ export class TestSuite {
             throw new Error(`No tests found for ${this.name}. Did you forget to add the @test decorator?`);
         }
 
-        await this._beforeAll();
+        await this.beforeAll();
 
         const report = new CompositeReport(this.name);
         for (const testName in activeTests) {
@@ -40,7 +44,7 @@ export class TestSuite {
             report.addReport(testReport);
         }
 
-        await this._afterAll();
+        await this.afterAll();
 
         this._reportIgnoredTests(report);
         return report;
@@ -50,9 +54,9 @@ export class TestSuite {
 
         const t0 = performance.now();
         try {
-            await this._beforeEach();
+            await this.beforeEach();
             await test.bind(this)();
-            await this._afterEach();
+            await this.afterEach();
             return new SuccessfulTestReport(name, performance.now() - t0);
         }
         catch (err) {
@@ -103,9 +107,4 @@ export class TestSuite {
     private _hasFocusedTests() {
         return this.focusedTests && Object.keys(this.focusedTests).length > 0;
     }
-
-    protected _beforeAll() { }
-    protected _beforeEach() { }
-    protected _afterEach() { }
-    protected _afterAll() { }
 }
