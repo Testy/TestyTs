@@ -1,19 +1,15 @@
-import { ftestSuite, createTestSuite } from '../../lib/decorators/testSuite.decorator';
+import { createTestSuite, testSuite } from '../../lib/decorators/testSuite.decorator';
 import { test } from '../../lib/decorators/test.decorator';
-import { beforeAll } from '../../lib/decorators/beforeAll.decorator';
 import { TestStatus } from '../../lib/testStatus';
-import { beforeEach } from '../../lib/decorators/beforeEach.decorator';
-import { afterEach } from '../../lib/decorators/afterEach.decorator';
-import { afterAll } from '../../lib/decorators/afterAll.decorator';
-import { TestCase } from '../../lib/testCase';
 import { expect } from '../../testy';
+import { NormalBeforeAfterTestSuite } from './dummyTestSuite/normalBeforeAfterTestSuite';
 
-@ftestSuite('Before and After Decorators Test Suite')
+@testSuite('Before and After Decorators Test Suite')
 class BeforeAfterDecoratorsTestSuite {
     @test('Test')
     private async test() {
         // Arrange
-        const testSuite = createTestSuite<DummyTestSuite>(DummyTestSuite, 'Dummy Test Suite', TestStatus.Normal);
+        const testSuite = createTestSuite(NormalBeforeAfterTestSuite, 'Dummy Test Suite', TestStatus.Normal);
 
         // Act
         await testSuite.run();
@@ -26,34 +22,3 @@ class BeforeAfterDecoratorsTestSuite {
     }
 }
 
-class DummyTestSuite {
-    public numberOfBeforeAllExecutions = 0;
-    public numberOfBeforeEachExecutions = 0;
-    public numberOfAfterEachExecutions = 0;
-    public numberOfAfterAllExecutions = 0;
-
-    @beforeAll()
-    private beforeAll() { ++this.numberOfBeforeAllExecutions; }
-
-    @beforeEach()
-    private beforeEach() { ++this.numberOfBeforeEachExecutions; }
-
-    @afterEach()
-    private afterEach() { ++this.numberOfAfterEachExecutions; }
-
-    @afterAll()
-    private afterAll() { ++this.numberOfAfterAllExecutions; }
-
-    @test('a')
-    private a() { }
-
-    @test('b')
-    private b() { }
-
-    @test('c', [
-        new TestCase('c.1'),
-        new TestCase('c.2'),
-        new TestCase('c.3'),
-    ])
-    private c() { }
-}
