@@ -1,4 +1,5 @@
 import { TestCase } from '../testCase';
+import { TestSuiteMetadata } from './testSuiteMetadata';
 
 /**
  * Marks a method inside a @testSuite decorated class as a test.
@@ -11,7 +12,8 @@ export function test(name: string, testCases?: TestCase[], timeout: number = 200
     return (target, key, descriptor) => {
         initializeTarget(target);
         assertTestIsUnique(name, target);
-        target.tests[name] = generateTest(name, testCases, descriptor.value, timeout);
+        const metadata = TestSuiteMetadata.getMetadataStore(target);
+        metadata.tests[name] = generateTest(name, testCases, descriptor.value, timeout);
     };
 }
 
@@ -27,7 +29,8 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
     return (target, key, descriptor) => {
         initializeTarget(target);
         assertTestIsUnique(name, target);
-        target.focusedTests[name] = generateTest(name, testCases, descriptor.value, timeout);
+        const metadata = TestSuiteMetadata.getMetadataStore(target);
+        metadata.focusedTests[name] = generateTest(name, testCases, descriptor.value, timeout);
     };
 }
 
@@ -42,7 +45,8 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
 export function xtest(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        target.ignoredTests.push(name);
+        const metadata = TestSuiteMetadata.getMetadataStore(target);
+        metadata.ignoredTests.push(name);
     };
 }
 
@@ -66,11 +70,11 @@ function generateTest(name: string, testCases: TestCase[], testMethod: any, time
 }
 
 function decorateStandaloneTest(testMethod: Function, timeout: number) {
-    return async () => {
+    return async (context: any) => {
         await new Promise(async (resolve, reject) => {
             setTimeout(() => reject('Test has timed out.'), timeout);
             try {
-                await testMethod.bind(this)();
+                await testMethod.bind(context)();
             }
             catch (err) {
                 reject(err);

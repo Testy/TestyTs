@@ -1,1 +1,1 @@
-export enum TestStatus { None, Focused, Ignored }
+export enum TestStatus { Normal, Focused, Ignored }

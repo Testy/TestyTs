@@ -1,4 +1,3 @@
-import { Logger } from './logger/logger';
 import { TestStatus } from './testStatus';
 import { Report } from './reporting/report/report';
 import { CompositeReport } from './reporting/report/compositeReport';
@@ -7,56 +6,59 @@ import { performance } from 'perf_hooks';
 import { SkippedTestReport } from './reporting/report/skippedTestReport';
 import { FailedTestReport } from './reporting/report/failedTestReport';
 
-/** The @testSuite decorator adds all this classe's properties and methods to the target
- * class to create inheritance. This is why some method names break the style convention
- * and start by an underscore; we want to minimise conflicts with the user's methods.
+/** 
+ * Contains a list of tests, focusedTests, ignored tests, and a context in which to execute them.
  */
-export class TestSuite {
-    readonly name: string;
-    readonly status: TestStatus;
-    private tests: { [name: string]: any };
-    private focusedTests: { [name: string]: any };
-    private ignoredTests: string[];
-    private beforeAll = () => { };
-    private beforeEach = () => { }
-    private afterEach = () => { }
-    private afterAll = () => { }
+export class TestSuite<T> {
+    public get name(): string { return this._name; }
+    public get status(): TestStatus { return this._status; }
 
-    constructor(private logger: Logger) { }
+    constructor(
+        private _name: string,
+        private _status: TestStatus,
+        public context: T,
+        private tests: { [name: string]: any },
+        private focusedTests: { [name: string]: any },
+        private ignoredTests: string[],
+        private beforeAll: () => any,
+        private beforeEach: () => any,
+        private afterEach: () => any,
+        private afterAll: () => any,
+    ) { }
 
     public async run(): Promise<Report> {
-        const activeTests = this._getActiveTests();
+        const activeTests = this.getActiveTests();
 
         if (!activeTests || Object.keys(activeTests).length === 0) {
             throw new Error(`No tests found for ${this.name}. Did you forget to add the @test decorator?`);
         }
 
-        await this.beforeAll();
+        await this.beforeAll.bind(this.context)();
 
         const report = new CompositeReport(this.name);
         for (const testName in activeTests) {
             const test = activeTests[testName];
 
-            const testReport = this._hasTestcases(test)
-                ? await this._runTestcases(testName, test)
-                : await this._runTest(testName, test);
+            const testReport = this.hasTestcases(test)
+                ? await this.runTestcases(testName, test)
+                : await this.runTest(testName, test);
 
             report.addReport(testReport);
         }
 
-        await this.afterAll();
+        await this.afterAll.bind(this.context)();
 
-        this._reportIgnoredTests(report);
+        this.reportIgnoredTests(report);
         return report;
     }
 
-    private async _runTest(name: string, test: Function): Promise<Report> {
+    private async runTest(name: string, test: Function): Promise<Report> {
 
         const t0 = performance.now();
         try {
-            await this.beforeEach();
-            await test.bind(this)();
-            await this.afterEach();
+            await this.beforeEach.bind(this.context)();
+            await test(this.context);
+            await this.afterEach.bind(this.context)();
             return new SuccessfulTestReport(name, performance.now() - t0);
         }
         catch (err) {
@@ -64,47 +66,47 @@ export class TestSuite {
         }
     }
 
-    private async _runTestcases(name: string, testCases: { [name: string]: Function }): Promise<Report> {
+    private async runTestcases(name: string, testCases: { [name: string]: Function }): Promise<Report> {
         const report = new CompositeReport(name);
 
         for (const testCaseName in testCases) {
             const testCase = testCases[testCaseName];
-            report.addReport(await this._runTest(testCaseName, testCase));
+            report.addReport(await this.runTest(testCaseName, testCase));
         }
 
         return report;
     }
 
-    private async _reportIgnoredTests(report: CompositeReport) {
-        if (!this._hasIgnoredTests())
+    private async reportIgnoredTests(report: CompositeReport) {
+        if (!this.hasIgnoredTests())
             return;
 
-        for (const test of this._getIgnoredTests()) {
+        for (const test of this.getIgnoredTests()) {
             report.addReport(new SkippedTestReport(test));
         }
     }
 
-    private _getActiveTests(): { [name: string]: any } {
-        return this._hasFocusedTests()
+    private getActiveTests(): { [name: string]: any } {
+        return this.hasFocusedTests()
             ? this.focusedTests
             : this.tests;
     }
 
-    private _getIgnoredTests(): string[] {
-        return this._hasFocusedTests()
+    private getIgnoredTests(): string[] {
+        return this.hasFocusedTests()
             ? this.ignoredTests.concat(Object.keys(this.tests))
             : this.ignoredTests;
     }
 
-    private _hasTestcases(test: Function | { [name: string]: Function }) {
+    private hasTestcases(test: Function | { [name: string]: Function }) {
         return !(test instanceof Function);
     }
 
-    private _hasIgnoredTests() {
-        return this._getIgnoredTests().length > 0;
+    private hasIgnoredTests() {
+        return this.getIgnoredTests().length > 0;
     }
 
-    private _hasFocusedTests() {
+    private hasFocusedTests() {
         return this.focusedTests && Object.keys(this.focusedTests).length > 0;
     }
 }

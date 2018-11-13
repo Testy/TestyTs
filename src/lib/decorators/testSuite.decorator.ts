@@ -3,6 +3,7 @@ import { LoggerFactory } from '../logger/loggerFactory';
 import { TestSuite } from '../testSuite';
 import { TestSuitePropertiesAndMethodNamesError } from '../exceptions/TestSuitePropertiesAndMethodNamesError';
 import { TestStatus } from '../testStatus';
+import { TestSuiteMetadata } from './testSuiteMetadata';
 
 const logger = LoggerFactory.create();
 
@@ -12,7 +13,7 @@ const logger = LoggerFactory.create();
  * @param name Name of the test suite, displayed in the test report.
  */
 export function testSuite(name: string) {
-    return createTestSuiteDecoratorFactory(name, TestStatus.None);
+    return createTestSuiteDecoratorFactory(name, TestStatus.Normal);
 }
 
 /** 
@@ -34,31 +35,29 @@ export function xtestSuite(name: string) {
 }
 
 function createTestSuiteDecoratorFactory(name: string, status: TestStatus) {
-    return (constructor: Function) => {
-        const testSuite = Object.create(constructor.prototype);
-        const testSuiteBase = new TestSuite(logger);
-        assertTestSuiteValidity(testSuite, testSuiteBase);
-
-        for (const key in testSuiteBase) {
-            testSuite[key] = testSuiteBase[key];
-        }
-
-        testSuite.name = name;
-        testSuite.status = status;
-
+    return (constructor: new () => any) => {
+        const testSuite = createTestSuite(constructor, name, status);
         TestRunner.testRunner.addTestSuite(testSuite);
     };
 }
 
-/**
- * Ensures that the user did not use the same properties and method names as the TestSuite class
+/** 
+ * [WARNING] This class should be used for internal testing. 
  */
-function assertTestSuiteValidity(testSuite: any, testSuiteBase: TestSuite) {
-    const testSuitePropAndMethodNames = Object.keys(testSuite.constructor.prototype);
-    const basePropAndMethodNames = Object.keys(testSuiteBase.constructor.prototype);
+export function createTestSuite<T>(constructor: new () => any, name: string, status: TestStatus) {
+    const testSuite = new constructor();
+    const metadata = TestSuiteMetadata.getMetadataStore(testSuite);
+    return new TestSuite<T>(
+        name,
+        status,
+        testSuite,
+        metadata.tests,
+        metadata.focusedTests,
+        metadata.ignoredTests,
+        metadata.beforeAll,
+        metadata.beforeEach,
+        metadata.afterEach,
+        metadata.afterAll,
+    );
 
-    const conflicts = testSuitePropAndMethodNames.filter(value => -1 !== basePropAndMethodNames.indexOf(value));
-    if (conflicts.length > 0) {
-        throw new TestSuitePropertiesAndMethodNamesError(conflicts);
-    }
 }
