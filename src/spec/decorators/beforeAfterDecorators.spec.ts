@@ -1,16 +1,16 @@
-import { createTestSuite, testSuite, ftestSuite } from '../../lib/decorators/testSuite.decorator';
 import { test } from '../../lib/decorators/test.decorator';
+import { createTestSuite, testSuite } from '../../lib/decorators/testSuite.decorator';
+import { TestResult } from '../../lib/reporting/report/testResult';
+import { TestCase } from '../../lib/testCase';
 import { TestStatus } from '../../lib/testStatus';
 import { expect } from '../../testy';
 import { NormalBeforeAfterTestSuite } from './dummyTestSuite/normalBeforeAfterTestSuite';
-import { ThrowsDuringBeforeAllTestSuite } from './dummyTestSuite/throwsDuringBeforeAllTestSuite';
-import { TestResult } from '../../lib/reporting/report/testResult';
-import { TestCase } from '../../lib/testCase';
-import { ThrowsDuringBeforeEachTestSuite } from './dummyTestSuite/throwsDuringBeforeEachTestSuite';
-import { ThrowsDuringAfterEachTestSuite } from './dummyTestSuite/throwsDuringAfterEachTestSuite';
 import { ThrowsDuringAfterAllTestSuite } from './dummyTestSuite/throwsDuringAfterAllTestSuite';
+import { ThrowsDuringAfterEachTestSuite } from './dummyTestSuite/throwsDuringAfterEachTestSuite';
+import { ThrowsDuringBeforeAllTestSuite } from './dummyTestSuite/throwsDuringBeforeAllTestSuite';
+import { ThrowsDuringBeforeEachTestSuite } from './dummyTestSuite/throwsDuringBeforeEachTestSuite';
 
-@ftestSuite('Before and After Decorators Test Suite')
+@testSuite('Before and After Decorators Test Suite')
 class BeforeAfterDecoratorsTestSuite {
 
     @test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
