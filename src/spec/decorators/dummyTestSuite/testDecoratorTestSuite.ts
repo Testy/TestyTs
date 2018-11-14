@@ -1,7 +1,7 @@
 import { test } from '../../../lib/decorators/test.decorator';
 
 export class SingleTestTestDecoratorTestSuite {
-    
+
     public numberOfRunsTest1: number = 0;
 
     @test('Test 1.')
