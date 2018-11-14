@@ -88,11 +88,11 @@ function decorateStandaloneTest(testMethod: Function, timeout: number) {
 function decorateTestWithTestcases(testMethod: Function, testCases: TestCase[], timeout: number) {
     const tests: { [name: string]: Function } = {};
     for (const testCase of testCases) {
-        tests[testCase.name] = async () => {
+        tests[testCase.name] = async (context: any) => {
             await new Promise(async (resolve, reject) => {
                 setTimeout(() => reject('Test has timed out.'), timeout);
                 try {
-                    await testMethod.bind(this)(...testCase.args);
+                    await testMethod.bind(context)(...testCase.args);
                 }
                 catch (err) {
                     reject(err);
