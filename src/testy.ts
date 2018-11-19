@@ -15,10 +15,8 @@ import { beforeEach } from './lib/decorators/beforeEach.decorator';
 import { beforeAll } from './lib/decorators/beforeAll.decorator';
 
 export {
-    test,
-    testSuite,
-    ftestSuite,
-    xtestSuite,
+    test, ftest, xtest,
+    testSuite, ftestSuite, xtestSuite,
     beforeAll,
     beforeEach,
     afterEach,
