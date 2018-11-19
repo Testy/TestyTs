@@ -34,7 +34,13 @@ class Expect {
             throw new ExpectationError(message || `Expected ${JSON.stringify(actual)} ${this.notFlag ? 'not' : ''} to equal ${JSON.stringify(expected)}.`);
     }
 
-    public sequencesToBeEqual<T extends any[]>(actual: T, expected: T, message?: string) {
+    /**
+     * Throws if the two arrays are not equal
+     * @param actual Actual array.
+     * @param expected Expected array.
+     * @param message Custom assertion failure message.
+     */
+    public arraysToBeEqual<T extends any[]>(actual: T, expected: T, message?: string) {
         if (actual.length !== expected.length)
             throw new ExpectationError(message || `Expected sequences to be equal, but their lenghts were different.`);
 
