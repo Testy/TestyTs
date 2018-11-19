@@ -1,12 +1,12 @@
-import { testSuite, createTestSuite, ftestSuite } from '../../lib/decorators/testSuite.decorator';
-import { test } from '../../lib/decorators/test.decorator';
-import { TestStatus } from '../../lib/testStatus';
-import { expect } from '../../testy';
-import { SingleTestTestDecoratorTestSuite } from './dummyTestSuite/testDecoratorTestSuite';
-import { MultipleTestTestDecoratorTestSuite } from './dummyTestSuite/multipleTestsTestDecoratorTestSuite';
-import { TestCasesTestDecoratorTestSuite } from './dummyTestSuite/testCasesTestDecoratorTestSuite';
-import { TimeoutTestDecoratorTestSuite } from './dummyTestSuite/timeoutTestDecoratorTestSuite';
-import { TestResult } from '../../lib/reporting/report/testResult';
+import { testSuite, createTestSuite, ftestSuite } from '../../../lib/decorators/testSuite.decorator';
+import { test } from '../../../lib/decorators/test.decorator';
+import { TestStatus } from '../../../lib/testStatus';
+import { expect } from '../../../testy';
+import { TestResult } from '../../../lib/reporting/report/testResult';
+import { SingleTestTestDecoratorTestSuite } from './testDecoratorTestSuite';
+import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
+import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSuite';
+import { TimeoutTestDecoratorTestSuite } from './timeoutTestDecoratorTestSuite';
 
 @testSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {

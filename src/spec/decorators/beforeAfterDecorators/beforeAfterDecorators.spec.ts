@@ -1,14 +1,14 @@
-import { test } from '../../lib/decorators/test.decorator';
-import { createTestSuite, testSuite } from '../../lib/decorators/testSuite.decorator';
-import { TestResult } from '../../lib/reporting/report/testResult';
-import { TestCase } from '../../lib/testCase';
-import { TestStatus } from '../../lib/testStatus';
-import { expect } from '../../testy';
-import { NormalBeforeAfterTestSuite } from './dummyTestSuite/normalBeforeAfterTestSuite';
-import { ThrowsDuringAfterAllTestSuite } from './dummyTestSuite/throwsDuringAfterAllTestSuite';
-import { ThrowsDuringAfterEachTestSuite } from './dummyTestSuite/throwsDuringAfterEachTestSuite';
-import { ThrowsDuringBeforeAllTestSuite } from './dummyTestSuite/throwsDuringBeforeAllTestSuite';
-import { ThrowsDuringBeforeEachTestSuite } from './dummyTestSuite/throwsDuringBeforeEachTestSuite';
+import { test } from '../../../lib/decorators/test.decorator';
+import { createTestSuite, testSuite } from '../../../lib/decorators/testSuite.decorator';
+import { TestResult } from '../../../lib/reporting/report/testResult';
+import { TestCase } from '../../../lib/testCase';
+import { TestStatus } from '../../../lib/testStatus';
+import { expect } from '../../../testy';
+import { NormalBeforeAfterTestSuite } from './normalBeforeAfterTestSuite';
+import { ThrowsDuringBeforeAllTestSuite } from './throwsDuringBeforeAllTestSuite';
+import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSuite';
+import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
+import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
 
 @testSuite('Before and After Decorators Test Suite')
 class BeforeAfterDecoratorsTestSuite {
