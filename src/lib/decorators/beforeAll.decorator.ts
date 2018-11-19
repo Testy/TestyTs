@@ -6,6 +6,6 @@ import { TestSuiteMetadata } from './testSuiteMetadata';
 export function beforeAll() {
     return (target, key, descriptor) => {
         const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.beforeAll = descriptor.value;
+        metadata.beforeAll.push(descriptor.value);
     };
 }

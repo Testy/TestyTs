@@ -20,10 +20,10 @@ export class TestSuite<T> {
         private tests: { [name: string]: any },
         private focusedTests: { [name: string]: any },
         private ignoredTests: string[],
-        private beforeAll: () => any,
-        private beforeEach: () => any,
-        private afterEach: () => any,
-        private afterAll: () => any,
+        private beforeAllMethods: Array<() => any>,
+        private beforeEachMethods: Array<() => any>,
+        private afterEachMethods: Array<() => any>,
+        private afterAllMethods: Array<() => any>,
     ) { }
 
     public async run(): Promise<Report> {
@@ -34,7 +34,7 @@ export class TestSuite<T> {
         }
 
         try {
-            await this.beforeAll.bind(this.context)();
+            await this.beforeAll();
         } catch (err) {
             return this.getFailureReport(err.message);
         }
@@ -51,7 +51,7 @@ export class TestSuite<T> {
         }
 
         try {
-            await this.afterAll.bind(this.context)();
+            await this.afterAll();
         } catch (err) {
             return this.getFailureReport(err.message);
         }
@@ -64,9 +64,9 @@ export class TestSuite<T> {
 
         const t0 = performance.now();
         try {
-            await this.beforeEach.bind(this.context)();
+            await this.beforeEach();
             await test(this.context);
-            await this.afterEach.bind(this.context)();
+            await this.afterEach();
             return new SuccessfulTestReport(name, performance.now() - t0);
         }
         catch (err) {
@@ -139,5 +139,21 @@ export class TestSuite<T> {
         }
 
         return report;
+    }
+
+    private beforeEach() {
+        this.beforeEachMethods.forEach(x => x.bind(this.context)());
+    }
+
+    private beforeAll() {
+        this.beforeAllMethods.forEach(x => x.bind(this.context)());
+    }
+
+    private afterEach() {
+        this.afterEachMethods.forEach(x => x.bind(this.context)());
+    }
+
+    private afterAll() {
+        this.afterAllMethods.forEach(x => x.bind(this.context)());
     }
 }

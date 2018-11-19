@@ -6,6 +6,6 @@ import { TestSuiteMetadata } from './testSuiteMetadata';
 export function afterEach() {
     return (target, key, descriptor) => {
         const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.afterEach = descriptor.value;
+        metadata.afterEach.push(descriptor.value);
     };
 }
