@@ -10,7 +10,7 @@ import { Report } from './reporting/report/report';
 export class TestRunner {
     private static _testRunner: TestRunner;
     public static get testRunner(): TestRunner { return TestRunner._testRunner; }
-    private testSuites: TestSuite[] = [];
+    private testSuites: Array<TestSuite<any>> = [];
 
     public constructor() { }
 
@@ -18,7 +18,7 @@ export class TestRunner {
         TestRunner._testRunner = new TestRunner();
     }
 
-    public addTestSuite(testSuite: TestSuite) {
+    public addTestSuite(testSuite: TestSuite<any>) {
         this.testSuites.push(testSuite);
     }
 
