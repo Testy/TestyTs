@@ -60,7 +60,6 @@ export class TestDecoratorTestSuite {
         const report = await testSuite.run();
 
         // Assert
-        console.log(report);
         expect.toBeEqual(report.result, TestResult.Failure);
     }
 }
