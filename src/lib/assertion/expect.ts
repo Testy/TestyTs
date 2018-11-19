@@ -34,6 +34,15 @@ class Expect {
             throw new ExpectationError(message || `Expected ${JSON.stringify(actual)} ${this.notFlag ? 'not' : ''} to equal ${JSON.stringify(expected)}.`);
     }
 
+    public sequencesToBeEqual<T extends any[]>(actual: T, expected: T, message?: string) {
+        if (actual.length !== expected.length)
+            throw new ExpectationError(message || `Expected sequences to be equal, but their lenghts were different.`);
+
+        for (const i in actual) {
+            this.toBeEqual(actual[i], expected[i], message);
+        }
+    }
+
     /**
      * Throws if value is not defined.
      * @param value Value which is expected to be defined.
