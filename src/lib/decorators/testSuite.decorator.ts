@@ -4,8 +4,6 @@ import { TestSuite } from '../testSuite';
 import { TestStatus } from '../testStatus';
 import { TestSuiteMetadata } from './testSuiteMetadata';
 
-const logger = LoggerFactory.create();
-
 /** 
  * Marks a class as a test suite. 
  * 
