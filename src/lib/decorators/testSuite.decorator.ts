@@ -1,7 +1,6 @@
 import { TestRunner } from '../testRunner';
 import { LoggerFactory } from '../logger/loggerFactory';
 import { TestSuite } from '../testSuite';
-import { TestSuitePropertiesAndMethodNamesError } from '../exceptions/TestSuitePropertiesAndMethodNamesError';
 import { TestStatus } from '../testStatus';
 import { TestSuiteMetadata } from './testSuiteMetadata';
 
