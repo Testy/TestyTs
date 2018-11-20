@@ -1,1 +1,1 @@
-ts-node src/testy.ts
+ts-node src/testy.ts %*
