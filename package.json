@@ -5,7 +5,7 @@
     "main": "index.js",
     "preferGlobal": true,
     "scripts": {
-        "test": "testy",
+        "test": "ts-node src/testy.ts",
         "lint": "tslint -c tslint.json 'src/**/*.ts'",
         "lint-fix": "tslint -c tslint.json 'src/**/*.ts' --fix"
     },
