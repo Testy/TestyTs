@@ -25,9 +25,4 @@ class ExpectToMatch {
     private aNotToBeInSuccess() {
         expect.not.toBeIn('a', ['b', 'c', 'd']);
     }
-
-    @test(`FAIL ON PURPOSE`)
-    private FAIL() {
-        expect.toBeTrue(false, 'Yup, this should fail.');
-    }
 }
