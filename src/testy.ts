@@ -14,6 +14,7 @@ import { afterEach } from './lib/decorators/afterEach.decorator';
 import { beforeEach } from './lib/decorators/beforeEach.decorator';
 import { beforeAll } from './lib/decorators/beforeAll.decorator';
 import { TestResult } from './lib/reporting/report/testResult';
+import * as path from 'path';
 
 export {
     test, ftest, xtest,
@@ -32,7 +33,7 @@ const logger = new ConsoleLogger();
 const reporter = new ConsoleReporter(logger);
 
 async function run() {
-    const config: Config = await import(`${process.cwd()}\\testy.json`);
+    const config: Config = await import(path.resolve(process.cwd(), 'testy.json'));
     await testsLoader.loadTests(config.include);
     const report = await testRunner.runTests();
     report.acceptReporter(reporter);
