@@ -39,10 +39,10 @@ async function run() {
     report.acceptReporter(reporter);
 
     if (report.result === TestResult.Failure)
-        process.exit(-1);
+        throw new Error();
 }
 
 run().catch(err => {
-    console.error(err);
-    process.exit(-1);
+    console.error(err.message);
+    process.exit(1);
 });
