@@ -4,6 +4,7 @@ import { CompositeReport } from './reporting/report/compositeReport';
 import { SkippedTestReport } from './reporting/report/skippedTestReport';
 import { Report } from './reporting/report/report';
 import { RootReport } from './reporting/report/rootReport';
+import { Logger } from './logger/logger';
 
 /**
  * Runs all tests decorated with @testSuite and @ftestSuite.
@@ -23,10 +24,10 @@ export class TestRunner {
         this.testSuites.push(testSuite);
     }
 
-    public async runTests(): Promise<Report> {
-        const report = new RootReport('Test Runner');
+    public async runTests(logger: Logger): Promise<RootReport> {
+        const report = new RootReport(logger);
         for (const testSuite of this.getActiveTests()) {
-            report.addReport(await testSuite.run());
+            report.addReport(await testSuite.run(logger));
 
         }
 

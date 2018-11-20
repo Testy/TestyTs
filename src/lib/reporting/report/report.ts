@@ -1,4 +1,3 @@
-import { ReporterVisitor } from '../reporters/reporter';
 import { TestResult } from './testResult';
 
 /**
@@ -11,5 +10,4 @@ export interface Report {
     numberOfTests: number;
     numberOfSuccessfulTests: number;
     numberOfSkippedTests: number;
-    acceptReporter(reporter: ReporterVisitor);
 }

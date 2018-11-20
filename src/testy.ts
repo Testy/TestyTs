@@ -7,7 +7,6 @@ import { test, ftest, xtest } from './lib/decorators/test.decorator';
 import { testSuite, ftestSuite, xtestSuite } from './lib/decorators/testSuite.decorator';
 import { expect } from './lib/assertion/expect';
 import { TestCase } from './lib/testCase';
-import { ConsoleReporter } from './lib/reporting/reporters/consoleReporter';
 import { ConsoleLogger } from './lib/logger/consoleLogger';
 import { afterAll } from './lib/decorators/afterAll.decorator';
 import { afterEach } from './lib/decorators/afterEach.decorator';
@@ -15,6 +14,7 @@ import { beforeEach } from './lib/decorators/beforeEach.decorator';
 import { beforeAll } from './lib/decorators/beforeAll.decorator';
 import { TestResult } from './lib/reporting/report/testResult';
 import * as path from 'path';
+import { Logger } from './lib/logger/logger';
 
 export {
     test, ftest, xtest,
@@ -30,19 +30,17 @@ export {
 const testsLoader = new TestsLoader();
 const testRunner = TestRunner.testRunner;
 const logger = new ConsoleLogger();
-const reporter = new ConsoleReporter(logger);
 
-async function run() {
+async function run(logger: Logger) {
     const config: Config = await import(path.resolve(process.cwd(), 'testy.json'));
     await testsLoader.loadTests(config.include);
-    const report = await testRunner.runTests();
-    report.acceptReporter(reporter);
-
+    const report = await testRunner.runTests(logger);
+    report.printStatistics();
     if (report.result === TestResult.Failure)
         throw new Error();
 }
 
-run().catch(err => {
-    console.error(err.message);
+run(logger).catch(err => {
+    console.error(err);
     process.exit(1);
 });

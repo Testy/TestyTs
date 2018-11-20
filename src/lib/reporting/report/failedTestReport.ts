@@ -1,19 +1,15 @@
 import { Report } from './report';
-import { ReporterVisitor } from '../reporters/reporter';
 import { TestResult } from './testResult';
+import { Logger } from '../../logger/logger';
+import { LeafReport } from './leafReport';
 
-export class FailedTestReport implements Report {
-    public get name() { return this._name; }
+export class FailedTestReport extends LeafReport {
     public get message() { return this._message; }
-    public get duration(): number { return this._duration; }
-    public get numberOfTests(): number { return 1; }
-    public get numberOfSuccessfulTests(): number { return 0; }
-    public get numberOfSkippedTests(): number { return 0; }
-    public get result(): TestResult { return TestResult.Failure; }
 
-    constructor(private _name: string, private _message: string, private _duration: number) { }
-
-    acceptReporter(reporter: ReporterVisitor) {
-        reporter.visitFailedTestReport(this);
+    constructor(name: string, private _message: string, duration: number, private logger?: Logger) {
+        super(name, TestResult.Failure, duration);
+        if (this.logger) {
+            this.logger.failure(`x ${this.name} - ${this.message}`);
+        }
     }
 }
