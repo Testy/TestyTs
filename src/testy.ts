@@ -13,6 +13,7 @@ import { afterAll } from './lib/decorators/afterAll.decorator';
 import { afterEach } from './lib/decorators/afterEach.decorator';
 import { beforeEach } from './lib/decorators/beforeEach.decorator';
 import { beforeAll } from './lib/decorators/beforeAll.decorator';
+import { TestResult } from './lib/reporting/report/testResult';
 
 export {
     test, ftest, xtest,
@@ -35,6 +36,9 @@ async function run() {
     await testsLoader.loadTests(config.include);
     const report = await testRunner.runTests();
     report.acceptReporter(reporter);
+
+    if (report.result === TestResult.Failure)
+        process.exit(-1);
 }
 
 run();

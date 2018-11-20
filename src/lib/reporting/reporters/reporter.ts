@@ -9,4 +9,5 @@ export interface ReporterVisitor {
     visitFailedTestReport(report: FailedTestReport);
     visitSkippedTestReport(report: SkippedTestReport);
     visitCompositeReport(report: CompositeReport);
+    visitRootReport(report: CompositeReport);
 }

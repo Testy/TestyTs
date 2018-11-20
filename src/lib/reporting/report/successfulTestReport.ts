@@ -6,6 +6,8 @@ export class SuccessfulTestReport implements Report {
     public get name() { return this._name; }
     public get duration(): number { return this._duration; }
     public get numberOfTests(): number { return 1; }
+    public get numberOfSuccessfulTests(): number { return 1; }
+    public get numberOfSkippedTests(): number { return 0; }
     public get result(): TestResult { return TestResult.Success; }
 
     constructor(private _name: string, private _duration: number) { }

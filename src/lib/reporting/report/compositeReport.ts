@@ -10,6 +10,8 @@ export class CompositeReport implements Report {
     public get message(): string { return undefined; }
     public get duration(): number { return this.children.reduce((a, b) => a + b.duration, 0); }
     public get numberOfTests(): number { return this.children.reduce((a, b) => a + b.numberOfTests, 0); }
+    public get numberOfSuccessfulTests(): number { return this.children.reduce((a, b) => a + b.numberOfSuccessfulTests, 0); }
+    public get numberOfSkippedTests(): number { return this.children.reduce((a, b) => a + b.numberOfSkippedTests, 0); }
 
     public get result(): TestResult {
         if (this.children.find(x => x.result === TestResult.Failure) !== undefined)

@@ -9,5 +9,7 @@ export interface Report {
     result: TestResult;
     duration: number;
     numberOfTests: number;
+    numberOfSuccessfulTests: number;
+    numberOfSkippedTests: number;
     acceptReporter(reporter: ReporterVisitor);
 }

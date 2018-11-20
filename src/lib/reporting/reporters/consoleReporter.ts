@@ -5,8 +5,11 @@ import { Logger } from '../../logger/logger';
 import { SuccessfulTestReport } from '../report/successfulTestReport';
 import { FailedTestReport } from '../report/failedTestReport';
 import { SkippedTestReport } from '../report/skippedTestReport';
+import { RootReport } from '../report/rootReport';
+import { Report } from '../report/report';
 
 export class ConsoleReporter implements ReporterVisitor {
+
     constructor(private logger: Logger) { }
 
     public visitSuccesfulTestReport(report: SuccessfulTestReport) {
@@ -32,7 +35,7 @@ export class ConsoleReporter implements ReporterVisitor {
         const ignoredTests = report.getChildren().filter(x => x.result === TestResult.Skipped);
         if (ignoredTests.length > 0) {
             this.logger.decreaseIndentation();
-            this.logger.warn('Some tests were skipped.');
+            this.logger.warn('\nSome tests were skipped.');
             this.logger.increaseIndentation();
 
             for (const child of ignoredTests) {
@@ -41,5 +44,32 @@ export class ConsoleReporter implements ReporterVisitor {
         }
 
         this.logger.decreaseIndentation();
+    }
+
+    public visitRootReport(report: RootReport) {
+        this.logger.info('Tests started');
+        this.visitCompositeReport(report);
+        this.logger.info();
+
+        const totalTests = report.numberOfTests;
+        const successfulTests = report.numberOfSuccessfulTests;
+        const skippedTests = report.numberOfSkippedTests;
+
+        if (totalTests === successfulTests) {
+            this.logger.success(`Test run successful.`);
+        }
+        else if (totalTests === successfulTests + skippedTests) {
+            this.logger.warn(`Test run successful, but some tests were skipped.`);
+        }
+        else {
+            this.logger.failure(`Test run failure.`);
+        }
+
+        this.reportStatistics(report);
+    }
+
+    private reportStatistics(report: Report) {
+        const numberOfFailedTests = report.numberOfTests - report.numberOfSuccessfulTests - report.numberOfSkippedTests;
+        this.logger.info(`${report.numberOfSuccessfulTests}/${report.numberOfTests} passed. ${numberOfFailedTests} failed. ${report.numberOfSkippedTests} skipped.`);
     }
 }
