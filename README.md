@@ -20,7 +20,7 @@ $ npm install -g testyts
 To generate a testy.json configuration file, use the following cmmand:
 
 ```
-$ testy init
+$ testyts init
 ```
 
 
@@ -94,11 +94,12 @@ class MyTestSuite extends MyBaseTestSuite {
 There's a whole bunch of assertion methods and also a dash of syntactic sugar sexyness in the expect class.
 
 ```ts
+expect.toBeTrue(2 > 1);
 expect.toBeEqual('a', 'a');
 expect.not.toBeEqual('p', 'np');
 expect.toThrow(() => someNastyMethod());
-expect.toBeTrue(2 > 1);
-// More...
+expect.toBeSorted.inAscendingOrder([0, 1, 1, 2, 3, 5, 8]);
+// More!
 ```
 
 ## Run the tests
@@ -106,8 +107,8 @@ expect.toBeTrue(2 > 1);
 To run the tests, use the following command
 
 ```
-$ testy
-$ testy --config custom/config/file.json // To specify a custom configuration file
+$ testyts
+$ testyts --config custom/config/file.json // To specify a custom configuration file
 ```
 
 ## Contributing
