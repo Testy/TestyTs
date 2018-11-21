@@ -1,22 +1,23 @@
-import { CliCommand } from './cliCommand';
-import { writeFile, fstat, existsSync } from 'fs';
+import { existsSync } from 'fs';
 import { resolve } from 'path';
+import { TestResult } from '../../testy';
 import { Config } from '../interfaces/config';
 import { Logger } from '../logger/logger';
-import { TestsLoader } from '../utils/testsLoader';
 import { TestRunner } from '../testRunner';
-import { TestResult } from '../../testy';
+import { TestsLoader } from '../utils/testsLoader';
+import { CliCommand } from './cliCommand';
 
 export class RunCommand implements CliCommand {
+    public get configFile(): string { return this._configFile; }
 
     private readonly defaultConfig: Config = {
         include: ['**/*.spec.ts']
     };
 
-    constructor(private logger: Logger, private configFile: string = 'testy.json') { }
+    constructor(private logger: Logger, private _configFile: string = 'testy.json') { }
 
     public async execute() {
-        const configPath = resolve(process.cwd(), this.configFile);
+        const configPath = resolve(process.cwd(), this._configFile);
         if (!existsSync(configPath))
             throw new Error(`The specified configuration file could not be found: ${configPath}`);
 

@@ -18,7 +18,8 @@ export class TestyCli {
         }
     }
 
-    private getCommand(args: any[]) {
+    public getCommand(args: any[]) {
+
         return new Promise<CliCommand>(resolve => {
             program
                 .command('init')
@@ -32,8 +33,10 @@ export class TestyCli {
             program
                 .command('*')
                 .action(() => resolve(new NopCommand()));
-
             program.parse(args);
+            if (program.args.length === 0) {
+                resolve(new RunCommand(this.logger));
+            }
         });
     }
 }
