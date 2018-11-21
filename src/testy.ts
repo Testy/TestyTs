@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env ts-node
 
 import { LoggerFactory } from './lib/logger/loggerFactory';
 import { TestyCli } from './lib/cli/testyCli';
@@ -13,7 +13,9 @@ export { beforeEach } from './lib/decorators/beforeEach.decorator';
 export { beforeAll } from './lib/decorators/beforeAll.decorator';
 export { TestResult } from './lib/reporting/report/testResult';
 
-const logger = LoggerFactory.create();
-const cli = new TestyCli(logger);
-cli.handle(process.argv);
+export function main(args: any[]) {
+    const logger = LoggerFactory.create();
+    const cli = new TestyCli(logger);
+    cli.handle(process.argv);
+}
 

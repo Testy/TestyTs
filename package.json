@@ -9,7 +9,7 @@
         "lint": "tslint -c tslint.json 'src/**/*.ts'",
         "lint-fix": "tslint -c tslint.json 'src/**/*.ts' --fix"
     },
-    "bin": "testy.bat",
+    "bin": "src/bin/testy.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Aboisier/testyts.git"
