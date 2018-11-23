@@ -2,7 +2,7 @@
     "name": "tpm_testyts_2",
     "version": "1.0.14",
     "description": "Modern test framework for TypeScript.",
-    "main": "build/testy.core.js",
+    "main": "build/testyCore.js",
     "bin": "build/testy.js",
     "scripts": {
         "test": "ts-node src/testy.ts",
