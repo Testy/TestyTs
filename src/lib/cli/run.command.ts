@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
-import { TestResult } from '../../testy';
+import { TestResult } from '../../testyCore';
 import { Config } from '../interfaces/config';
 import { Logger } from '../logger/logger';
 import { TestRunner } from '../testRunner';
