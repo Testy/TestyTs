@@ -1,12 +1,11 @@
-import { testSuite, createTestSuite, ftestSuite } from '../../../lib/decorators/testSuite.decorator';
-import { test } from '../../../lib/decorators/test.decorator';
-import { TestStatus } from '../../../lib/testStatus';
-import { expect } from '../../../testyCore';
+import { test, expect, testSuite } from '../../../testyCore';
 import { TestResult } from '../../../lib/reporting/report/testResult';
 import { SingleTestTestDecoratorTestSuite } from './testDecoratorTestSuite';
 import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
 import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSuite';
 import { TimeoutTestDecoratorTestSuite } from './timeoutTestDecoratorTestSuite';
+import { createTestSuite } from '../../../lib/decorators/testSuite.decorator';
+import { TestStatus } from '../../../lib/testStatus';
 
 @testSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {

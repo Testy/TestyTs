@@ -1,7 +1,7 @@
 import { test, testSuite, expect } from '../../testyCore';
 
 @testSuite('Expect ToBeSorted InAscendingOrder Tests')
-class ExpectToBeOrdered {
+export class ExpectToBeOrdered {
 
     @test('ordered numbers to be ordered')
     private orderedNumbersToBeOrdered() {

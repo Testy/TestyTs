@@ -21,7 +21,7 @@ export class RunCommand implements CliCommand {
         if (!existsSync(configPath))
             throw new Error(`The specified configuration file could not be found: ${configPath}`);
 
-        const testsLoader = new TestsLoader();
+        const testsLoader = new TestsLoader(this.logger);
         const testRunner = TestRunner.testRunner;
 
         const config: Config = await import(configPath);

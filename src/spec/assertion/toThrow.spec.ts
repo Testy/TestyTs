@@ -1,7 +1,7 @@
 import { test, testSuite, expect } from '../../testyCore';
 
 @testSuite('Expect ToThrow Test Suite')
-class ExpectToThrowTestSuite {
+export class ExpectToThrowTestSuite {
 
     @test('error to throw')
     private errorToThrow() {

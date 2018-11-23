@@ -1,7 +1,7 @@
 import { test, testSuite, expect } from '../../testyCore';
 
 @testSuite('Expect ToBeEqual Test Suite')
-class ExpectToBeEqualTestSuite {
+export class ExpectToBeEqualTestSuite {
 
     @test(`'a' to equal 'a'`)
     private equal() {

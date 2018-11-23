@@ -11,7 +11,7 @@ import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite
 import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
 
 @testSuite('Before and After Decorators Test Suite')
-class BeforeAfterDecoratorsTestSuite {
+export class BeforeAfterDecoratorsTestSuite {
 
     @test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
     private async trivialCase() {

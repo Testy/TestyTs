@@ -1,7 +1,7 @@
 import { test, testSuite, expect, TestCase } from '../../testyCore';
 
 @testSuite('Expect ArraysToBeEqual Test Suite')
-class ExpectArraysToBeEqualTestSuite {
+export class ExpectArraysToBeEqualTestSuite {
 
     @test('Arrays to be equal', [
         new TestCase(`'a, b, c' and 'a, b, c'`, ['a', 'b', 'c'], ['a', 'b', 'c']),

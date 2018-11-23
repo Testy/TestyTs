@@ -10,7 +10,7 @@ import { NullLogger } from '../utils/nullLogger';
 import { InitCommand } from '../../lib/cli/init.command';
 
 @testSuite('Cli Tests')
-class Lel {
+export class CliTests {
     private logger: Logger;
     private cli: TestyCli;
 

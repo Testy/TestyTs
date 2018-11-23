@@ -2,7 +2,7 @@ import { test, testSuite, expect } from '../../testyCore';
 import { TestCase } from '../../lib/testCase';
 
 @testSuite('Expect ToBeFalsy Tests')
-class ExpectToBeFalsy {
+export class ExpectToBeFalsy {
 
     @test('To be falsy, should succeed', [
         new TestCase('false', false),

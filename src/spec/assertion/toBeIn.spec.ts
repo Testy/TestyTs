@@ -1,7 +1,7 @@
 import { test, testSuite, expect, ftestSuite } from '../../testyCore';
 
 @testSuite('Expect ToBeIn Tests')
-class ExpectToMatch {
+export class ExpectToMatch {
     @test(`'a' to be in, should succeed`)
     private aToBeInSuccess() {
         expect.toBeIn('a', ['a', 'b', 'c']);

@@ -1,7 +1,7 @@
 import { test, testSuite, expect } from '../../testyCore';
 
 @testSuite('Expect ToMatch Tests')
-class ExpectToMatch {
+export class ExpectToMatch {
     @test(`'hello' to match /[a-z]/, should succeed`)
     private helloToMatchSuccess() {
         expect.toMatch('hello', /[a-z]/);

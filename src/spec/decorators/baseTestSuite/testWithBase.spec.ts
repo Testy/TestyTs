@@ -5,7 +5,7 @@ import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBaseTestSuite';
 import { expect } from '../../../testyCore';
 
 @testSuite('Test Suite With Base Test Suite Tests')
-class BeforeAfterDecoratorsTestSuite {
+export class BeforeAfterDecoratorsTestSuite {
 
     @test('the base and the actual test suite before and after methods are called.')
     private async trivialCase() {
