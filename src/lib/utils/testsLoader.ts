@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as glob from 'glob';
+import { TestRunner } from '../testRunner';
 
 export class TestsLoader {
     public async loadTests(patterns: string[]) {
@@ -11,15 +12,20 @@ export class TestsLoader {
             }
         }
 
-
         for (const file of files) {
-            await import(file);
+            const importedFile = await import(file);
+            for (const key in importedFile) {
+                const testSuiteInstance = importedFile[key].testSuiteInstance;
+                if (testSuiteInstance) {
+                    TestRunner.testRunner.addTestSuite(testSuiteInstance);
+                }
+            }
         }
     }
 
     private async matchFiles(pattern: string) {
         return new Promise<string[]>((resolve, reject) => {
-            glob(pattern, {ignore: ['node_modules/**']}, (err, files) => {
+            glob(pattern, { ignore: ['node_modules/**'] }, (err, files) => {
                 if (err) reject(err);
                 resolve(files);
             });

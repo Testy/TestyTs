@@ -9,8 +9,8 @@ import { TestSuiteMetadata } from './testSuiteMetadata';
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function testSuite(name: string) {
-    return createTestSuiteDecoratorFactory(name, TestStatus.Normal);
+export function testSuite<T extends { new(...args: any[]): {} }>(name: string): any {
+    return createTestSuiteDecoratorFactory<T>(name, TestStatus.Normal);
 }
 
 /** 
@@ -18,8 +18,8 @@ export function testSuite(name: string) {
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function ftestSuite(name: string) {
-    return createTestSuiteDecoratorFactory(name, TestStatus.Focused);
+export function ftestSuite<T extends { new(...args: any[]): {} }>(name: string) {
+    return createTestSuiteDecoratorFactory<T>(name, TestStatus.Focused);
 }
 
 /**
@@ -27,14 +27,14 @@ export function ftestSuite(name: string) {
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function xtestSuite(name: string) {
-    return createTestSuiteDecoratorFactory(name, TestStatus.Ignored);
+export function xtestSuite<T extends { new(...args: any[]): {} }>(name: string) {
+    return createTestSuiteDecoratorFactory<T>(name, TestStatus.Ignored);
 }
 
-function createTestSuiteDecoratorFactory(name: string, status: TestStatus) {
-    return (constructor: new () => any) => {
-        const testSuite = createTestSuite(constructor, name, status);
-        TestRunner.testRunner.addTestSuite(testSuite);
+function createTestSuiteDecoratorFactory<T extends { new(...args: any[]): {} }>(name: string, status: TestStatus) {
+    return (constructor: T) => {
+        (constructor as any).testSuiteInstance = createTestSuite(constructor, name, status);
+        return constructor;
     };
 }
 
@@ -56,5 +56,4 @@ export function createTestSuite<T>(constructor: new () => T, name: string, statu
         metadata.afterEach,
         metadata.afterAll,
     );
-
 }
