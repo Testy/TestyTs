@@ -1,4 +1,4 @@
-import { test } from '../../../lib/decorators/test.decorator';
+import { test } from '../../../testyCore';
 
 export class SingleTestTestDecoratorTestSuite {
 

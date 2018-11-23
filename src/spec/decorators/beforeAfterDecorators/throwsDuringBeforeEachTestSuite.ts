@@ -1,5 +1,4 @@
-import { test, beforeEach, TestCase } from '../../../testy';
-import { xtest } from '../../../lib/decorators/test.decorator';
+import { test, xtest, beforeEach, TestCase } from '../../../testyCore';
 
 export class ThrowsDuringBeforeEachTestSuite {
     @beforeEach()

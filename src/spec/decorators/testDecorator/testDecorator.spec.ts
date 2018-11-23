@@ -1,7 +1,7 @@
 import { testSuite, createTestSuite, ftestSuite } from '../../../lib/decorators/testSuite.decorator';
 import { test } from '../../../lib/decorators/test.decorator';
 import { TestStatus } from '../../../lib/testStatus';
-import { expect } from '../../../testy';
+import { expect } from '../../../testyCore';
 import { TestResult } from '../../../lib/reporting/report/testResult';
 import { SingleTestTestDecoratorTestSuite } from './testDecoratorTestSuite';
 import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';

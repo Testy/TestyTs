@@ -1,8 +1,4 @@
-import { beforeAll } from '../../../lib/decorators/beforeAll.decorator';
-import { test } from '../../../lib/decorators/test.decorator';
-import { beforeEach } from '../../../lib/decorators/beforeEach.decorator';
-import { afterEach } from '../../../lib/decorators/afterEach.decorator';
-import { afterAll } from '../../../lib/decorators/afterAll.decorator';
+import { test, beforeAll, beforeEach, afterEach, afterAll } from '../../../testyCore';
 
 export class BaseTestSuite {
     public beforeAllExecuted = [];

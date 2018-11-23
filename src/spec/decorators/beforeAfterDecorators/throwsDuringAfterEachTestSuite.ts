@@ -1,5 +1,4 @@
-import { test, afterEach, TestCase } from '../../../testy';
-import { xtest } from '../../../lib/decorators/test.decorator';
+import { test, xtest, afterEach, TestCase } from '../../../testyCore';
 
 export class ThrowsDuringAfterEachTestSuite {
     @afterEach()

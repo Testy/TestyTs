@@ -1,4 +1,4 @@
-import { test, testSuite, expect } from '../../testy';
+import { test, testSuite, expect } from '../../testyCore';
 
 @testSuite('Expect ToThrow Test Suite')
 class ExpectToThrowTestSuite {

@@ -1,4 +1,4 @@
-import { test, testSuite, expect, TestCase } from '../../testy';
+import { test, testSuite, expect, TestCase } from '../../testyCore';
 
 @testSuite('Expect ArraysToBeEqual Test Suite')
 class ExpectArraysToBeEqualTestSuite {

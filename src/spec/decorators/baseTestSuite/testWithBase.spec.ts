@@ -2,7 +2,7 @@ import { test } from '../../../lib/decorators/test.decorator';
 import { createTestSuite, testSuite } from '../../../lib/decorators/testSuite.decorator';
 import { TestStatus } from '../../../lib/testStatus';
 import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBaseTestSuite';
-import { expect } from '../../../testy';
+import { expect } from '../../../testyCore';
 
 @testSuite('Test Suite With Base Test Suite Tests')
 class BeforeAfterDecoratorsTestSuite {

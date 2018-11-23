@@ -1,4 +1,4 @@
-import { test, beforeAll, beforeEach, afterEach, afterAll, TestCase } from '../../../testy';
+import { test, beforeAll, beforeEach, afterEach, afterAll, TestCase } from '../../../testyCore';
 import { xtest } from '../../../lib/decorators/test.decorator';
 
 export class NormalBeforeAfterTestSuite {

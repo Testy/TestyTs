@@ -1,9 +1,16 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "lib": [
+            "es6"
+        ],
         "target": "es6",
         "typeRoots": [
             "node_modules/@types"
+        ],
+        "types": [
+            "reflect-metadata",
+            "node"
         ],
         "noImplicitAny": false,
         "experimentalDecorators": true,

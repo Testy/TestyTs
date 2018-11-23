@@ -1,5 +1,4 @@
-import { test } from '../../../lib/decorators/test.decorator';
-import { TestCase } from '../../../lib/testCase';
+import { test, TestCase } from '../../../testyCore';
 
 export class TestCasesTestDecoratorTestSuite {
 

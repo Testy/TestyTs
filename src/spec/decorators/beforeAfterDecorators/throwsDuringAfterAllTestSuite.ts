@@ -1,5 +1,4 @@
-import { test, afterAll, TestCase } from '../../../testy';
-import { xtest } from '../../../lib/decorators/test.decorator';
+import { test, xtest, afterAll, TestCase } from '../../../testyCore';
 
 export class ThrowsDuringAfterAllTestSuite {
     @afterAll()
