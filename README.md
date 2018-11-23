@@ -27,7 +27,7 @@ $ testyts init
 ## Write some tests
 
 ### The basics 
-Writing tests with Testy is simple. Don't forget to export your test suites, otherwise they won't be discovered.
+Writing tests with Testy is simple. Don't forget to export your test suites though. Otherwise, they won't be discovered by the test runner.
 
 ```ts
 @testSuite('Sum Test Suite')
@@ -54,7 +54,7 @@ export class MyTestSuite {
 
     @beforeAll()
     beforeAll() {
-        // This is executed before all the test
+        // This is executed before all the tests
     }
 
     @beforeEach()
@@ -69,14 +69,14 @@ export class MyTestSuite {
     
     @afterAll()
     afterAll() {
-        // This is executed after all the test
+        // This is executed after all the tests
     }
 }
 ```
 
 ### Reuse code!
 
-This is where stuff gets interesting. Testy allows you to use base test classes. The base test can have setup and teardown methods. Your child test suite may also have setup and teardown methods. In that case, the base test methods are executed before.
+This is where stuff gets interesting. Testy allows you to use base test classes. The base test can have setup and teardown methods. Your child test suite may also have setup and teardown methods. In that case, the base test methods are executed first.
 
 ```ts
 class MyBaseTestSuite{
