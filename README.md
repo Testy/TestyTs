@@ -27,11 +27,11 @@ $ testyts init
 ## Write some tests
 
 ### The basics 
-Writing tests with Testy is simple.
+Writing tests with Testy is simple. Don't forget to export your test suites, otherwise they won't be discovered.
 
 ```ts
 @testSuite('Sum Test Suite')
-class MyTestSuite {
+export class MyTestSuite {
 
     @test('One plus one, should equal two')
     onePlusOne() {
@@ -50,7 +50,7 @@ Testy provides setup and teardown hooks.
 
 ```ts
 @testSuite('Sum Test Suite')
-class MyTestSuite {
+export class MyTestSuite {
 
     @beforeAll()
     beforeAll() {
