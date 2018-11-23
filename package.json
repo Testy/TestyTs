@@ -1,11 +1,11 @@
 {
-    "name": "tpm_testyts_2",
-    "version": "1.0.31",
+    "name": "testyts",
+    "version": "0.1.0",
     "description": "Modern test framework for TypeScript.",
     "main": "build/testyCore.js",
     "bin": "build/testy.js",
     "scripts": {
-        "test": "tsc & ls & node build/testy.js",
+        "test": "tsc & node build/testy.js",
         "build": "tsc",
         "lint": "tslint -c tslint.json 'src/**/*.ts'",
         "lint-fix": "tslint -c tslint.json 'src/**/*.ts' --fix"
