@@ -16,7 +16,8 @@
         "experimentalDecorators": true,
         "downlevelIteration": true,
         "outDir": "./build",
-        "sourceMap": false
+        "sourceMap": false,
+        "declaration": true
     },
     "include": [
         "src/**/*"
