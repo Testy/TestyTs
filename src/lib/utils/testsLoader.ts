@@ -19,7 +19,7 @@ export class TestsLoader {
 
     private async matchFiles(pattern: string) {
         return new Promise<string[]>((resolve, reject) => {
-            glob(pattern, (err, files) => {
+            glob(pattern, {ignore: ['node_modules/**']}, (err, files) => {
                 if (err) reject(err);
                 resolve(files);
             });
