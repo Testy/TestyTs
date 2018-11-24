@@ -89,6 +89,21 @@ class MyTestSuite extends MyBaseTestSuite {
 }
 ```
 
+### Test cases
+
+```ts
+@testSuite('Sum Test Suite')
+export class MyTestSuite {
+    @test('Addition', [
+          new TestCase('Two plus two is four', 2, 2, 4),
+          new TestCase(`Minus one that's three`, 4, -1, 3)
+    ])
+    onePlusOne(a: number, b: number, result: number) {
+        expect.toBeEqual(a + b, result);
+    }
+}
+```
+
 ### Asserting
 
 There's a whole bunch of assertion methods and also a dash of syntactic sugar sexyness in the expect class.
@@ -100,6 +115,42 @@ expect.not.toBeEqual('p', 'np');
 expect.toThrow(() => someNastyMethod());
 expect.toBeSorted.inAscendingOrder([0, 1, 1, 2, 3, 5, 8]);
 // More!
+```
+
+### Ignoring or focusing some tests
+
+You can ignore tests by adding an `x` before a test suite or a specific test decorator. Ignored tests will still show up in the test report, but they will be marked as ignored.
+
+```ts
+@xtestSuite('Sum Test Suite') // This test suite will be ignored
+export class MyTestSuite { 
+// Your tests
+}
+
+@testSuite('Sum Test Suite')
+export class MyTestSuite {
+    @xtest('One plus one, should equal two') // This test will be ignored
+    onePlusOne() {
+       // Some test
+    }
+}
+```
+
+You can also focus tests by adding an `f` before a test suite or a specific test decorator. If one test or test suites are focused, only those will be runned. The others will be reported as ignored.
+
+```ts
+@ftestSuite('Sum Test Suite') // This test suite will be focused.
+export class MyTestSuite { 
+...
+}
+
+@testSuite('Sum Test Suite')
+export class MyTestSuite {
+    @ftest('One plus one, should equal two') // This test will be focused
+    onePlusOne() {
+       // Your test
+    }
+}
 ```
 
 ## Run the tests
