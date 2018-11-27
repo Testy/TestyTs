@@ -22,11 +22,11 @@ export class RunCommand implements CliCommand {
             throw new Error(`The specified configuration file could not be found: ${configPath}`);
 
         const testsLoader = new TestsLoader(this.logger);
-        const testRunner = TestRunner.testRunner;
+        const testRunner = new TestRunner(this.logger);
 
         const config: Config = await import(configPath);
-        await testsLoader.loadTests(config.include);
-        const report = await testRunner.runTests(this.logger);
+        const testSuites = await testsLoader.loadTests(process.cwd(), config.include);
+        const report = await testRunner.runTests(testSuites);
         report.printStatistics();
         if (report.result === TestResult.Failure)
             throw new Error();
