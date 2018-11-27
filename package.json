@@ -6,7 +6,7 @@
     "main": "build/testyCore.js",
     "bin": "build/testy.js",
     "scripts": {
-        "test": "tsc & node build/testy.js",
+        "test": "tsc & node build/testy.js & npm run lint",
         "build": "tsc",
         "lint": "tslint -c tslint.json 'src/**/*.ts'",
         "lint-fix": "tslint -c tslint.json 'src/**/*.ts' --fix"
