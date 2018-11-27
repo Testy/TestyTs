@@ -1,12 +1,12 @@
 import { CliCommand } from './cliCommand';
 import { writeFile } from 'fs';
 import { resolve } from 'path';
-import { Config } from '../interfaces/config';
+import { TestyConfig } from '../interfaces/config';
 import { Logger } from '../logger/logger';
 
 export class InitCommand implements CliCommand {
 
-    private readonly defaultConfig: Config = {
+    private readonly defaultConfig: TestyConfig = {
         include: ['**/*.spec.ts']
     };
 

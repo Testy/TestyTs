@@ -1,7 +1,7 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { TestResult } from '../../testyCore';
-import { Config } from '../interfaces/config';
+import { TestyConfig } from '../interfaces/config';
 import { Logger } from '../logger/logger';
 import { TestRunner } from '../testRunner';
 import { TestsLoader } from '../utils/testsLoader';
@@ -10,7 +10,7 @@ import { CliCommand } from './cliCommand';
 export class RunCommand implements CliCommand {
     public get configFile(): string { return this._configFile; }
 
-    private readonly defaultConfig: Config = {
+    private readonly defaultConfig: TestyConfig = {
         include: ['**/*.spec.ts']
     };
 
@@ -24,8 +24,9 @@ export class RunCommand implements CliCommand {
         const testsLoader = new TestsLoader(this.logger);
         const testRunner = new TestRunner(this.logger);
 
-        const config: Config = await import(configPath);
-        const testSuites = await testsLoader.loadTests(process.cwd(), config.include);
+        const config: TestyConfig = await import(configPath);
+        const tsconfig = require('../tsconfig.json');
+        const testSuites = await testsLoader.loadTests(process.cwd(), config.include, tsconfig);
         const report = await testRunner.runTests(testSuites);
         report.printStatistics();
         if (report.result === TestResult.Failure)
