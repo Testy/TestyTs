@@ -31,10 +31,6 @@ export class TestsLoader {
             }
         }
 
-        if (this.logger && testSuites.length === 0) {
-            this.logger.warn(`No tests were discovered in the following file: ${file}. Did you forget to add the 'export' keyword to your class?`);
-        }
-
         return testSuites;
     }
 
