@@ -1,5 +1,8 @@
 import { TestCase } from '../testCase';
 import { TestSuiteMetadata } from './testSuiteMetadata';
+import { TestStatus } from '../testStatus';
+import { Test } from '../interfaces/test';
+import { TestsCollection } from '../utils/testsCollection';
 
 /**
  * Marks a method inside a @testSuite decorated class as a test.
@@ -11,9 +14,12 @@ import { TestSuiteMetadata } from './testSuiteMetadata';
 export function test(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        assertTestIsUnique(name, target);
         const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.tests[name] = generateTest(name, testCases, descriptor.value, timeout);
+        if (metadata.tests.has(name)) {
+            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
+        }
+
+        metadata.tests.set(name, generateTest(testCases, TestStatus.Normal, descriptor.value, timeout));
     };
 }
 
@@ -28,9 +34,12 @@ export function test(name: string, testCases?: TestCase[], timeout: number = 200
 export function ftest(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        assertTestIsUnique(name, target);
         const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.focusedTests[name] = generateTest(name, testCases, descriptor.value, timeout);
+        if (metadata.tests.has(name)) {
+            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
+        }
+
+        metadata.tests.set(name, generateTest(testCases, TestStatus.Focused, descriptor.value, timeout));
     };
 }
 
@@ -46,7 +55,11 @@ export function xtest(name: string, testCases?: TestCase[], timeout: number = 20
     return (target, key, descriptor) => {
         initializeTarget(target);
         const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.ignoredTests.push(name);
+        if (metadata.tests.has(name)) {
+            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
+        }
+
+        metadata.tests.set(name, generateTest(testCases, TestStatus.Ignored, descriptor.value, timeout));
     };
 }
 
@@ -56,17 +69,19 @@ function initializeTarget(target: any) {
     if (!target.ignoredTests) { target.ignoredTests = []; }
 }
 
-function assertTestIsUnique(name: string, target: any) {
-    if (target.focusedTests[name] === undefined && target.tests[name] === undefined)
-        return;
-
-    throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
+function generateTest(testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): Test | TestsCollection {
+    return testCases
+        ? generateTestsFromTestcases(testMethod, testCases, status, timeout)
+        : new Test(decorateStandaloneTest(testMethod, timeout), status);
 }
 
-function generateTest(name: string, testCases: TestCase[], testMethod: any, timeout: number) {
-    return testCases
-        ? decorateTestWithTestcases(testMethod, testCases, timeout)
-        : decorateStandaloneTest(testMethod, timeout);
+function generateTestsFromTestcases(testMethod: Function, testCases: TestCase[], status: TestStatus, timeout: number): TestsCollection {
+    const tests = new TestsCollection();
+    for (const testCase of testCases) {
+        tests.set(testCase.name, new Test(decorateTestWithTestcase(testMethod, testCase, timeout), status));
+    }
+
+    return tests;
 }
 
 function decorateStandaloneTest(testMethod: Function, timeout: number) {
@@ -85,23 +100,18 @@ function decorateStandaloneTest(testMethod: Function, timeout: number) {
     };
 }
 
-function decorateTestWithTestcases(testMethod: Function, testCases: TestCase[], timeout: number) {
-    const tests: { [name: string]: Function } = {};
-    for (const testCase of testCases) {
-        tests[testCase.name] = async (context: any) => {
-            await new Promise(async (resolve, reject) => {
-                setTimeout(() => reject('Test has timed out.'), timeout);
-                try {
-                    await testMethod.bind(context)(...testCase.args);
-                }
-                catch (err) {
-                    reject(err);
-                }
+function decorateTestWithTestcase(testMethod: Function, testCase: TestCase, timeout: number) {
+    return async (context: any) => {
+        await new Promise(async (resolve, reject) => {
+            setTimeout(() => reject('Test has timed out.'), timeout);
+            try {
+                await testMethod.bind(context)(...testCase.args);
+            }
+            catch (err) {
+                reject(err);
+            }
 
-                resolve();
-            });
-        };
-    }
-
-    return tests;
+            resolve();
+        });
+    };
 }

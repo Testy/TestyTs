@@ -18,6 +18,7 @@ export class RunCommand implements CliCommand {
 
     public async execute() {
         const configPath = resolve(process.cwd(), this._configFile);
+        const tsconfigPath = resolve(process.cwd(), this._configFile);
         if (!existsSync(configPath))
             throw new Error(`The specified configuration file could not be found: ${configPath}`);
 
@@ -25,7 +26,7 @@ export class RunCommand implements CliCommand {
         const testRunner = new TestRunner(this.logger);
 
         const config: TestyConfig = await import(configPath);
-        const tsconfig = require('../tsconfig.json');
+        const tsconfig = await import(tsconfigPath);
         const testSuites = await testsLoader.loadTests(process.cwd(), config.include, tsconfig);
         const report = await testRunner.runTests(testSuites);
         report.printStatistics();

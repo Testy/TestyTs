@@ -1,5 +1,3 @@
-import { TestRunner } from '../testRunner';
-import { LoggerFactory } from '../logger/loggerFactory';
 import { TestSuite } from '../testSuite';
 import { TestStatus } from '../testStatus';
 import { TestSuiteMetadata } from './testSuiteMetadata';
@@ -18,7 +16,7 @@ export function testSuite<T extends { new(...args: any[]): {} }>(name: string): 
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function ftestSuite<T extends { new(...args: any[]): {} }>(name: string) {
+export function ftestSuite<T extends { new(...args: any[]): {} }>(name: string): any {
     return createTestSuiteDecoratorFactory<T>(name, TestStatus.Focused);
 }
 
@@ -27,7 +25,7 @@ export function ftestSuite<T extends { new(...args: any[]): {} }>(name: string) 
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function xtestSuite<T extends { new(...args: any[]): {} }>(name: string) {
+export function xtestSuite<T extends { new(...args: any[]): {} }>(name: string): any {
     return createTestSuiteDecoratorFactory<T>(name, TestStatus.Ignored);
 }
 
@@ -49,8 +47,6 @@ export function createTestSuite<T>(constructor: new () => T, name: string, statu
         status,
         testSuite,
         metadata.tests,
-        metadata.focusedTests,
-        metadata.ignoredTests,
         metadata.beforeAll,
         metadata.beforeEach,
         metadata.afterEach,

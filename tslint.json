@@ -22,7 +22,7 @@
             true,
             "never-prefix"
         ],
-        "interface-over-type-literal": true,
+        "interface-over-type-literal": false,
         "jsdoc-format": true,
         "max-classes-per-file": false,
         "max-line-length": false,
