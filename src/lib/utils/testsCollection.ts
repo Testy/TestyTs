@@ -16,14 +16,14 @@ export class TestsCollection extends Map<string, Test | TestsCollection> {
     public get(key: string): Test | TestsCollection {
         const test = super.get(key);
         if (test instanceof TestsCollection) {
-            if (this.hasFocusedTests()) {
+            if (this.hasFocusedTests(this)) {
                 return test.getNormalizedCopy();
             }
 
             return test;
         }
 
-        if (this.hasFocusedTests() && test.status !== TestStatus.Focused) {
+        if (this.hasFocusedTests(this) && test.status !== TestStatus.Focused) {
             return new Test(test.func, TestStatus.Ignored);
         }
 
@@ -32,14 +32,14 @@ export class TestsCollection extends Map<string, Test | TestsCollection> {
 
     private hasFocusedTests(testOrCollection: Test | TestsCollection = this) {
         if (testOrCollection instanceof Test) {
-            return testOrCollection.status === TestStatus.Ignored;
+            return testOrCollection.status === TestStatus.Focused;
         }
 
-        testOrCollection.forEach((test, _) => {
+        for (const test of Array.from(testOrCollection.values())) {
             if (this.hasFocusedTests(test)) {
                 return true;
             }
-        });
+        }
 
         return false;
     }
