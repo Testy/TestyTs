@@ -2,6 +2,7 @@
 
 ### 0.3.1
  - Refactored the test runner and test loader to reduce coupling
+ - Created debug config for vscode
 
 ### 0.3.0
  - Added more info in README.md
