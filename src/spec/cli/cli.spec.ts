@@ -32,7 +32,7 @@ export class CliTests {
         // Assert
         expect.toBeTrue(command instanceof RunCommand);
         const runCommand = command as RunCommand;
-        expect.toBeEqual(runCommand.configFile, expectedConfig);
+        expect.toBeEqual(runCommand.testyConfigFile, expectedConfig);
     }
 
     @test('testy init')
