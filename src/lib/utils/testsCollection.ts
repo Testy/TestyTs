@@ -1,67 +1,64 @@
 import { Test } from '../interfaces/test';
 import { TestStatus } from '../testStatus';
-import { stat } from 'fs';
 
+/**
+ * Contains a collection of tests and of test collections.
+ */
 export class TestsCollection extends Map<string, Test | TestsCollection> {
-    public get testNames(): string[] { return Array.from(this.keys()); }
+    public get testIds(): string[] { return Array.from(this.keys()); }
 
-    public activeTests() {
-        const focusedTests = this.getTestsMarked(TestStatus.Focused);
-        if (focusedTests.testNames.length > 0) {
-            return focusedTests;
-        }
-
-        return this.getTestsMarked(TestStatus.Normal);
-    }
-
-    public skippedTests() {
-        const focusedTests = this.focusedTests();
-        if (focusedTests.testNames.length === 0) {
-            return this.getTestsMarked(TestStatus.Ignored);
-        }
-
-        return this.getTestsMarked([TestStatus.Normal, TestStatus.Ignored]);
-    }
-
-    private getIgnoredTests() {
-        return this.getTestsMarked(TestStatus.Ignored);
-    }
-
-    private focusedTests() {
-        return this.getTestsMarked(TestStatus.Focused);
-    }
-
-    private getTestsMarked(statuses: TestStatus | TestStatus[]) {
-        if (!(statuses instanceof Array)) {
-            statuses = [statuses];
-        }
-
-        const ignoredTests = new TestsCollection();
-
-        this.forEach((test, testId) => {
-            if (test instanceof Test) {
-                if (this.testHasStatus(test, statuses as TestStatus[])) {
-                    ignoredTests.set(testId, test);
-                }
+    /**
+     * Returns a test or a test collection with its status(es) normalized. 
+     * This means that if a test has a "Normal" state, but there are focused tests, the test will appear as ignored. 
+     * If it is a test collection, all its children will be normalized.
+     * @param key The test's id
+     */
+    public get(key: string): Test | TestsCollection {
+        const test = super.get(key);
+        if (test instanceof TestsCollection) {
+            if (this.hasFocusedTests()) {
+                return test.getNormalizedCopy();
             }
-            else {
-                const subIgnoredTests = test.getTestsMarked(statuses);
-                if (subIgnoredTests.testNames.length > 0) {
-                    ignoredTests.set(testId, subIgnoredTests);
-                }
+
+            return test;
+        }
+
+        if (this.hasFocusedTests() && test.status !== TestStatus.Focused) {
+            return new Test(test.func, TestStatus.Ignored);
+        }
+
+        return test;
+    }
+
+    private hasFocusedTests(testOrCollection: Test | TestsCollection = this) {
+        if (testOrCollection instanceof Test) {
+            return testOrCollection.status === TestStatus.Ignored;
+        }
+
+        testOrCollection.forEach((test, _) => {
+            if (this.hasFocusedTests(test)) {
+                return true;
             }
         });
 
-        return ignoredTests;
+        return false;
     }
 
-    private testHasStatus(test: Test, statuses: TestStatus[]) {
-        for (const status of statuses) {
-            if (test.status === status) {
-                return true;
+    /**
+     * Normalizes the test statuses. This means if at least one test is focused, the others will appear as skipped.
+     */
+    private getNormalizedCopy(): Test | TestsCollection {
+        const copy = new TestsCollection();
+        for (const id of this.testIds) {
+            const testOrCollection = super.get(id);
+            if (testOrCollection instanceof Test) {
+                copy.set(id, new Test(testOrCollection.func, testOrCollection.status === TestStatus.Focused ? TestStatus.Focused : TestStatus.Ignored));
+            }
+            else {
+                copy.set(id, testOrCollection.getNormalizedCopy());
             }
         }
 
-        return false;
+        return copy;
     }
 }

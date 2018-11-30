@@ -10,7 +10,7 @@ import { Test } from './interfaces/test';
 import { TestsCollection } from './utils/testsCollection';
 
 /** 
- * Contains a list of tests, focusedTests, ignored tests, and a context in which to execute them.
+ * Contains a list of tests and a context in which to execute them.
  */
 export class TestSuite<T> {
     public get name(): string { return this._name; }
@@ -29,61 +29,60 @@ export class TestSuite<T> {
     }
 
     public async run(logger?: Logger): Promise<Report> {
-        const activeTests = this.tests.activeTests();
-
         try {
             await this.beforeAll();
         } catch (err) {
-            return this.getFailureReport(err.message, logger);
+            return this.getFailureReport(err.message, this.name, this.tests, logger);
         }
 
         const report = new CompositeReport(this.name, logger);
         if (logger) { logger.increaseIndentation(); }
 
-        for (const testName of activeTests.testNames) {
-            const test = activeTests.get(testName);
-            const testReport = test instanceof TestsCollection
-                ? await this.runTestcases(testName, test, logger)
-                : await this.runTest(testName, test, logger);
-
+        for (const testName of this.tests.testIds) {
+            const test = this.tests.get(testName);
+            const testReport = await this.runTestOrTestcases(testName, test, logger);
             report.addReport(testReport);
         }
-
-
-        this.reportIgnoredTests(report);
 
         if (logger) { logger.decreaseIndentation(); }
 
         try {
             await this.afterAll();
         } catch (err) {
-            return this.getFailureReport(err.message, logger);
+            return this.getFailureReport(err.message, this.name, this.tests, logger);
         }
 
         return report;
     }
 
     private async runTest(name: string, test: Test, logger?: Logger): Promise<Report> {
+        if (test.status === TestStatus.Ignored) {
+            return new SkippedTestReport(name, logger);
+        }
+
         const t0 = performance.now();
         try {
             await this.beforeEach();
             await test.run(this.context);
             await this.afterEach();
-            const report = new SuccessfulTestReport(name, performance.now() - t0, logger);
-            return report;
+            return new SuccessfulTestReport(name, performance.now() - t0, logger);
         }
         catch (err) {
             return new FailedTestReport(name, err.message, performance.now() - t0, logger);
         }
     }
 
-    private async runTestcases(name: string, testCases: TestsCollection, logger?: Logger): Promise<Report> {
-        const report = new CompositeReport(name, logger);
+    private async runTestOrTestcases(name: string, testOrTestcases: Test | TestsCollection, logger?: Logger): Promise<Report> {
+        if (testOrTestcases instanceof Test) {
+            return await this.runTest(name, testOrTestcases, logger);
+        }
 
+        const testcases = testOrTestcases;
+        const report = new CompositeReport(name, logger);
         if (logger) { logger.increaseIndentation(); }
-        for (const testCaseName of testCases.testNames) {
-            const testCase = testCases[testCaseName];
-            const testReport = await this.runTest(testCaseName, testCase, logger);
+        for (const testCaseName of testcases.testIds) {
+            const testCase = testcases.get(testCaseName) as Test;
+            const testReport = await this.runTestOrTestcases(testCaseName, testCase, logger);
             report.addReport(testReport);
         }
         if (logger) { logger.decreaseIndentation(); }
@@ -91,34 +90,19 @@ export class TestSuite<T> {
         return report;
     }
 
-    private async reportIgnoredTests(report: CompositeReport, logger?: Logger) {
-        if (true) // has ignored tests
-            return;
+    private getFailureReport(reason: string, name: string, testOrTestsCollection: Test | TestsCollection, logger?: Logger) {
+        if (testOrTestsCollection instanceof Test) {
+            const test = testOrTestsCollection;
+            return test.status === TestStatus.Ignored
+                ? new SkippedTestReport(name, logger)
+                : new FailedTestReport(name, reason, 0, logger);
+        }
 
-        // for (const test of this.getIgnoredTests()) {
-        //     report.addReport(new SkippedTestReport(test, logger));
-        // }
-    }
-
-    private getFailureReport(reason: string, logger?: Logger) {
-        const report = new CompositeReport(this.name, logger);
-
-        // for (const testName of this.getActiveTests().testNames) {
-        //     const test = this.tests.get(testName);
-
-        //     if (test instanceof TestsCollection) {
-        //         for (const subTestName in test) {
-        //             report.addReport(new FailedTestReport(subTestName, reason, 0, logger));
-        //         }
-        //     }
-        //     else {
-        //         report.addReport(new FailedTestReport(testName, reason, 0, logger));
-        //     }
-        // }
-
-        // for (const testName in this.getIgnoredTests()) {
-        //     report.addReport(new SkippedTestReport(testName, logger));
-        // }
+        const report = new CompositeReport(name, logger);
+        for (const testID of testOrTestsCollection.testIds) {
+            const test = testOrTestsCollection.get(testID);
+            report.addReport(this.getFailureReport(reason, testID, test, logger));
+        }
 
         return report;
     }
