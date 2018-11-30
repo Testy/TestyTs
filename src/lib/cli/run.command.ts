@@ -14,10 +14,11 @@ export class RunCommand implements CliCommand {
         include: ['**/*.spec.ts']
     };
 
-    constructor(private logger: Logger, private _configFile: string = 'testy.json') { }
+    constructor(private logger: Logger, private _configFile: string = 'testy.json', private _tsConfigFile = 'tsconfig.json') { }
 
     public async execute() {
         const configPath = resolve(process.cwd(), this._configFile);
+        const tsconfigPath = resolve(process.cwd(), this._tsConfigFile);
         if (!existsSync(configPath))
             throw new Error(`The specified configuration file could not be found: ${configPath}`);
 
