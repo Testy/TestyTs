@@ -1,7 +1,5 @@
 # TestyTs
 [![Build Status](https://travis-ci.org/Testy/TestyTs.svg?branch=master)](https://travis-ci.org/Testy/TestyTs)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTesty%2FTestyTs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FTesty%2FTestyTs?ref=badge_shield)
-
 
 TestyTs is a modern TypeScript testing framework.
 
