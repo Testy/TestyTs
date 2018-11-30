@@ -25,6 +25,7 @@
         "interface-over-type-literal": false,
         "jsdoc-format": true,
         "max-classes-per-file": false,
+        "no-return-await": false,
         "max-line-length": false,
         "member-access": false,
         "member-ordering": false,
