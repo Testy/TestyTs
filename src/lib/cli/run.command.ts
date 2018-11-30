@@ -8,25 +8,27 @@ import { TestsLoader } from '../utils/testsLoader';
 import { CliCommand } from './cliCommand';
 
 export class RunCommand implements CliCommand {
-    public get configFile(): string { return this._configFile; }
+    public get testyConfigFile(): string { return this._testyConfigFile; }
+    public get tsConfigFile(): string { return this._tsConfigFile; }
 
-    private readonly defaultConfig: TestyConfig = {
-        include: ['**/*.spec.ts']
-    };
-
-    constructor(private logger: Logger, private _configFile: string = 'testy.json', private _tsConfigFile = 'tsconfig.json') { }
+    constructor(private logger: Logger, private _testyConfigFile: string = 'testy.json', private _tsConfigFile = 'tsconfig.json') { }
 
     public async execute() {
-        const configPath = resolve(process.cwd(), this._configFile);
+        const testyConfigPath = resolve(process.cwd(), this._testyConfigFile);
         const tsconfigPath = resolve(process.cwd(), this._tsConfigFile);
-        if (!existsSync(configPath))
-            throw new Error(`The specified configuration file could not be found: ${configPath}`);
+
+        if (!existsSync(testyConfigPath))
+            throw new Error(`The specified Testy configuration file could not be found: ${testyConfigPath}`);
+
+        if (!existsSync(testyConfigPath))
+            throw new Error(`The specified tsconfig configuration file could not be found: ${testyConfigPath}`);
+
 
         const testsLoader = new TestsLoader(this.logger);
         const testRunner = new TestRunner(this.logger);
 
-        const config: TestyConfig = await import(configPath);
-        const tsconfig = require('../tsconfig.json');
+        const config: TestyConfig = await import(testyConfigPath);
+        const tsconfig = await import(tsconfigPath);
         const testSuites = await testsLoader.loadTests(process.cwd(), config.include, tsconfig);
         const report = await testRunner.runTests(testSuites);
         report.printStatistics();
