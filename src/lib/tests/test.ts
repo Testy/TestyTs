@@ -15,7 +15,7 @@ export class Test {
         await this.func(context);
     }
 
-    public async accept(visitor: TestVisitor) {
-        visitor.visitTest(this);
+    public async accept(visitor: TestVisitor): Promise<void> {
+        await visitor.visitTest(this);
     }
 }
