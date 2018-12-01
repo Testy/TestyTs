@@ -1,6 +1,7 @@
 import { Test } from './test';
 import { TestStatus } from '../testStatus';
 import { TestVisitor } from './visitors/testVisitor';
+import { TimeoutTestDecoratorTestSuite } from '../../spec/decorators/testDecorator/timeoutTestDecoratorTestSuite';
 
 /**
  * Contains a collection of tests and of test collections.
@@ -25,27 +26,32 @@ export class TestsCollection extends Map<string, Test | TestsCollection> {
      */
     public get(key: string): Test | TestsCollection {
         const test = super.get(key);
-        if (test instanceof TestsCollection) {
-            if (this.hasFocusedTests(this)) {
+        if (test instanceof Map) {
+            if (this.hasFocusedTests()) {
                 return test.getNormalizedCopy();
             }
 
             return test;
         }
 
-        if (this.hasFocusedTests(this) && test.status !== TestStatus.Focused) {
+        if (this.hasFocusedTests() && this.status !== TestStatus.Focused && test.status !== TestStatus.Focused) {
             return new Test(test.name, test.func, TestStatus.Ignored);
         }
 
         return test;
     }
 
-    public accept(visitor: TestVisitor) {
-        visitor.visitTestCollection(this);
+    public async accept(visitor: TestVisitor): Promise<void> {
+        await visitor.visitTestCollection(this);
     }
 
     private hasFocusedTests(testOrCollection: Test | TestsCollection = this) {
-        if (testOrCollection instanceof Test) {
+        // This is a workaround. There is currently a problem with typeof extending built-in types: https://bit.ly/2U3Gp39
+        if (testOrCollection.status === TestStatus.Focused) {
+            return true;
+        }
+
+        if (!(testOrCollection instanceof Map)) {
             return testOrCollection.status === TestStatus.Focused;
         }
 
@@ -59,17 +65,20 @@ export class TestsCollection extends Map<string, Test | TestsCollection> {
     }
 
     /**
-     * Normalizes the test statuses. This means if at least one test is focused, the others will appear as skipped.
+     * Normalizes the test statuses. This means all tests which are not focused or under a focused test collection will be skipped.
      */
     private getNormalizedCopy(): Test | TestsCollection {
+        if (this.status === TestStatus.Focused) { return this; }
+
         const copy = new TestsCollection();
+        copy.name = this.name;
         for (const id of this.testIds) {
             const testOrCollection = super.get(id);
-            if (testOrCollection instanceof Test) {
-                copy.set(id, new Test(testOrCollection.name, testOrCollection.func, testOrCollection.status === TestStatus.Focused ? TestStatus.Focused : TestStatus.Ignored));
+            if (testOrCollection instanceof Map) {
+                copy.set(id, testOrCollection.getNormalizedCopy());
             }
             else {
-                copy.set(id, testOrCollection.getNormalizedCopy());
+                copy.set(id, new Test(testOrCollection.name, testOrCollection.func, testOrCollection.status === TestStatus.Focused ? TestStatus.Focused : TestStatus.Ignored));
             }
         }
 
