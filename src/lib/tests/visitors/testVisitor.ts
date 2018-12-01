@@ -1,7 +1,7 @@
 import { Test } from '../test';
 import { TestsCollection } from '../testsCollection';
 
-export interface TestVisitor {
-    visitTest(test: Test): Promise<void>;
-    visitTestCollection(testCollection: TestsCollection): Promise<void>;
+export interface TestsVisitor<T> {
+    visitTest(test: Test): Promise<T>;
+    visitTestCollection(testCollection: TestsCollection): Promise<T>;
 }

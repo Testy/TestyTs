@@ -1,5 +1,5 @@
 import { TestStatus } from '../testStatus';
-import { TestVisitor } from './visitors/testVisitor';
+import { TestsVisitor } from './visitors/testVisitor';
 
 export class Test {
     public get name() { return this._name; }
@@ -15,7 +15,7 @@ export class Test {
         await this.func(context);
     }
 
-    public async accept(visitor: TestVisitor): Promise<void> {
-        await visitor.visitTest(this);
+    public async accept<T>(visitor: TestsVisitor<T>): Promise<T> {
+        return await visitor.visitTest(this);
     }
 }

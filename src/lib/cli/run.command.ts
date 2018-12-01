@@ -7,7 +7,7 @@ import { TestRunner } from '../testRunner';
 import { TestsLoader } from '../utils/testsLoader';
 import { CliCommand } from './cliCommand';
 import { testSuite } from '../decorators/testSuite.decorator';
-import { RunnerVisitor } from '../tests/visitors/runnerVisitor';
+import { TestsRunnerVisitor } from '../tests/visitors/runnerVisitor';
 
 export class RunCommand implements CliCommand {
     public get testyConfigFile(): string { return this._testyConfigFile; }
@@ -32,8 +32,8 @@ export class RunCommand implements CliCommand {
         const config: TestyConfig = await import(testyConfigPath);
         const tsconfig = await import(tsconfigPath);
         const testSuites = await testsLoader.loadTests(process.cwd(), config.include, tsconfig);
-        const runnerVisitor = new RunnerVisitor(this.logger);
-        await testSuites.accept(runnerVisitor);
+        const runnerVisitor = new TestsRunnerVisitor(this.logger);
+        const report = await testSuites.accept(runnerVisitor);
         // const report = await testRunner.runTests(testSuites);
         // report.printStatistics();
         // if (report.result === TestResult.Failure)

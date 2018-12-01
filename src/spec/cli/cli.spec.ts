@@ -18,6 +18,7 @@ export class CliTests {
     private beforeEach() {
         this.logger = new NullLogger();
         this.cli = new TestyCli(this.logger);
+        throw new Error('lel');
     }
 
     @test('Run command', [

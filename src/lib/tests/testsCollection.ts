@@ -1,6 +1,6 @@
 import { Test } from './test';
 import { TestStatus } from '../testStatus';
-import { TestVisitor } from './visitors/testVisitor';
+import { TestsVisitor } from './visitors/testVisitor';
 import { TimeoutTestDecoratorTestSuite } from '../../spec/decorators/testDecorator/timeoutTestDecoratorTestSuite';
 
 /**
@@ -41,8 +41,8 @@ export class TestsCollection extends Map<string, Test | TestsCollection> {
         return test;
     }
 
-    public async accept(visitor: TestVisitor): Promise<void> {
-        await visitor.visitTestCollection(this);
+    public async accept<T>(visitor: TestsVisitor<T>): Promise<T> {
+        return await visitor.visitTestCollection(this);
     }
 
     private hasFocusedTests(testOrCollection: Test | TestsCollection = this) {
