@@ -68,12 +68,13 @@ function initializeTarget(target: any) {
 
 function generateTest(name: string, testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): Test | TestsCollection {
     return testCases
-        ? generateTestsFromTestcases(testMethod, testCases, status, timeout)
+        ? generateTestsFromTestcases(name, testMethod, testCases, status, timeout)
         : new Test(name, decorateStandaloneTest(testMethod, timeout), status);
 }
 
-function generateTestsFromTestcases(testMethod: Function, testCases: TestCase[], status: TestStatus, timeout: number): TestsCollection {
+function generateTestsFromTestcases(name: string, testMethod: Function, testCases: TestCase[], status: TestStatus, timeout: number): TestsCollection {
     const tests = new TestsCollection();
+    tests.name = name;
     for (const testCase of testCases) {
         const decoratedTestMethod = decorateTestWithTestcase(testMethod, testCase, timeout);
         tests.set(testCase.name, new Test(testCase.name, decoratedTestMethod, status));
