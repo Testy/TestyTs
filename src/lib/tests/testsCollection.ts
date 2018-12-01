@@ -1,10 +1,20 @@
 import { Test } from './test';
 import { TestStatus } from '../testStatus';
+import { TestVisitor } from './visitors/testVisitor';
 
 /**
  * Contains a collection of tests and of test collections.
  */
 export class TestsCollection extends Map<string, Test | TestsCollection> {
+    public name: string;
+    public status: TestStatus;
+    public context: any;
+    public tests: TestsCollection;
+    public beforeAllMethods: Array<() => any> = [];
+    public beforeEachMethods: Array<() => any> = [];
+    public afterEachMethods: Array<() => any> = [];
+    public afterAllMethods: Array<() => any> = [];
+
     public get testIds(): string[] { return Array.from(this.keys()); }
 
     /**
@@ -24,10 +34,14 @@ export class TestsCollection extends Map<string, Test | TestsCollection> {
         }
 
         if (this.hasFocusedTests(this) && test.status !== TestStatus.Focused) {
-            return new Test(test.func, TestStatus.Ignored);
+            return new Test(test.name, test.func, TestStatus.Ignored);
         }
 
         return test;
+    }
+
+    public accept(visitor: TestVisitor) {
+        visitor.visitTestCollection(this);
     }
 
     private hasFocusedTests(testOrCollection: Test | TestsCollection = this) {
@@ -52,7 +66,7 @@ export class TestsCollection extends Map<string, Test | TestsCollection> {
         for (const id of this.testIds) {
             const testOrCollection = super.get(id);
             if (testOrCollection instanceof Test) {
-                copy.set(id, new Test(testOrCollection.func, testOrCollection.status === TestStatus.Focused ? TestStatus.Focused : TestStatus.Ignored));
+                copy.set(id, new Test(testOrCollection.name, testOrCollection.func, testOrCollection.status === TestStatus.Focused ? TestStatus.Focused : TestStatus.Ignored));
             }
             else {
                 copy.set(id, testOrCollection.getNormalizedCopy());

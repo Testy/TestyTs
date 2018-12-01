@@ -1,5 +1,4 @@
 import { TestCase } from '../testCase';
-import { TestSuiteMetadata } from './testSuiteMetadata';
 import { TestStatus } from '../testStatus';
 import { Test } from '../tests/test';
 import { TestsCollection } from '../tests/testsCollection';
@@ -14,12 +13,12 @@ import { TestsCollection } from '../tests/testsCollection';
 export function test(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        const metadata = TestSuiteMetadata.getMetadataStore(target);
-        if (metadata.tests.has(name)) {
+        const testSuiteInstance: TestsCollection = target.__testSuiteInstance;
+        if (testSuiteInstance.has(name)) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
 
-        metadata.tests.set(name, generateTest(testCases, TestStatus.Normal, descriptor.value, timeout));
+        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Normal, descriptor.value, timeout));
     };
 }
 
@@ -34,12 +33,12 @@ export function test(name: string, testCases?: TestCase[], timeout: number = 200
 export function ftest(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        const metadata = TestSuiteMetadata.getMetadataStore(target);
-        if (metadata.tests.has(name)) {
+        const testSuiteInstance: TestsCollection = target.__testSuiteInstance;
+        if (testSuiteInstance.has(name)) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
 
-        metadata.tests.set(name, generateTest(testCases, TestStatus.Focused, descriptor.value, timeout));
+        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Focused, descriptor.value, timeout));
     };
 }
 
@@ -54,31 +53,30 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
 export function xtest(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        const metadata = TestSuiteMetadata.getMetadataStore(target);
-        if (metadata.tests.has(name)) {
+        const testSuiteInstance: TestsCollection = target.__testSuiteInstance;
+        if (testSuiteInstance.has(name)) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
 
-        metadata.tests.set(name, generateTest(testCases, TestStatus.Ignored, descriptor.value, timeout));
+        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Ignored, descriptor.value, timeout));
     };
 }
 
 function initializeTarget(target: any) {
-    if (!target.tests) { target.tests = {}; }
-    if (!target.focusedTests) { target.focusedTests = {}; }
-    if (!target.ignoredTests) { target.ignoredTests = []; }
+    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestsCollection(); }
 }
 
-function generateTest(testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): Test | TestsCollection {
+function generateTest(name: string, testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): Test | TestsCollection {
     return testCases
         ? generateTestsFromTestcases(testMethod, testCases, status, timeout)
-        : new Test(decorateStandaloneTest(testMethod, timeout), status);
+        : new Test(name, decorateStandaloneTest(testMethod, timeout), status);
 }
 
 function generateTestsFromTestcases(testMethod: Function, testCases: TestCase[], status: TestStatus, timeout: number): TestsCollection {
     const tests = new TestsCollection();
     for (const testCase of testCases) {
-        tests.set(testCase.name, new Test(decorateTestWithTestcase(testMethod, testCase, timeout), status));
+        const decoratedTestMethod = decorateTestWithTestcase(testMethod, testCase, timeout);
+        tests.set(testCase.name, new Test(testCase.name, decoratedTestMethod, status));
     }
 
     return tests;

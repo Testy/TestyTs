@@ -1,6 +1,5 @@
-import { TestSuite } from '../tests/testSuite';
 import { TestStatus } from '../testStatus';
-import { TestSuiteMetadata } from './testSuiteMetadata';
+import { TestsCollection } from '../tests/testsCollection';
 
 /** 
  * Marks a class as a test suite. 
@@ -41,15 +40,9 @@ function createTestSuiteDecoratorFactory<T extends { new(...args: any[]): {} }>(
  */
 export function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus) {
     const testSuite = new constructor();
-    const metadata = TestSuiteMetadata.getMetadataStore(testSuite);
-    return new TestSuite<T>(
-        name,
-        status,
-        testSuite,
-        metadata.tests,
-        metadata.beforeAll,
-        metadata.beforeEach,
-        metadata.afterEach,
-        metadata.afterAll,
-    );
+    const testSuiteInstance: TestsCollection = (testSuite as any).__testSuiteInstance;
+    testSuiteInstance.name = name;
+    testSuiteInstance.status = status;
+    testSuiteInstance.context = testSuite;
+    (constructor as any).__testSuiteInstance = testSuiteInstance;
 }

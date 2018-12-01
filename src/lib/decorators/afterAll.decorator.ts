@@ -1,11 +1,16 @@
-import { TestSuiteMetadata } from './testSuiteMetadata';
+import { TestsCollection } from '../tests/testsCollection';
 
 /** 
  * Method which is executed after all the tests were ran. 
  */
 export function afterAll() {
     return (target, key, descriptor) => {
-        const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.afterAll.push(descriptor.value);
+        initializeTarget(target);
+        const testSuiteInstance: TestsCollection = target.__testSuiteInstance;
+        testSuiteInstance.afterAllMethods.push(descriptor.value);
     };
+}
+
+function initializeTarget(target: any) {
+    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestsCollection(); }
 }

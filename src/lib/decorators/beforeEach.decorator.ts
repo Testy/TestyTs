@@ -1,11 +1,16 @@
-import { TestSuiteMetadata } from './testSuiteMetadata';
+import { TestsCollection } from '../tests/testsCollection';
 
 /** 
  * Method which is executed before each test is ran.
  */
 export function beforeEach() {
     return (target, key, descriptor) => {
-        const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.beforeEach.push(descriptor.value);
+        initializeTarget(target);
+        const testSuiteInstance: TestsCollection = target.__testSuiteInstance;
+        testSuiteInstance.beforeEachMethods.push(descriptor.value);
     };
+}
+
+function initializeTarget(target: any) {
+    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestsCollection(); }
 }
