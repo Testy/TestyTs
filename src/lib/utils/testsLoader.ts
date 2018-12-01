@@ -20,6 +20,7 @@ export class TestsLoader {
         }
 
         const testSuites = new TestsCollection();
+        testSuites.name = 'Root';
         for (const file of files) {
             const importedFile = await import(file);
             for (const key in importedFile) {
