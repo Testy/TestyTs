@@ -1,13 +1,13 @@
-import { TestStatus } from './testStatus';
-import { Report } from './reporting/report/report';
-import { CompositeReport } from './reporting/report/compositeReport';
-import { SuccessfulTestReport } from './reporting/report/successfulTestReport';
+import { TestStatus } from '../testStatus';
+import { Report } from '../reporting/report/report';
+import { CompositeReport } from '../reporting/report/compositeReport';
+import { SuccessfulTestReport } from '../reporting/report/successfulTestReport';
 import { performance } from 'perf_hooks';
-import { SkippedTestReport } from './reporting/report/skippedTestReport';
-import { FailedTestReport } from './reporting/report/failedTestReport';
-import { Logger } from './logger/logger';
-import { Test } from './interfaces/test';
-import { TestsCollection } from './utils/testsCollection';
+import { SkippedTestReport } from '../reporting/report/skippedTestReport';
+import { FailedTestReport } from '../reporting/report/failedTestReport';
+import { Logger } from '../logger/logger';
+import { Test } from './test';
+import { TestsCollection } from './testsCollection';
 
 /** 
  * Contains a list of tests and a context in which to execute them.

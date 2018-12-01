@@ -1,4 +1,4 @@
-import { TestSuite } from './testSuite';
+import { TestSuite } from './tests/testSuite';
 import { TestStatus } from './testStatus';
 import { CompositeReport } from './reporting/report/compositeReport';
 import { SkippedTestReport } from './reporting/report/skippedTestReport';

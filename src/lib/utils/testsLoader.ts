@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as glob from 'glob';
 import { Logger } from '../logger/logger';
-import { TestSuite } from '../testSuite';
+import { TestSuite } from '../tests/testSuite';
 import * as tsnode from 'ts-node';
 
 export class TestsLoader {

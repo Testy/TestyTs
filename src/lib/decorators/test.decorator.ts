@@ -1,8 +1,8 @@
 import { TestCase } from '../testCase';
 import { TestSuiteMetadata } from './testSuiteMetadata';
 import { TestStatus } from '../testStatus';
-import { Test } from '../interfaces/test';
-import { TestsCollection } from '../utils/testsCollection';
+import { Test } from '../tests/test';
+import { TestsCollection } from '../tests/testsCollection';
 
 /**
  * Marks a method inside a @testSuite decorated class as a test.

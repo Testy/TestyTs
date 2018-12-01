@@ -1,4 +1,4 @@
-import { TestsCollection } from '../utils/testsCollection';
+import { TestsCollection } from '../tests/testsCollection';
 
 export class TestSuiteMetadata {
     /** We use an arbitrarily long name to void overriding something by accident. */

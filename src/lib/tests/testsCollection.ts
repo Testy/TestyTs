@@ -1,4 +1,4 @@
-import { Test } from '../interfaces/test';
+import { Test } from './test';
 import { TestStatus } from '../testStatus';
 
 /**

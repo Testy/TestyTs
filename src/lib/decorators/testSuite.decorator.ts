@@ -1,4 +1,4 @@
-import { TestSuite } from '../testSuite';
+import { TestSuite } from '../tests/testSuite';
 import { TestStatus } from '../testStatus';
 import { TestSuiteMetadata } from './testSuiteMetadata';
 

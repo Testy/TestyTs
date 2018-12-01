@@ -1,7 +1,7 @@
 import { testSuite } from '../../lib/decorators/testSuite.decorator';
 import { test } from '../../lib/decorators/test.decorator';
-import { TestsCollection } from '../../lib/utils/testsCollection';
-import { Test } from '../../lib/interfaces/test';
+import { TestsCollection } from '../../lib/tests/testsCollection';
+import { Test } from '../../lib/tests/test';
 import { TestStatus } from '../../lib/testStatus';
 import { expect } from '../../lib/assertion/expect';
 
