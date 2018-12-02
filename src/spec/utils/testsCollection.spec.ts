@@ -5,7 +5,7 @@ import { Test } from '../../lib/tests/test';
 import { TestStatus } from '../../lib/testStatus';
 import { expect } from '../../lib/assertion/expect';
 
-@ftestSuite('Tests Collection Tests')
+@testSuite('Tests Collection Tests')
 export class TestsCollectionTests {
     @test('get tests, all normal tests')
     getTestsAllNormalTests() {
