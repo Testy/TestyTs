@@ -30,7 +30,7 @@ export function xtestSuite<T extends { new(...args: any[]): {} }>(name: string):
 
 function createTestSuiteDecoratorFactory<T extends { new(...args: any[]): {} }>(name: string, status: TestStatus) {
     return (constructor: T) => {
-        (constructor as any).testSuiteInstance = createTestSuite(constructor, name, status);
+        (constructor as any).__testSuiteInstance = createTestSuite(constructor, name, status);
         return constructor;
     };
 }
@@ -38,11 +38,11 @@ function createTestSuiteDecoratorFactory<T extends { new(...args: any[]): {} }>(
 /** 
  * [WARNING] This class should be used for internal testing. 
  */
-export function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus) {
+export function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus): TestsCollection {
     const testSuite = new constructor();
     const testSuiteInstance: TestsCollection = (testSuite as any).__testSuiteInstance;
     testSuiteInstance.name = name;
     testSuiteInstance.status = status;
     testSuiteInstance.context = testSuite;
-    (constructor as any).__testSuiteInstance = testSuiteInstance;
+    return testSuiteInstance;
 }
