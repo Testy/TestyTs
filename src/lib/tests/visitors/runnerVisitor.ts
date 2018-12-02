@@ -9,6 +9,7 @@ import { SkippedTestReport } from '../../reporting/report/skippedTestReport';
 import { Report } from '../../reporting/report/report';
 import { CompositeReport } from '../../reporting/report/compositeReport';
 import { FailedTestsReportVisitor } from './failedTestsReportVisitor';
+import { LeafReport } from '../../reporting/report/leafReport';
 
 export class TestsRunnerVisitor implements TestsVisitor<Report> {
     private contexts: any[] = [];
@@ -18,7 +19,8 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
     public async visitTestCollection(tests: TestsCollection): Promise<Report> {
         if (tests.context) { this.contexts.push(tests.context); }
 
-        const report = new CompositeReport(tests.name, this.logger);
+        const report = new CompositeReport(tests.name);
+        this.logger.info(tests.name);
         this.logger.increaseIndentation();
 
         try {
@@ -38,18 +40,24 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
     }
 
     public async visitTest(test: Test): Promise<Report> {
+        let report: LeafReport;
+
         if (test.status === TestStatus.Ignored) {
-            return new SkippedTestReport(test.name, this.logger);
+            report = new SkippedTestReport(test.name);
+        }
+        else {
+            try {
+                const context = this.contexts.length > 0 ? this.contexts[this.contexts.length - 1] : undefined;
+                await test.run(context);
+                report = new SuccessfulTestReport(test.name, 0);
+            }
+            catch (err) {
+                report = new FailedTestReport(test.name, err.message, 0);
+            }
         }
 
-        try {
-            const context = this.contexts.length > 0 ? this.contexts[this.contexts.length - 1] : undefined;
-            await test.run(context);
-            return new SuccessfulTestReport(test.name, 0, this.logger);
-        }
-        catch (err) {
-            return new FailedTestReport(test.name, err.message, 0, this.logger);
-        }
+        report.log(this.logger);
+        return report;
     }
 
     private async runTests(tests: TestsCollection, report: CompositeReport): Promise<void> {

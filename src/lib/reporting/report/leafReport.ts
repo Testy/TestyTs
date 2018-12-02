@@ -1,5 +1,6 @@
 import { Report } from './report';
 import { TestResult } from './testResult';
+import { Logger } from '../../logger/logger';
 
 export abstract class LeafReport implements Report {
 
@@ -11,4 +12,6 @@ export abstract class LeafReport implements Report {
     public get result(): TestResult { return this._result; }
 
     constructor(private _name: string, private _result: TestResult, private _duration: number) { }
+
+    public abstract log(logger: Logger): void;
 }

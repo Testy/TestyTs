@@ -27,14 +27,14 @@ export class TestsCollection extends Map<string, Test | TestsCollection> {
     public get(key: string): Test | TestsCollection {
         const test = super.get(key);
         if (test instanceof Map) {
-            if (this.hasFocusedTests()) {
+            if (this.status !== TestStatus.Focused && this.hasFocusedTests()) {
                 return test.getNormalizedCopy();
             }
 
             return test;
         }
 
-        if (this.hasFocusedTests() && this.status !== TestStatus.Focused && test.status !== TestStatus.Focused) {
+        if (this.status !== TestStatus.Focused && test.status !== TestStatus.Focused && this.hasFocusedTests()) {
             return new Test(test.name, test.func, TestStatus.Ignored);
         }
 
@@ -46,11 +46,11 @@ export class TestsCollection extends Map<string, Test | TestsCollection> {
     }
 
     private hasFocusedTests(testOrCollection: Test | TestsCollection = this) {
-        // This is a workaround. There is currently a problem with typeof extending built-in types: https://bit.ly/2U3Gp39
         if (testOrCollection.status === TestStatus.Focused) {
             return true;
         }
 
+        // This is a workaround. There is currently a problem with typeof extending built-in types: https://bit.ly/2U3Gp39
         if (!(testOrCollection instanceof Map)) {
             return testOrCollection.status === TestStatus.Focused;
         }

@@ -1,12 +1,9 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
-import { TestResult } from '../../testyCore';
 import { TestyConfig } from '../interfaces/config';
 import { Logger } from '../logger/logger';
-import { TestRunner } from '../testRunner';
 import { TestsLoader } from '../utils/testsLoader';
 import { CliCommand } from './cliCommand';
-import { testSuite } from '../decorators/testSuite.decorator';
 import { TestsRunnerVisitor } from '../tests/visitors/runnerVisitor';
 
 export class RunCommand implements CliCommand {
@@ -27,16 +24,11 @@ export class RunCommand implements CliCommand {
 
 
         const testsLoader = new TestsLoader(this.logger);
-        const testRunner = new TestRunner(this.logger);
 
         const config: TestyConfig = await import(testyConfigPath);
         const tsconfig = await import(tsconfigPath);
         const testSuites = await testsLoader.loadTests(process.cwd(), config.include, tsconfig);
         const runnerVisitor = new TestsRunnerVisitor(this.logger);
         const report = await testSuites.accept(runnerVisitor);
-        // const report = await testRunner.runTests(testSuites);
-        // report.printStatistics();
-        // if (report.result === TestResult.Failure)
-        //     throw new Error();
     }
 }
