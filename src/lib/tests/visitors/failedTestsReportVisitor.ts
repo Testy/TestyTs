@@ -1,7 +1,7 @@
 import { TestsVisitor } from './testVisitor';
 import { Report } from '../../reporting/report/report';
 import { Test } from '../test';
-import { TestsCollection } from '../testsCollection';
+import { TestSuite } from '../testSuite';
 import { CompositeReport } from '../../reporting/report/compositeReport';
 import { TestStatus } from '../../testStatus';
 import { SkippedTestReport } from '../../reporting/report/skippedTestReport';
@@ -21,7 +21,7 @@ export class FailedTestsReportVisitor implements TestsVisitor<Report> {
         return report;
     }
 
-    public async visitTestCollection(tests: TestsCollection): Promise<Report> {
+    public async visitTestSuite(tests: TestSuite): Promise<Report> {
         const report = new CompositeReport(tests.name);
 
         for (const id of tests.testIds) {

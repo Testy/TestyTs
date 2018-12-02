@@ -1,7 +1,7 @@
 import { Test } from '../test';
-import { TestsCollection } from '../testsCollection';
+import { TestSuite } from '../testSuite';
 
 export interface TestsVisitor<T> {
     visitTest(test: Test): Promise<T>;
-    visitTestCollection(testCollection: TestsCollection): Promise<T>;
+    visitTestSuite(testSuite: TestSuite): Promise<T>;
 }

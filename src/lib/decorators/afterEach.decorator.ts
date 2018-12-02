@@ -1,4 +1,4 @@
-import { TestsCollection } from '../tests/testsCollection';
+import { TestSuite } from '../tests/testSuite';
 import { testSuite } from './testSuite.decorator';
 
 /** 
@@ -7,11 +7,11 @@ import { testSuite } from './testSuite.decorator';
 export function afterEach() {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        const testSuiteInstance: TestsCollection = target.__testSuiteInstance;
+        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
         testSuiteInstance.afterEachMethods.push(descriptor.value);
     };
 }
 
 function initializeTarget(target: any) {
-    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestsCollection(); }
+    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestSuite(); }
 }

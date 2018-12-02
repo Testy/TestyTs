@@ -2,12 +2,12 @@ import * as path from 'path';
 import * as glob from 'glob';
 import { Logger } from '../logger/logger';
 import * as tsnode from 'ts-node';
-import { TestsCollection } from '../tests/testsCollection';
+import { TestSuite } from '../tests/testSuite';
 
 export class TestsLoader {
     constructor(private logger?: Logger) { }
 
-    public async loadTests(root: string, patterns: string[], tsconfig: {}): Promise<TestsCollection> {
+    public async loadTests(root: string, patterns: string[], tsconfig: {}): Promise<TestSuite> {
         // We register the tsnode compiler to transpile the test files
         tsnode.register(tsconfig);
 
@@ -19,12 +19,12 @@ export class TestsLoader {
             }
         }
 
-        const testSuites = new TestsCollection();
+        const testSuites = new TestSuite();
         testSuites.name = 'Root';
         for (const file of files) {
             const importedFile = await import(file);
             for (const key in importedFile) {
-                const testSuiteInstance: TestsCollection = importedFile[key].__testSuiteInstance;
+                const testSuiteInstance: TestSuite = importedFile[key].__testSuiteInstance;
                 if (!testSuiteInstance)
                     continue;
 

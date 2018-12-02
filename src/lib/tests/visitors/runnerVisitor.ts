@@ -1,4 +1,4 @@
-import { TestsCollection } from '../testsCollection';
+import { TestSuite } from '../testSuite';
 import { Test } from '../test';
 import { TestsVisitor } from './testVisitor';
 import { Logger } from '../../logger/logger';
@@ -12,12 +12,12 @@ import { FailedTestsReportVisitor } from './failedTestsReportVisitor';
 import { LeafReport } from '../../reporting/report/leafReport';
 
 export class TestsRunnerVisitor implements TestsVisitor<Report> {
-    private contexts: TestsCollection[] = [];
+    private testSuites: TestSuite[] = [];
 
     constructor(private logger: Logger) { }
 
-    public async visitTestCollection(tests: TestsCollection): Promise<Report> {
-        this.contexts.push(tests);
+    public async visitTestSuite(tests: TestSuite): Promise<Report> {
+        this.testSuites.push(tests);
 
         const report = new CompositeReport(tests.name);
         this.logger.info(tests.name);
@@ -34,7 +34,7 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
         }
         finally {
             this.logger.decreaseIndentation();
-            this.contexts.pop();
+            this.testSuites.pop();
         }
 
         return report;
@@ -63,7 +63,7 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
         return report;
     }
 
-    private async runTests(tests: TestsCollection, report: CompositeReport): Promise<void> {
+    private async runTests(tests: TestSuite, report: CompositeReport): Promise<void> {
         for (const id of tests.testIds) {
             const testReport = await tests.get(id).accept(this);
             report.addReport(testReport);
@@ -77,20 +77,20 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
     }
 
     private async runBeforeEachMethods() {
-        for (const testsCollection of this.contexts) {
-            await this.runAll(testsCollection.beforeEachMethods, testsCollection.context);
+        for (const testSuite of this.testSuites) {
+            await this.runAll(testSuite.beforeEachMethods, testSuite.context);
         }
     }
 
     private async runAfterEachMethods() {
-        for (const testsCollection of this.contexts) {
-            await this.runAll(testsCollection.afterEachMethods, testsCollection.context);
+        for (const testSuite of this.testSuites) {
+            await this.runAll(testSuite.afterEachMethods, testSuite.context);
         }
     }
 
     private getClosestContext() {
-        for (let i = this.contexts.length - 1; i >= 0; --i) {
-            const context = this.contexts[i].context;
+        for (let i = this.testSuites.length - 1; i >= 0; --i) {
+            const context = this.testSuites[i].context;
             if (context !== undefined) return context;
         }
     }

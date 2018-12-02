@@ -1,7 +1,7 @@
 import { TestCase } from '../testCase';
 import { TestStatus } from '../testStatus';
 import { Test } from '../tests/test';
-import { TestsCollection } from '../tests/testsCollection';
+import { TestSuite } from '../tests/testSuite';
 
 /**
  * Marks a method inside a @testSuite decorated class as a test.
@@ -13,7 +13,7 @@ import { TestsCollection } from '../tests/testsCollection';
 export function test(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        const testSuiteInstance: TestsCollection = target.__testSuiteInstance;
+        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
         if (testSuiteInstance.has(name)) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
@@ -33,7 +33,7 @@ export function test(name: string, testCases?: TestCase[], timeout: number = 200
 export function ftest(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        const testSuiteInstance: TestsCollection = target.__testSuiteInstance;
+        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
         if (testSuiteInstance.has(name)) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
@@ -53,7 +53,7 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
 export function xtest(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        const testSuiteInstance: TestsCollection = target.__testSuiteInstance;
+        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
         if (testSuiteInstance.has(name)) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
@@ -63,17 +63,17 @@ export function xtest(name: string, testCases?: TestCase[], timeout: number = 20
 }
 
 function initializeTarget(target: any) {
-    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestsCollection(); }
+    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestSuite(); }
 }
 
-function generateTest(name: string, testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): Test | TestsCollection {
+function generateTest(name: string, testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): Test | TestSuite {
     return testCases
         ? generateTestsFromTestcases(name, testMethod, testCases, status, timeout)
         : new Test(name, decorateStandaloneTest(testMethod, timeout), status);
 }
 
-function generateTestsFromTestcases(name: string, testMethod: Function, testCases: TestCase[], status: TestStatus, timeout: number): TestsCollection {
-    const tests = new TestsCollection();
+function generateTestsFromTestcases(name: string, testMethod: Function, testCases: TestCase[], status: TestStatus, timeout: number): TestSuite {
+    const tests = new TestSuite();
     tests.name = name;
     for (const testCase of testCases) {
         const decoratedTestMethod = decorateTestWithTestcase(testMethod, testCase, timeout);
