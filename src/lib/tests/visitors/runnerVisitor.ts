@@ -12,12 +12,12 @@ import { FailedTestsReportVisitor } from './failedTestsReportVisitor';
 import { LeafReport } from '../../reporting/report/leafReport';
 
 export class TestsRunnerVisitor implements TestsVisitor<Report> {
-    private contexts: any[] = [];
+    private contexts: TestsCollection[] = [];
 
     constructor(private logger: Logger) { }
 
     public async visitTestCollection(tests: TestsCollection): Promise<Report> {
-        if (tests.context) { this.contexts.push(tests.context); }
+        this.contexts.push(tests);
 
         const report = new CompositeReport(tests.name);
         this.logger.info(tests.name);
@@ -34,7 +34,7 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
         }
         finally {
             this.logger.decreaseIndentation();
-            if (tests.context) { this.contexts.pop(); }
+            this.contexts.pop();
         }
 
         return report;
@@ -48,8 +48,10 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
         }
         else {
             try {
-                const context = this.contexts.length > 0 ? this.contexts[this.contexts.length - 1] : undefined;
+                const context = this.getClosestContext();
+                await this.runBeforeEachMethods();
                 await test.run(context);
+                await this.runAfterEachMethods();
                 report = new SuccessfulTestReport(test.name, 0);
             }
             catch (err) {
@@ -63,9 +65,7 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
 
     private async runTests(tests: TestsCollection, report: CompositeReport): Promise<void> {
         for (const id of tests.testIds) {
-            await this.runAll(tests.beforeEachMethods, tests.context);
             const testReport = await tests.get(id).accept(this);
-            await this.runAll(tests.afterEachMethods, tests.context);
             report.addReport(testReport);
         }
     }
@@ -73,6 +73,25 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
     private async runAll(methods, context: any) {
         for (const method of methods) {
             await method.bind(context)();
+        }
+    }
+
+    private async runBeforeEachMethods() {
+        for (const testsCollection of this.contexts) {
+            await this.runAll(testsCollection.beforeEachMethods, testsCollection.context);
+        }
+    }
+
+    private async runAfterEachMethods() {
+        for (const testsCollection of this.contexts) {
+            await this.runAll(testsCollection.afterEachMethods, testsCollection.context);
+        }
+    }
+
+    private getClosestContext() {
+        for (let i = this.contexts.length - 1; i >= 0; --i) {
+            const context = this.contexts[i].context;
+            if (context !== undefined) return context;
         }
     }
 }
