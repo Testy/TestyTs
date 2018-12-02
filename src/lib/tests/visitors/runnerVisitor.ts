@@ -30,11 +30,12 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
         }
         catch (err) {
             const failedTestsVisitor = new FailedTestsReportVisitor(err.message, this.logger);
-            return tests.accept(failedTestsVisitor);
+            return await tests.accept(failedTestsVisitor);
         }
-
-        this.logger.decreaseIndentation();
-        if (tests.context) { this.contexts.pop(); }
+        finally {
+            this.logger.decreaseIndentation();
+            if (tests.context) { this.contexts.pop(); }
+        }
 
         return report;
     }
