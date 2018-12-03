@@ -1,17 +1,22 @@
 import { test } from '../../../lib/decorators/test.decorator';
 import { createTestSuite, testSuite } from '../../../lib/decorators/testSuite.decorator';
+import { Logger } from '../../../lib/logger/logger';
 import { TestResult } from '../../../lib/reporting/report/testResult';
 import { TestCase } from '../../../lib/testCase';
+import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
 import { TestStatus } from '../../../lib/testStatus';
 import { expect } from '../../../testyCore';
+import { NullLogger } from '../../utils/nullLogger';
 import { NormalBeforeAfterTestSuite } from './normalBeforeAfterTestSuite';
+import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
+import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
 import { ThrowsDuringBeforeAllTestSuite } from './throwsDuringBeforeAllTestSuite';
 import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSuite';
-import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
-import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
 
 @testSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
+    private logger: Logger = new NullLogger();
+    private visitor = new TestsRunnerVisitor(this.logger);
 
     @test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
     private async trivialCase() {
@@ -19,7 +24,7 @@ export class BeforeAfterDecoratorsTestSuite {
         const testSuite = createTestSuite(NormalBeforeAfterTestSuite, 'Dummy Test Suite', TestStatus.Normal);
 
         // Act
-        const report = await testSuite.run();
+        const report = await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeEqual(testSuite.context.numberOfBeforeAllExecutions, 1);
@@ -40,7 +45,7 @@ export class BeforeAfterDecoratorsTestSuite {
         const testSuite = createTestSuite(testSuiteType, 'Dummy Test Suite', TestStatus.Normal);
 
         // Act
-        const report = await testSuite.run();
+        const report = await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeDefined(report);

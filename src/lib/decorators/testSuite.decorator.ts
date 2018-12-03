@@ -1,8 +1,5 @@
-import { TestRunner } from '../testRunner';
-import { LoggerFactory } from '../logger/loggerFactory';
-import { TestSuite } from '../testSuite';
 import { TestStatus } from '../testStatus';
-import { TestSuiteMetadata } from './testSuiteMetadata';
+import { TestSuite } from '../tests/testSuite';
 
 /** 
  * Marks a class as a test suite. 
@@ -18,7 +15,7 @@ export function testSuite<T extends { new(...args: any[]): {} }>(name: string): 
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function ftestSuite<T extends { new(...args: any[]): {} }>(name: string) {
+export function ftestSuite<T extends { new(...args: any[]): {} }>(name: string): any {
     return createTestSuiteDecoratorFactory<T>(name, TestStatus.Focused);
 }
 
@@ -27,13 +24,13 @@ export function ftestSuite<T extends { new(...args: any[]): {} }>(name: string) 
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function xtestSuite<T extends { new(...args: any[]): {} }>(name: string) {
+export function xtestSuite<T extends { new(...args: any[]): {} }>(name: string): any {
     return createTestSuiteDecoratorFactory<T>(name, TestStatus.Ignored);
 }
 
 function createTestSuiteDecoratorFactory<T extends { new(...args: any[]): {} }>(name: string, status: TestStatus) {
     return (constructor: T) => {
-        (constructor as any).testSuiteInstance = createTestSuite(constructor, name, status);
+        (constructor as any).__testSuiteInstance = createTestSuite(constructor, name, status);
         return constructor;
     };
 }
@@ -41,19 +38,11 @@ function createTestSuiteDecoratorFactory<T extends { new(...args: any[]): {} }>(
 /** 
  * [WARNING] This class should be used for internal testing. 
  */
-export function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus) {
-    const testSuite = new constructor();
-    const metadata = TestSuiteMetadata.getMetadataStore(testSuite);
-    return new TestSuite<T>(
-        name,
-        status,
-        testSuite,
-        metadata.tests,
-        metadata.focusedTests,
-        metadata.ignoredTests,
-        metadata.beforeAll,
-        metadata.beforeEach,
-        metadata.afterEach,
-        metadata.afterAll,
-    );
+export function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus): TestSuite {
+    const context = new constructor();
+    const testSuiteInstance: TestSuite = (context as any).__testSuiteInstance;
+    testSuiteInstance.name = name;
+    testSuiteInstance.status = status;
+    testSuiteInstance.context = context;
+    return testSuiteInstance;
 }

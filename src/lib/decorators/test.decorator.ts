@@ -1,5 +1,7 @@
 import { TestCase } from '../testCase';
-import { TestSuiteMetadata } from './testSuiteMetadata';
+import { TestStatus } from '../testStatus';
+import { Test } from '../tests/test';
+import { TestSuite } from '../tests/testSuite';
 
 /**
  * Marks a method inside a @testSuite decorated class as a test.
@@ -11,9 +13,12 @@ import { TestSuiteMetadata } from './testSuiteMetadata';
 export function test(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        assertTestIsUnique(name, target);
-        const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.tests[name] = generateTest(name, testCases, descriptor.value, timeout);
+        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
+        if (testSuiteInstance.has(name)) {
+            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
+        }
+
+        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Normal, descriptor.value, timeout));
     };
 }
 
@@ -28,9 +33,12 @@ export function test(name: string, testCases?: TestCase[], timeout: number = 200
 export function ftest(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        assertTestIsUnique(name, target);
-        const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.focusedTests[name] = generateTest(name, testCases, descriptor.value, timeout);
+        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
+        if (testSuiteInstance.has(name)) {
+            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
+        }
+
+        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Focused, descriptor.value, timeout));
     };
 }
 
@@ -45,28 +53,34 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
 export function xtest(name: string, testCases?: TestCase[], timeout: number = 2000) {
     return (target, key, descriptor) => {
         initializeTarget(target);
-        const metadata = TestSuiteMetadata.getMetadataStore(target);
-        metadata.ignoredTests.push(name);
+        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
+        if (testSuiteInstance.has(name)) {
+            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
+        }
+
+        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Ignored, descriptor.value, timeout));
     };
 }
 
 function initializeTarget(target: any) {
-    if (!target.tests) { target.tests = {}; }
-    if (!target.focusedTests) { target.focusedTests = {}; }
-    if (!target.ignoredTests) { target.ignoredTests = []; }
+    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestSuite(); }
 }
 
-function assertTestIsUnique(name: string, target: any) {
-    if (target.focusedTests[name] === undefined && target.tests[name] === undefined)
-        return;
-
-    throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
-}
-
-function generateTest(name: string, testCases: TestCase[], testMethod: any, timeout: number) {
+function generateTest(name: string, testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): Test | TestSuite {
     return testCases
-        ? decorateTestWithTestcases(testMethod, testCases, timeout)
-        : decorateStandaloneTest(testMethod, timeout);
+        ? generateTestsFromTestcases(name, testMethod, testCases, status, timeout)
+        : new Test(name, decorateStandaloneTest(testMethod, timeout), status);
+}
+
+function generateTestsFromTestcases(name: string, testMethod: Function, testCases: TestCase[], status: TestStatus, timeout: number): TestSuite {
+    const tests = new TestSuite();
+    tests.name = name;
+    for (const testCase of testCases) {
+        const decoratedTestMethod = decorateTestWithTestcase(testMethod, testCase, timeout);
+        tests.set(testCase.name, new Test(testCase.name, decoratedTestMethod, status));
+    }
+
+    return tests;
 }
 
 function decorateStandaloneTest(testMethod: Function, timeout: number) {
@@ -85,23 +99,18 @@ function decorateStandaloneTest(testMethod: Function, timeout: number) {
     };
 }
 
-function decorateTestWithTestcases(testMethod: Function, testCases: TestCase[], timeout: number) {
-    const tests: { [name: string]: Function } = {};
-    for (const testCase of testCases) {
-        tests[testCase.name] = async (context: any) => {
-            await new Promise(async (resolve, reject) => {
-                setTimeout(() => reject('Test has timed out.'), timeout);
-                try {
-                    await testMethod.bind(context)(...testCase.args);
-                }
-                catch (err) {
-                    reject(err);
-                }
+function decorateTestWithTestcase(testMethod: Function, testCase: TestCase, timeout: number) {
+    return async (context: any) => {
+        await new Promise(async (resolve, reject) => {
+            setTimeout(() => reject('Test has timed out.'), timeout);
+            try {
+                await testMethod.bind(context)(...testCase.args);
+            }
+            catch (err) {
+                reject(err);
+            }
 
-                resolve();
-            });
-        };
-    }
-
-    return tests;
+            resolve();
+        });
+    };
 }

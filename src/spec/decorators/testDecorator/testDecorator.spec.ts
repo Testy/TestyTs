@@ -6,9 +6,14 @@ import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSui
 import { TimeoutTestDecoratorTestSuite } from './timeoutTestDecoratorTestSuite';
 import { createTestSuite } from '../../../lib/decorators/testSuite.decorator';
 import { TestStatus } from '../../../lib/testStatus';
+import { Logger } from '../../../lib/logger/logger';
+import { NullLogger } from '../../utils/nullLogger';
+import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
 
 @testSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {
+    private logger: Logger = new NullLogger();
+    private visitor = new TestsRunnerVisitor(this.logger);
 
     @test('single test, test should be ran once')
     private async singleTest() {
@@ -16,7 +21,7 @@ export class TestDecoratorTestSuite {
         const testSuite = createTestSuite(SingleTestTestDecoratorTestSuite, 'Dummy Test Suite', TestStatus.Normal);
 
         // Act
-        const report = await testSuite.run();
+        const report = await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
@@ -28,7 +33,7 @@ export class TestDecoratorTestSuite {
         const testSuite = createTestSuite(MultipleTestTestDecoratorTestSuite, 'Dummy Test Suite', TestStatus.Normal);
 
         // Act
-        const report = await testSuite.run();
+        const report = await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
@@ -42,7 +47,7 @@ export class TestDecoratorTestSuite {
         const testSuite = createTestSuite(TestCasesTestDecoratorTestSuite, 'Dummy Test Suite', TestStatus.Normal);
 
         // Act
-        const report = await testSuite.run();
+        const report = await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
@@ -56,7 +61,7 @@ export class TestDecoratorTestSuite {
         const testSuite = createTestSuite(TimeoutTestDecoratorTestSuite, 'Dummy Test Suite', TestStatus.Normal);
 
         // Act
-        const report = await testSuite.run();
+        const report = await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeEqual(report.result, TestResult.Failure);

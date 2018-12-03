@@ -4,11 +4,11 @@ import { LeafReport } from './leafReport';
 
 export class SuccessfulTestReport extends LeafReport {
 
-    constructor(name: string, duration: number, private logger?: Logger) {
+    constructor(name: string, duration: number) {
         super(name, TestResult.Success, duration);
+    }
 
-        if (this.logger) {
-            this.logger.success(`√ ${this.name}`);
-        }
+    public log(logger: Logger) {
+        logger.success(`√ ${this.name}`);
     }
 }

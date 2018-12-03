@@ -1,6 +1,5 @@
 import { Report } from './report';
 import { TestResult } from './testResult';
-import { Logger } from '../../logger/logger';
 
 /**
  * Represents a collection of reports. Part of a composite pattern.
@@ -25,11 +24,7 @@ export class CompositeReport implements Report {
 
     private children: Report[] = [];
 
-    constructor(private _name: string, protected logger?: Logger) {
-        if (this.logger) {
-            this.logger.info(this.name);
-        }
-    }
+    constructor(private _name: string) { }
 
     public addReport(report: Report) {
         this.children.push(report);
