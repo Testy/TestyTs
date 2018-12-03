@@ -12,9 +12,6 @@
                 "debug-tests"
             ],
             "sourceMaps": true,
-            "outFiles": [
-                "${workspaceFolder}/build/**/*.js"
-            ],
             "protocol": "inspector",
             "port": 9229
         }
