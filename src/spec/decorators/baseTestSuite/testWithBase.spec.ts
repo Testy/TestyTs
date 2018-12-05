@@ -4,8 +4,6 @@ import { TestStatus } from '../../../lib/testStatus';
 import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBaseTestSuite';
 import { expect } from '../../../testyCore';
 import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
-import { NullLogger } from '../../utils/nullLogger';
-import { Logger } from '../../../lib/logger/logger';
 
 @testSuite('Test Suite With Base Test Suite Tests')
 export class BeforeAfterDecoratorsTestSuite {
