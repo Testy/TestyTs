@@ -3,7 +3,7 @@ import { createTestSuite, testSuite } from '../../../lib/decorators/testSuite.de
 import { TestStatus } from '../../../lib/testStatus';
 import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBaseTestSuite';
 import { expect } from '../../../testyCore';
-import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
+import { TestsRunnerVisitor } from '../../../lib/tests/visitors/testsRunnerVisitor';
 import { NullLogger } from '../../utils/nullLogger';
 import { Logger } from '../../../lib/logger/logger';
 

@@ -8,7 +8,7 @@ import { createTestSuite } from '../../../lib/decorators/testSuite.decorator';
 import { TestStatus } from '../../../lib/testStatus';
 import { Logger } from '../../../lib/logger/logger';
 import { NullLogger } from '../../utils/nullLogger';
-import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
+import { TestsRunnerVisitor } from '../../../lib/tests/visitors/testsRunnerVisitor';
 
 @testSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {
