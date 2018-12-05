@@ -6,14 +6,11 @@ import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSui
 import { TimeoutTestDecoratorTestSuite } from './timeoutTestDecoratorTestSuite';
 import { createTestSuite } from '../../../lib/decorators/testSuite.decorator';
 import { TestStatus } from '../../../lib/testStatus';
-import { Logger } from '../../../lib/logger/logger';
-import { NullLogger } from '../../utils/nullLogger';
-import { TestsRunnerVisitor } from '../../../lib/tests/visitors/testsRunnerVisitor';
+import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
 
 @testSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {
-    private logger: Logger = new NullLogger();
-    private visitor = new TestsRunnerVisitor(this.logger);
+    private visitor = new TestRunnerVisitor();
 
     @test('single test, test should be ran once')
     private async singleTest() {

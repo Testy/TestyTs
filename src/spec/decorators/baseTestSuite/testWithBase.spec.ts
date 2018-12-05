@@ -3,19 +3,17 @@ import { createTestSuite, testSuite } from '../../../lib/decorators/testSuite.de
 import { TestStatus } from '../../../lib/testStatus';
 import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBaseTestSuite';
 import { expect } from '../../../testyCore';
-import { TestsRunnerVisitor } from '../../../lib/tests/visitors/testsRunnerVisitor';
+import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
 import { NullLogger } from '../../utils/nullLogger';
 import { Logger } from '../../../lib/logger/logger';
 
 @testSuite('Test Suite With Base Test Suite Tests')
 export class BeforeAfterDecoratorsTestSuite {
-    private logger: Logger = new NullLogger();
-
     @test('the base and the actual test suite before and after methods are called.')
     private async trivialCase() {
         // Arrange
         const testSuite = createTestSuite(TestSuiteWithBase, 'Dummy Test Suite', TestStatus.Normal);
-        const testRunnerVisitor = new TestsRunnerVisitor(this.logger);
+        const testRunnerVisitor = new TestRunnerVisitor();
 
         // Act
         const report = await testSuite.accept(testRunnerVisitor);

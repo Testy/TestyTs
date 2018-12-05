@@ -1,7 +1,6 @@
 import { TestSuite } from '../testSuite';
 import { Test } from '../test';
 import { TestsVisitor } from './testVisitor';
-import { Logger } from '../../logger/logger';
 import { SuccessfulTestReport } from '../../reporting/report/successfulTestReport';
 import { FailedTestReport } from '../../reporting/report/failedTestReport';
 import { TestStatus } from '../../testStatus';
@@ -11,17 +10,15 @@ import { CompositeReport } from '../../reporting/report/compositeReport';
 import { FailedTestsReportVisitor } from './failedTestsReportVisitor';
 import { LeafReport } from '../../reporting/report/leafReport';
 
-export class TestsRunnerVisitor implements TestsVisitor<Report> {
+export class TestRunnerVisitor implements TestsVisitor<Report> {
     private testSuites: TestSuite[] = [];
 
-    constructor(private logger: Logger) { }
+    constructor() { }
 
     public async visitTestSuite(tests: TestSuite): Promise<Report> {
         this.testSuites.push(tests);
 
         const report = new CompositeReport(tests.name);
-        this.logger.info(tests.name);
-        this.logger.increaseIndentation();
 
         try {
             await this.runAll(tests.beforeAllMethods, tests.context);
@@ -29,11 +26,10 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
             await this.runAll(tests.afterAllMethods, tests.context);
         }
         catch (err) {
-            const failedTestsVisitor = new FailedTestsReportVisitor(err.message, this.logger);
+            const failedTestsVisitor = new FailedTestsReportVisitor(err.message);
             return await tests.accept(failedTestsVisitor);
         }
         finally {
-            this.logger.decreaseIndentation();
             this.testSuites.pop();
         }
 
@@ -59,7 +55,6 @@ export class TestsRunnerVisitor implements TestsVisitor<Report> {
             }
         }
 
-        report.log(this.logger);
         return report;
     }
 

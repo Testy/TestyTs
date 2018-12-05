@@ -3,7 +3,7 @@ import { createTestSuite, testSuite } from '../../../lib/decorators/testSuite.de
 import { Logger } from '../../../lib/logger/logger';
 import { TestResult } from '../../../lib/reporting/report/testResult';
 import { TestCase } from '../../../lib/testCase';
-import { TestsRunnerVisitor } from '../../../lib/tests/visitors/testsRunnerVisitor';
+import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
 import { TestStatus } from '../../../lib/testStatus';
 import { expect } from '../../../testyCore';
 import { NullLogger } from '../../utils/nullLogger';
@@ -15,8 +15,7 @@ import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSui
 
 @testSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
-    private logger: Logger = new NullLogger();
-    private visitor = new TestsRunnerVisitor(this.logger);
+    private visitor = new TestRunnerVisitor();
 
     @test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
     private async trivialCase() {
