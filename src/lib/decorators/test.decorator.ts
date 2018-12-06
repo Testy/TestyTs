@@ -11,17 +11,7 @@ import { TestSuite } from '../tests/testSuite';
  * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
 export function test(name?: string, testCases?: TestCase[], timeout: number = 2000) {
-    return (target, key: string, descriptor) => {
-        initializeTarget(target);
-        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
-
-        name = name ? name : key;
-        if (testSuiteInstance.has(name)) {
-            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
-        }
-
-        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Normal, descriptor.value, timeout));
-    };
+    return generateDecoratorFunction(name, TestStatus.Normal, testCases, timeout);
 }
 
 /**
@@ -33,17 +23,7 @@ export function test(name?: string, testCases?: TestCase[], timeout: number = 20
  * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
 export function ftest(name: string, testCases?: TestCase[], timeout: number = 2000) {
-    return (target, key, descriptor) => {
-        initializeTarget(target);
-        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
-
-        name = name ? name : key;
-        if (testSuiteInstance.has(name)) {
-            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
-        }
-
-        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Focused, descriptor.value, timeout));
-    };
+    return generateDecoratorFunction(name, TestStatus.Focused, testCases, timeout);
 }
 
 /** 
@@ -55,6 +35,14 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
  * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
 export function xtest(name: string, testCases?: TestCase[], timeout: number = 2000) {
+    return generateDecoratorFunction(name, TestStatus.Ignored, testCases, timeout);
+}
+
+function initializeTarget(target: any) {
+    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestSuite(); }
+}
+
+function generateDecoratorFunction(name: string, status: TestStatus, testCases: TestCase[], timeout: number) {
     return (target, key, descriptor) => {
         initializeTarget(target);
         const testSuiteInstance: TestSuite = target.__testSuiteInstance;
@@ -64,12 +52,8 @@ export function xtest(name: string, testCases?: TestCase[], timeout: number = 20
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
 
-        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Ignored, descriptor.value, timeout));
+        testSuiteInstance.set(name, generateTest(name, testCases, status, descriptor.value, timeout));
     };
-}
-
-function initializeTarget(target: any) {
-    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestSuite(); }
 }
 
 function generateTest(name: string, testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): Test | TestSuite {
