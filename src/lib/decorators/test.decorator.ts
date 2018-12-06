@@ -10,10 +10,12 @@ import { TestSuite } from '../tests/testSuite';
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function test(name: string, testCases?: TestCase[], timeout: number = 2000) {
-    return (target, key, descriptor) => {
+export function test(name?: string, testCases?: TestCase[], timeout: number = 2000) {
+    return (target, key: string, descriptor) => {
         initializeTarget(target);
         const testSuiteInstance: TestSuite = target.__testSuiteInstance;
+
+        name = name ? name : key;
         if (testSuiteInstance.has(name)) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
@@ -34,6 +36,8 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
     return (target, key, descriptor) => {
         initializeTarget(target);
         const testSuiteInstance: TestSuite = target.__testSuiteInstance;
+
+        name = name ? name : key;
         if (testSuiteInstance.has(name)) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
@@ -54,6 +58,8 @@ export function xtest(name: string, testCases?: TestCase[], timeout: number = 20
     return (target, key, descriptor) => {
         initializeTarget(target);
         const testSuiteInstance: TestSuite = target.__testSuiteInstance;
+
+        name = name ? name : key;
         if (testSuiteInstance.has(name)) {
             throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
         }
