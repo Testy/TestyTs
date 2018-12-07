@@ -6,7 +6,7 @@ import { TestsLoader } from '../utils/testsLoader';
 import { CliCommand } from './cliCommand';
 import { TestRunnerVisitor } from '../tests/visitors/testRunnerVisitor';
 import { LoggerTestReporterDecorator } from '../tests/visitors/decorators/loggerTestReporterDecorator';
-import { TestsVisitor } from '../tests/visitors/testVisitor';
+import { TestVisitor } from '../tests/visitors/testVisitor';
 import { Report } from '../reporting/report/report';
 
 export class RunCommand implements CliCommand {
@@ -22,7 +22,7 @@ export class RunCommand implements CliCommand {
         const testsLoader = new TestsLoader(this.logger);
         const testSuites = await testsLoader.loadTests(process.cwd(), testyConfig.include, tsConfig);
 
-        let testRunnerVisitor: TestsVisitor<Report> = new TestRunnerVisitor();
+        let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor();
         testRunnerVisitor = new LoggerTestReporterDecorator(testRunnerVisitor, this.logger);
         await testSuites.accept(testRunnerVisitor);
     }
