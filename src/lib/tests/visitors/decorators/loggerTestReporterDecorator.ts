@@ -1,4 +1,4 @@
-import { TestsVisitor } from '../testVisitor';
+import { TestVisitor } from '../testVisitor';
 import { Test } from '../../test';
 import { TestSuite } from '../../testSuite';
 import { Logger } from '../../../logger/logger';
@@ -9,7 +9,7 @@ import { TestsVisitorDecorator } from './testsVisitorDecorator';
 
 export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
 
-    constructor(baseVisitor: TestsVisitor<Report>, private logger: Logger) {
+    constructor(baseVisitor: TestVisitor<Report>, private logger: Logger) {
         super(baseVisitor);
     }
 

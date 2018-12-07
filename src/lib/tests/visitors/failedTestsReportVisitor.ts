@@ -1,4 +1,4 @@
-import { TestsVisitor } from './testVisitor';
+import { TestVisitor } from './testVisitor';
 import { Report } from '../../reporting/report/report';
 import { Test } from '../test';
 import { TestSuite } from '../testSuite';
@@ -8,7 +8,7 @@ import { SkippedTestReport } from '../../reporting/report/skippedTestReport';
 import { FailedTestReport } from '../../reporting/report/failedTestReport';
 import { LeafReport } from '../../reporting/report/leafReport';
 
-export class FailedTestsReportVisitor implements TestsVisitor<Report> {
+export class FailedTestsReportVisitor implements TestVisitor<Report> {
     constructor(private reason: string) { }
 
     public async visitTest(test: Test): Promise<Report> {

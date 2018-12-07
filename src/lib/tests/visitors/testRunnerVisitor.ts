@@ -1,6 +1,6 @@
 import { TestSuite } from '../testSuite';
 import { Test } from '../test';
-import { TestsVisitor } from './testVisitor';
+import { TestVisitor } from './testVisitor';
 import { SuccessfulTestReport } from '../../reporting/report/successfulTestReport';
 import { FailedTestReport } from '../../reporting/report/failedTestReport';
 import { TestStatus } from '../../testStatus';
@@ -10,7 +10,7 @@ import { CompositeReport } from '../../reporting/report/compositeReport';
 import { FailedTestsReportVisitor } from './failedTestsReportVisitor';
 import { LeafReport } from '../../reporting/report/leafReport';
 
-export class TestRunnerVisitor implements TestsVisitor<Report> {
+export class TestRunnerVisitor implements TestVisitor<Report> {
     private testSuites: TestSuite[] = [];
 
     constructor() { }
