@@ -13,7 +13,7 @@ import { LeafReport } from '../../lib/reporting/report/leafReport';
 import { FailedTestReport } from '../../lib/reporting/report/failedTestReport';
 import { SkippedTestReport } from '../../lib/reporting/report/skippedTestReport';
 
-@ftestSuite('Test Runner Visitor Tests')
+@testSuite('Test Runner Visitor Tests')
 export class TestRunnerVisitorTests {
     private testRunnerVisitor: TestRunnerVisitor;
 
