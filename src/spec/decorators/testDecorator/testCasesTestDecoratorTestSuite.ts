@@ -1,5 +1,6 @@
-import { test, TestCase } from '../../../testyCore';
+import { test, TestCase, testSuite } from '../../../testyCore';
 
+@testSuite('TestCases Test Decorator Test Suite')
 export class TestCasesTestDecoratorTestSuite {
 
     public numberOfRunsTest1: number = 0;

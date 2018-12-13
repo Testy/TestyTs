@@ -1,5 +1,7 @@
 import { test, xtest, beforeAll, TestCase } from '../../../testyCore';
+import { testSuite } from '../../../lib/decorators/testSuite.decorator';
 
+@testSuite('Throws During Before All Test Suite')
 export class ThrowsDuringBeforeAllTestSuite {
     @beforeAll()
     private beforeAll() {

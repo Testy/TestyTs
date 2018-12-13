@@ -1,5 +1,7 @@
 import { test } from '../../../testyCore';
+import { testSuite } from '../../../lib/decorators/testSuite.decorator';
 
+@testSuite('Multiple Test Test Decorator Test Suite')
 export class MultipleTestTestDecoratorTestSuite {
 
     public numberOfRunsTest1: number = 0;

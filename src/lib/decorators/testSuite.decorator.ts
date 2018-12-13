@@ -36,10 +36,7 @@ function createTestSuiteDecoratorFactory<T extends { new(...args: any[]): {} }>(
     };
 }
 
-/** 
- * [WARNING] This class should be used for internal testing. 
- */
-export function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus): TestSuite {
+function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus): TestSuite {
     const context = new constructor();
     const testSuiteInstance: TestSuite = (context as any).__testSuiteInstance;
     testSuiteInstance.name = name;
