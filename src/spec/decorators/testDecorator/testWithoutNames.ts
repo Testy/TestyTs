@@ -11,9 +11,9 @@ export class TestWithNoNamesTestSuite {
     private myTest2() { }
 
     @test(undefined, [
-        new TestCase('testCase1'),
-        new TestCase('testCase2'),
-        new TestCase('testCase3')
+        new TestCase('myTestCase1'),
+        new TestCase('myTestCase2'),
+        new TestCase('myTestCase3')
     ])
     private myTest3() { }
 }

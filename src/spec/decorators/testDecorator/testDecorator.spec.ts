@@ -10,6 +10,7 @@ import { Report } from '../../../lib/reporting/report/report';
 import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
 import { TestSuite } from '../../../lib/tests/testSuite';
 import { SingleTestTestDecoratorTestSuite } from './singleTestTestDecoratorTestSuite';
+import { FailedTestsReportVisitor } from '../../../lib/tests/visitors/failedTestsReportVisitor';
 
 @testSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {
@@ -77,12 +78,17 @@ export class TestDecoratorTestSuite {
     @test('no names, should infer from method names')
     private async noNameTest() {
         // Arrange
-        const testSuite = (TestWithNoNamesTestSuite as any).__testSuiteInstance;
-
-        // Act
-        const report = testSuite.accept(this.visitor);
+        const testSuite = this.getTestSuiteInstance(TestWithNoNamesTestSuite);
 
         // Assert
+        expect.toBeIn('myTest1', testSuite.testIds);
+        expect.toBeIn('myTest2', testSuite.testIds);
+        expect.toBeIn('myTest3', testSuite.testIds);
+
+        const myTest3 = testSuite.get('myTest3') as TestSuite;
+        expect.toBeIn('myTestCase1', myTest3.testIds);
+        expect.toBeIn('myTestCase2', myTest3.testIds);
+        expect.toBeIn('myTestCase3', myTest3.testIds);
     }
 
     protected getTestSuiteInstance(testClass: any): TestSuite {
