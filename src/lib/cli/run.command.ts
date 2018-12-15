@@ -4,7 +4,7 @@ import { TestyConfig } from '../interfaces/config';
 import { Logger } from '../logger/logger';
 import { TestsLoader } from '../utils/testsLoader';
 import { CliCommand } from './cliCommand';
-import { TestsRunnerVisitor } from '../tests/visitors/runnerVisitor';
+import { TestsRunnerVisitor } from '../tests/visitors/testsRunnerVisitor';
 
 export class RunCommand implements CliCommand {
     public get testyConfigFile(): string { return this._testyConfigFile; }
