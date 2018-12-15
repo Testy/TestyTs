@@ -10,7 +10,6 @@ import { Report } from '../../../lib/reporting/report/report';
 import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
 import { TestSuite } from '../../../lib/tests/testSuite';
 import { SingleTestTestDecoratorTestSuite } from './singleTestTestDecoratorTestSuite';
-import { FailedTestsReportVisitor } from '../../../lib/tests/visitors/failedTestsReportVisitor';
 
 @testSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {
