@@ -7,7 +7,8 @@ import { beforeEach } from '../../../lib/decorators/beforeEach.decorator';
 import { TestsRunnerVisitor } from '../../../lib/tests/visitors/testsRunnerVisitor';
 import { Logger } from '../../../lib/logger/logger';
 import { NullLogger } from '../../utils/nullLogger';
-import { MultipleTestTestDecoratorTestSuite as MultipleTestsTestSuite } from './multipleTests';
+import { MultipleTestsTestSuite } from './multipleTests';
+import { FocusedTestTestSuite } from './focusedTest';
 
 @testSuite('Tests Runner Visitor Tests')
 export class TestsRunnerVisitorTests {
@@ -45,6 +46,26 @@ export class TestsRunnerVisitorTests {
         expect.toBeEqual(report.result, TestResult.Success);
         expect.toBeEqual(report.numberOfSuccessfulTests, 3);
         expect.toBeEqual(report.numberOfSkippedTests, 0);
+
+        expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
+        expect.toBeEqual(testSuite.context.numberOfRunsTest2, 1);
+        expect.toBeEqual(testSuite.context.numberOfRunsTest3, 1);
+    }
+
+    @test('focused test, only the focused test should be ran')
+    private async focusedTest() {
+        // Arrange
+        const testSuite = this.getTestSuiteInstance(FocusedTestTestSuite);
+
+        // Act
+        const report = await testSuite.accept(this.visitor);
+
+        // Assert
+        expect.toBeEqual(report.result, TestResult.Skipped);
+        expect.toBeEqual(report.numberOfSuccessfulTests, 1);
+        expect.toBeEqual(report.numberOfSkippedTests, 1);
+        expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
+        expect.toBeEqual(testSuite.context.numberOfRunsTest2, 0);
     }
 
     protected getTestSuiteInstance(testClass: any): TestSuite {
