@@ -6,7 +6,7 @@ export class SingleTestTestDecoratorTestSuite {
 
     public numberOfRunsTest1: number = 0;
 
-    @test('Test 1.')
+    @test('My single test')
     private test1() {
         ++this.numberOfRunsTest1;
     }

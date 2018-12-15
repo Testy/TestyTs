@@ -1,81 +1,52 @@
-import { test, expect, testSuite, TestResult, beforeEach } from '../../../testyCore';
-import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
-import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSuite';
-import { TimeoutTestDecoratorTestSuite } from './timeoutTestDecoratorTestSuite';
-import { TestWithNoNamesTestSuite } from './testWithoutNames';
-import { NullLogger } from '../../utils/nullLogger';
-import { Logger } from '../../../lib/logger/logger';
-import { TestsVisitor } from '../../../lib/tests/visitors/testVisitor';
-import { Report } from '../../../lib/reporting/report/report';
-import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
 import { TestSuite } from '../../../lib/tests/testSuite';
+import { expect, test, testSuite } from '../../../testyCore';
+import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
 import { SingleTestTestDecoratorTestSuite } from './singleTestTestDecoratorTestSuite';
+import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSuite';
+import { TestWithNoNamesTestSuite } from './testWithoutNames';
 
 @testSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {
-    // TODO: This test suite should extend TestSuiteTestsBase when #8 is fixed.
-    private logger: Logger = new NullLogger();
-    protected visitor: TestsVisitor<Report>;
-
-    @beforeEach()
-    private beforeEach() {
-        this.visitor = new TestsRunnerVisitor(this.logger);
-    }
 
     @test('single test, test should be ran once')
-    private async singleTest() {
+    private singleTest() {
         // Arrange
-        const testSuite = (SingleTestTestDecoratorTestSuite as any).__testSuiteInstance;
-
-        // Act
-        await testSuite.accept(this.visitor);
+        const testSuite = this.getTestSuiteInstance(SingleTestTestDecoratorTestSuite);
 
         // Assert
-        expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
+        expect.toBeEqual(testSuite.testIds.length, 1);
+        expect.toBeIn('My single test', testSuite.testIds);
     }
 
     @test('multiple test, tests should be ran once')
-    private async multipleTest() {
+    private multipleTest() {
         // Arrange
-        const testSuite = (MultipleTestTestDecoratorTestSuite as any).__testSuiteInstance;
-
-        // Act
-        await testSuite.accept(this.visitor);
+        const testSuite = this.getTestSuiteInstance(MultipleTestTestDecoratorTestSuite);
 
         // Assert
-        expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
-        expect.toBeEqual(testSuite.context.numberOfRunsTest2, 1);
-        expect.toBeEqual(testSuite.context.numberOfRunsTest3, 1);
+        expect.toBeEqual(testSuite.testIds.length, 3);
+        expect.toBeIn('My first test', testSuite.testIds);
+        expect.toBeIn('My second test', testSuite.testIds);
+        expect.toBeIn('My third test', testSuite.testIds);
     }
 
     @test('test cases, tests should be ran once')
-    private async testCasesTest() {
+    private testCasesTest() {
         // Arrange
-        const testSuite = (TestCasesTestDecoratorTestSuite as any).__testSuiteInstance;
-
-        // Act
-        await testSuite.accept(this.visitor);
+        const testSuite = this.getTestSuiteInstance(TestCasesTestDecoratorTestSuite);
 
         // Assert
-        expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
-        expect.toBeEqual(testSuite.context.numberOfRunsTest2, 1);
-        expect.toBeEqual(testSuite.context.numberOfRunsTest3, 1);
-    }
+        expect.toBeEqual(testSuite.testIds.length, 1);
+        expect.toBeIn('My test with test cases', testSuite.testIds);
 
-    @test('test takes too long, should return failed test report')
-    private async timeoutTest() {
-        // Arrange
-        const testSuite = (TimeoutTestDecoratorTestSuite as any).__testSuiteInstance;
-
-        // Act
-        const report = await testSuite.accept(this.visitor);
-
-        // Assert
-        expect.toBeEqual(report.result, TestResult.Failure);
+        const subTestSuite = testSuite.get('My test with test cases') as TestSuite;
+        expect.toBeIn('My first test', subTestSuite.testIds);
+        expect.toBeIn('My second test', subTestSuite.testIds);
+        expect.toBeIn('My third test', subTestSuite.testIds);
     }
 
     @test('no names, should infer from method names')
-    private async noNameTest() {
+    private noNameTest() {
         // Arrange
         const testSuite = this.getTestSuiteInstance(TestWithNoNamesTestSuite);
 

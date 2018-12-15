@@ -1,4 +1,4 @@
-import { TestsRunnerVisitor } from '../../lib/tests/visitors/runnerVisitor';
+import { TestsRunnerVisitor } from '../../lib/tests/visitors/testsRunnerVisitor';
 import { Logger } from '../../lib/logger/logger';
 import { NullLogger } from '../utils/nullLogger';
 import { beforeEach } from '../../lib/decorators/beforeEach.decorator';

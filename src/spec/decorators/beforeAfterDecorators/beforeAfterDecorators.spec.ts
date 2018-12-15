@@ -10,7 +10,7 @@ import { NullLogger } from '../../utils/nullLogger';
 import { Logger } from '../../../lib/logger/logger';
 import { TestsVisitor } from '../../../lib/tests/visitors/testVisitor';
 import { Report } from '../../../lib/reporting/report/report';
-import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
+import { TestsRunnerVisitor } from '../../../lib/tests/visitors/testsRunnerVisitor';
 import { TestSuite } from '../../../lib/tests/testSuite';
 
 
