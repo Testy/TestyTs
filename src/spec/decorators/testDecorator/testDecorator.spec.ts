@@ -1,23 +1,34 @@
-import { test, expect, testSuite, ftest, TestResult } from '../../../testyCore';
-import { Logger } from '../../../lib/logger/logger';
-import { NullLogger } from '../../utils/nullLogger';
-import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
+import { test, expect, testSuite, TestResult, beforeEach } from '../../../testyCore';
 import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
 import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSuite';
 import { TimeoutTestDecoratorTestSuite } from './timeoutTestDecoratorTestSuite';
+import { TestWithNoNamesTestSuite } from './testWithoutNames';
+import { NullLogger } from '../../utils/nullLogger';
+import { Logger } from '../../../lib/logger/logger';
+import { TestsVisitor } from '../../../lib/tests/visitors/testVisitor';
+import { Report } from '../../../lib/reporting/report/report';
+import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
+import { TestSuite } from '../../../lib/tests/testSuite';
+import { SingleTestTestDecoratorTestSuite } from './singleTestTestDecoratorTestSuite';
 
 @testSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {
+    // TODO: This test suite should extend TestSuiteTestsBase when #8 is fixed.
     private logger: Logger = new NullLogger();
-    private visitor = new TestsRunnerVisitor(this.logger);
+    protected visitor: TestsVisitor<Report>;
+
+    @beforeEach()
+    private beforeEach() {
+        this.visitor = new TestsRunnerVisitor(this.logger);
+    }
 
     @test('single test, test should be ran once')
     private async singleTest() {
         // Arrange
-        const testSuite = (TestDecoratorTestSuite as any).__testSuiteInstance;
+        const testSuite = (SingleTestTestDecoratorTestSuite as any).__testSuiteInstance;
 
         // Act
-        const report = await testSuite.accept(this.visitor);
+        await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
@@ -29,7 +40,7 @@ export class TestDecoratorTestSuite {
         const testSuite = (MultipleTestTestDecoratorTestSuite as any).__testSuiteInstance;
 
         // Act
-        const report = await testSuite.accept(this.visitor);
+        await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
@@ -43,7 +54,7 @@ export class TestDecoratorTestSuite {
         const testSuite = (TestCasesTestDecoratorTestSuite as any).__testSuiteInstance;
 
         // Act
-        const report = await testSuite.accept(this.visitor);
+        await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeEqual(testSuite.context.numberOfRunsTest1, 1);
@@ -63,13 +74,18 @@ export class TestDecoratorTestSuite {
         expect.toBeEqual(report.result, TestResult.Failure);
     }
 
-    // @test('no names, should infer from method names')
-    // private async noNameTest() {
-    //     // Arrange
-    //     const testSuite = await this.testsLoader.loadTests(__dirname, ['testWithoutNames.ts'], undefined);
+    @test('no names, should infer from method names')
+    private async noNameTest() {
+        // Arrange
+        const testSuite = (TestWithNoNamesTestSuite as any).__testSuiteInstance;
 
-    //     // Act
+        // Act
+        const report = testSuite.accept(this.visitor);
 
-    //     // Assert
-    // }
+        // Assert
+    }
+
+    protected getTestSuiteInstance(testClass: any): TestSuite {
+        return testClass.__testSuiteInstance;
+    }
 }
