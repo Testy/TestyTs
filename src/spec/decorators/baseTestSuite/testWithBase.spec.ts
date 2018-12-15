@@ -2,10 +2,9 @@ import { test } from '../../../lib/decorators/test.decorator';
 import { testSuite } from '../../../lib/decorators/testSuite.decorator';
 import { Logger } from '../../../lib/logger/logger';
 import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
-import { TestsLoader } from '../../../lib/utils/testsLoader';
 import { expect } from '../../../testyCore';
 import { NullLogger } from '../../utils/nullLogger';
-import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBaseTestSuite';
+import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBase';
 
 @testSuite('Test Suite With Base Test Suite Tests')
 export class BeforeAfterDecoratorsTestSuite {
@@ -14,9 +13,7 @@ export class BeforeAfterDecoratorsTestSuite {
     @test('the base and the actual test suite before and after methods are called.')
     private async trivialCase() {
         // Arrange
-        const testsLoader = new TestsLoader();
-
-        const testSuite = await testsLoader.loadTests('./', ['testSuiteWithBaseTestSuite.ts'], undefined);
+        const testSuite = (TestSuiteWithBase as any).__testSuiteInstance;
         const testRunnerVisitor = new TestsRunnerVisitor(this.logger);
 
         // Act

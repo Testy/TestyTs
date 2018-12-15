@@ -1,34 +1,25 @@
 import { test } from '../../../lib/decorators/test.decorator';
 import { testSuite } from '../../../lib/decorators/testSuite.decorator';
 import { Logger } from '../../../lib/logger/logger';
-import { TestResult } from '../../../lib/reporting/report/testResult';
-import { TestCase } from '../../../lib/testCase';
 import { TestsRunnerVisitor } from '../../../lib/tests/visitors/runnerVisitor';
-import { TestStatus } from '../../../lib/testStatus';
-import { expect, beforeEach } from '../../../testyCore';
+import { expect, TestCase, TestResult } from '../../../testyCore';
 import { NullLogger } from '../../utils/nullLogger';
 import { NormalBeforeAfterTestSuite } from './normalBeforeAfterTestSuite';
-import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
-import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
 import { ThrowsDuringBeforeAllTestSuite } from './throwsDuringBeforeAllTestSuite';
 import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSuite';
-import { TestsLoader } from '../../../lib/utils/testsLoader';
+import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
+import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
+
 
 @testSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
-    private testsLoader: TestsLoader;
     private logger: Logger = new NullLogger();
     private visitor = new TestsRunnerVisitor(this.logger);
-
-    @beforeEach()
-    beforeEach() {
-        this.testsLoader = new TestsLoader();
-    }
 
     @test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
     private async trivialCase() {
         // Arrange
-        const testSuite = await this.testsLoader.loadTests('./', ['beforeAfterDecorators.spec.ts'], undefined);
+        const testSuite = (NormalBeforeAfterTestSuite as any).__testSuiteInstance;
 
         // Act
         const report = await testSuite.accept(this.visitor);
@@ -42,14 +33,14 @@ export class BeforeAfterDecoratorsTestSuite {
     }
 
     @test('Before and after methods failures', [
-        new TestCase('beforeAll throws, should return a failed test report',  'throwsDuringBeforeAllTestSuite.ts', 6),
-        new TestCase('beforeEach throws, should return a failed test report', 'throwsDuringBeforeEachTestSuite.ts', 6),
-        new TestCase('afterEach throws, should return a failed test report', 'throwsDuringAfterEachTestSuite.ts', 6),
-        new TestCase('afterAll throws, should return a failed test report', 'throwsDuringAfterAllTestSuite.ts', 6),
+        new TestCase('beforeAll throws, should return a failed test report', ThrowsDuringBeforeAllTestSuite, 6),
+        new TestCase('beforeEach throws, should return a failed test report', ThrowsDuringBeforeEachTestSuite, 6),
+        new TestCase('afterEach throws, should return a failed test report', ThrowsDuringAfterEachTestSuite, 6),
+        new TestCase('afterAll throws, should return a failed test report', ThrowsDuringAfterAllTestSuite, 6),
     ])
-    private async beforeOfAfterMethodFails(testFile: any, numberOfTests: number) {
+    private async beforeOfAfterMethodFails(testSuiteType: any, numberOfTests: number) {
         // Arrange
-        const testSuite = await this.testsLoader.loadTests('./', [testFile], undefined);
+        const testSuite = testSuiteType.__testSuiteInstance;
 
         // Act
         const report = await testSuite.accept(this.visitor);
