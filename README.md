@@ -1,4 +1,6 @@
-# TestyTs
+![](./img/testy_colour_rgb_transparent.png)
+
+
 [![Build Status](https://travis-ci.org/Testy/TestyTs.svg?branch=master)](https://travis-ci.org/Testy/TestyTs)
 [![Maintainability](https://api.codeclimate.com/v1/badges/66d7c2c5c60a4919d593/maintainability)](https://codeclimate.com/github/Testy/TestyTs/maintainability)
 
