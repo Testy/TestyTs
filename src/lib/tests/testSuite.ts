@@ -71,6 +71,7 @@ export class TestSuite extends Map<string, Test | TestSuite> {
 
         const copy = new TestSuite();
         copy.name = this.name;
+        copy.context = this.context;
         for (const id of this.testIds) {
             const testOrTestSuite = super.get(id);
             if (testOrTestSuite instanceof Map) {
