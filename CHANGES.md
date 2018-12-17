@@ -1,5 +1,8 @@
 # Changes
 
+### 0.4.3
+ - Fixed focused tests bug
+
 ### 0.4.2
  - Added tests for focused tests
 
