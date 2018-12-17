@@ -2,6 +2,7 @@
 
 ### 0.4.3
  - Fixed focused tests bug
+ - Made the name parameter optional for `ftest` and `xtest` too
 
 ### 0.4.2
  - Added tests for focused tests

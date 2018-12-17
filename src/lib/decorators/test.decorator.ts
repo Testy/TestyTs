@@ -22,7 +22,7 @@ export function test(name?: string, testCases?: TestCase[], timeout: number = 20
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function ftest(name: string, testCases?: TestCase[], timeout: number = 2000) {
+export function ftest(name?: string, testCases?: TestCase[], timeout: number = 2000) {
     return generateDecoratorFunction(name, TestStatus.Focused, testCases, timeout);
 }
 
@@ -34,7 +34,7 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function xtest(name: string, testCases?: TestCase[], timeout: number = 2000) {
+export function xtest(name?: string, testCases?: TestCase[], timeout: number = 2000) {
     return generateDecoratorFunction(name, TestStatus.Ignored, testCases, timeout);
 }
 
