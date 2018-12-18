@@ -1,5 +1,7 @@
 import { test, beforeAll, beforeEach, afterEach, afterAll } from '../../../testyCore';
+import { testSuite } from '../../../lib/decorators/testSuite.decorator';
 
+@testSuite('Base Test Suite')
 export class BaseTestSuite {
     public beforeAllExecuted = [];
     public beforeEachExecuted = [];

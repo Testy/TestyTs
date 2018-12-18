@@ -6,8 +6,8 @@ import { TestSuite } from '../tests/testSuite';
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function testSuite<T extends { new(...args: any[]): {} }>(name: string): any {
-    return createTestSuiteDecoratorFactory<T>(name, TestStatus.Normal);
+export function testSuite<T extends { new(...args: any[]): {} }>(name?: string): any {
+    return createTestSuiteDecoratorFactory<T>(TestStatus.Normal, name);
 }
 
 /** 
@@ -15,8 +15,8 @@ export function testSuite<T extends { new(...args: any[]): {} }>(name: string): 
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function ftestSuite<T extends { new(...args: any[]): {} }>(name: string): any {
-    return createTestSuiteDecoratorFactory<T>(name, TestStatus.Focused);
+export function ftestSuite<T extends { new(...args: any[]): {} }>(name?: string): any {
+    return createTestSuiteDecoratorFactory<T>(TestStatus.Focused, name);
 }
 
 /**
@@ -24,21 +24,19 @@ export function ftestSuite<T extends { new(...args: any[]): {} }>(name: string):
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function xtestSuite<T extends { new(...args: any[]): {} }>(name: string): any {
-    return createTestSuiteDecoratorFactory<T>(name, TestStatus.Ignored);
+export function xtestSuite<T extends { new(...args: any[]): {} }>(name?: string): any {
+    return createTestSuiteDecoratorFactory<T>(TestStatus.Ignored, name);
 }
 
-function createTestSuiteDecoratorFactory<T extends { new(...args: any[]): {} }>(name: string, status: TestStatus) {
+function createTestSuiteDecoratorFactory<T extends { new(...args: any[]): {} }>(status: TestStatus, name?: string) {
     return (constructor: T) => {
+        name = name ? name : constructor.name;
         (constructor as any).__testSuiteInstance = createTestSuite(constructor, name, status);
         return constructor;
     };
 }
 
-/** 
- * [WARNING] This class should be used for internal testing. 
- */
-export function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus): TestSuite {
+function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus): TestSuite {
     const context = new constructor();
     const testSuiteInstance: TestSuite = (context as any).__testSuiteInstance;
     testSuiteInstance.name = name;

@@ -10,16 +10,8 @@ import { TestSuite } from '../tests/testSuite';
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function test(name: string, testCases?: TestCase[], timeout: number = 2000) {
-    return (target, key, descriptor) => {
-        initializeTarget(target);
-        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
-        if (testSuiteInstance.has(name)) {
-            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
-        }
-
-        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Normal, descriptor.value, timeout));
-    };
+export function test(name?: string, testCases?: TestCase[], timeout: number = 2000) {
+    return generateDecoratorFunction(name, TestStatus.Normal, testCases, timeout);
 }
 
 /**
@@ -30,16 +22,8 @@ export function test(name: string, testCases?: TestCase[], timeout: number = 200
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function ftest(name: string, testCases?: TestCase[], timeout: number = 2000) {
-    return (target, key, descriptor) => {
-        initializeTarget(target);
-        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
-        if (testSuiteInstance.has(name)) {
-            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
-        }
-
-        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Focused, descriptor.value, timeout));
-    };
+export function ftest(name?: string, testCases?: TestCase[], timeout: number = 2000) {
+    return generateDecoratorFunction(name, TestStatus.Focused, testCases, timeout);
 }
 
 /** 
@@ -50,20 +34,26 @@ export function ftest(name: string, testCases?: TestCase[], timeout: number = 20
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function xtest(name: string, testCases?: TestCase[], timeout: number = 2000) {
-    return (target, key, descriptor) => {
-        initializeTarget(target);
-        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
-        if (testSuiteInstance.has(name)) {
-            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
-        }
-
-        testSuiteInstance.set(name, generateTest(name, testCases, TestStatus.Ignored, descriptor.value, timeout));
-    };
+export function xtest(name?: string, testCases?: TestCase[], timeout: number = 2000) {
+    return generateDecoratorFunction(name, TestStatus.Ignored, testCases, timeout);
 }
 
 function initializeTarget(target: any) {
     if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestSuite(); }
+}
+
+function generateDecoratorFunction(name: string, status: TestStatus, testCases: TestCase[], timeout: number) {
+    return (target, key, descriptor) => {
+        initializeTarget(target);
+        const testSuiteInstance: TestSuite = target.__testSuiteInstance;
+
+        name = name ? name : key;
+        if (testSuiteInstance.has(name)) {
+            throw new Error(`A test named "${name}" is already registered. Copy pasta much?`);
+        }
+
+        testSuiteInstance.set(name, generateTest(name, testCases, status, descriptor.value, timeout));
+    };
 }
 
 function generateTest(name: string, testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): Test | TestSuite {

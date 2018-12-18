@@ -1,5 +1,6 @@
-import { test, TestCase } from '../../../testyCore';
+import { test, TestCase, testSuite } from '../../../testyCore';
 
+@testSuite('TestCases Test Decorator Test Suite')
 export class TestCasesTestDecoratorTestSuite {
 
     public numberOfRunsTest1: number = 0;
@@ -7,9 +8,9 @@ export class TestCasesTestDecoratorTestSuite {
     public numberOfRunsTest3: number = 0;
 
     @test('My test with test cases', [
-        new TestCase('test 1', 1),
-        new TestCase('test 2', 2),
-        new TestCase('test 3', 3),
+        new TestCase('My first test', 1),
+        new TestCase('My second test', 2),
+        new TestCase('My third test', 3),
     ])
     private tests(n: number) {
         if (n === 1)++this.numberOfRunsTest1;

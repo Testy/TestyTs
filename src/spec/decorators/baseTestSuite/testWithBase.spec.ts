@@ -1,20 +1,19 @@
 import { test } from '../../../lib/decorators/test.decorator';
-import { createTestSuite, testSuite } from '../../../lib/decorators/testSuite.decorator';
-import { TestStatus } from '../../../lib/testStatus';
-import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBaseTestSuite';
+import { testSuite } from '../../../lib/decorators/testSuite.decorator';
 import { expect } from '../../../testyCore';
-import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
+import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBase';
+import { TestSuiteTestsBase } from '../testSuiteTestsBase';
 
 @testSuite('Test Suite With Base Test Suite Tests')
-export class BeforeAfterDecoratorsTestSuite {
+export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
+
     @test('the base and the actual test suite before and after methods are called.')
     private async trivialCase() {
         // Arrange
-        const testSuite = createTestSuite(TestSuiteWithBase, 'Dummy Test Suite', TestStatus.Normal);
-        const testRunnerVisitor = new TestRunnerVisitor();
+        const testSuite = this.getTestSuiteInstance(TestSuiteWithBase);
 
         // Act
-        const report = await testSuite.accept(testRunnerVisitor);
+        await testSuite.accept(this.visitor);
 
         // Assert
         expect.toBeEqual(testSuite.context.beforeAllExecuted[0], BaseTestSuite);

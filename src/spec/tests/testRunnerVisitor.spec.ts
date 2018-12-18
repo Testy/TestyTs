@@ -1,7 +1,6 @@
 import { testSuite, ftestSuite } from '../../lib/decorators/testSuite.decorator';
 import { test } from '../../lib/decorators/test.decorator';
 import { beforeEach } from '../../lib/decorators/beforeEach.decorator';
-import { TestRunnerVisitor } from '../../lib/tests/visitors/testRunnerVisitor';
 import { TestSuite } from '../../lib/tests/testSuite';
 import { Test } from '../../lib/tests/test';
 import { TestStatus } from '../../lib/testStatus';
@@ -12,8 +11,9 @@ import { Report } from '../../lib/reporting/report/report';
 import { LeafReport } from '../../lib/reporting/report/leafReport';
 import { FailedTestReport } from '../../lib/reporting/report/failedTestReport';
 import { SkippedTestReport } from '../../lib/reporting/report/skippedTestReport';
+import { TestRunnerVisitor } from '../../lib/tests/visitors/testRunnerVisitor';
 
-@ftestSuite('Test Runner Visitor Tests')
+@testSuite('Test Runner Visitor Tests')
 export class TestRunnerVisitorTests {
     private testRunnerVisitor: TestRunnerVisitor;
 

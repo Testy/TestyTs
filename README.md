@@ -1,5 +1,7 @@
-# TestyTs
 [![Build Status](https://travis-ci.org/Testy/TestyTs.svg?branch=master)](https://travis-ci.org/Testy/TestyTs)
+[![Maintainability](https://api.codeclimate.com/v1/badges/66d7c2c5c60a4919d593/maintainability)](https://codeclimate.com/github/Testy/TestyTs/maintainability)
+
+![Testy.Ts logo](./img/testy_colour_rgb_transparent.png)
 
 TestyTs is a modern TypeScript testing framework.
 
@@ -28,10 +30,10 @@ $ testyts init
 Writing tests with Testy is simple. Don't forget to export your test suites though. Otherwise, they won't be discovered by the test runner.
 
 ```ts
-@testSuite('Sum Test Suite')
+@testSuite()
 export class MyTestSuite {
 
-    @test('One plus one, should equal two')
+    @test()
     onePlusOne() {
         // Act
         const result = 1 + 1;
@@ -47,7 +49,7 @@ export class MyTestSuite {
 Testy provides setup and teardown hooks.
 
 ```ts
-@testSuite('Sum Test Suite')
+@testSuite()
 export class MyTestSuite {
 
     @beforeAll()
@@ -81,7 +83,7 @@ class MyBaseTestSuite{
     // Setup/teardown extravaganza
 }
 
-@testSuite('My Test Suite')
+@testSuite()
 class MyTestSuite extends MyBaseTestSuite {
     // My tests
 }
@@ -90,7 +92,7 @@ class MyTestSuite extends MyBaseTestSuite {
 ### Test cases
 
 ```ts
-@testSuite('Sum Test Suite')
+@testSuite()
 export class MyTestSuite {
     @test('Addition', [
           new TestCase('Two plus two is four', 2, 2, 4),
@@ -120,14 +122,14 @@ expect.toBeSorted.inAscendingOrder([0, 1, 1, 2, 3, 5, 8]);
 You can ignore tests by adding an `x` before a test suite or a specific test decorator. Ignored tests will still show up in the test report, but they will be marked as ignored.
 
 ```ts
-@xtestSuite('Sum Test Suite') // This test suite will be ignored
+@xtestSuite() // This test suite will be ignored
 export class MyTestSuite { 
 // Your tests
 }
 
-@testSuite('Sum Test Suite')
+@testSuite()
 export class MyTestSuite {
-    @xtest('One plus one, should equal two') // This test will be ignored
+    @xtest() // This test will be ignored
     onePlusOne() {
        // Some test
     }
@@ -137,16 +139,35 @@ export class MyTestSuite {
 You can also focus tests by adding an `f` before a test suite or a specific test decorator. If one test or test suites are focused, only those will be runned. The others will be reported as ignored.
 
 ```ts
-@ftestSuite('Sum Test Suite') // This test suite will be focused.
+@ftestSuite() // This test suite will be focused.
 export class MyTestSuite { 
 ...
 }
 
-@testSuite('Sum Test Suite')
+@testSuite()
 export class MyTestSuite {
-    @ftest('One plus one, should equal two') // This test will be focused
+    @ftest() // This test will be focused
     onePlusOne() {
        // Your test
+    }
+}
+```
+
+## Custom tests and test suites names 
+
+The tests and test suites names are inferred from the method or class name by default. You can specify a custom name.
+
+```ts
+@testSuite('My glorious test suite')
+export class MyTestSuite {
+
+    @test('Adding one plus one, should equal two')
+    onePlusOne() {
+        // Act
+        const result = 1 + 1;
+        
+        // Assert
+        expect.toBeEqual(result, 2);
     }
 }
 ```

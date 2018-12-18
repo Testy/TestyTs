@@ -5,11 +5,15 @@ import * as tsnode from 'ts-node';
 import { TestSuite } from '../tests/testSuite';
 
 export class TestsLoader {
+    private static isTsnodeRegistered = false;
     constructor(private logger?: Logger) { }
 
     public async loadTests(root: string, patterns: string[], tsconfig: {}): Promise<TestSuite> {
         // We register the tsnode compiler to transpile the test files
-        tsnode.register(tsconfig);
+        if (!TestsLoader.isTsnodeRegistered) {
+            tsnode.register(tsconfig);
+            TestsLoader.isTsnodeRegistered = true;
+        }
 
         const files: Set<string> = new Set();
         for (const pattern of patterns) {

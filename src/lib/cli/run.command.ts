@@ -4,10 +4,10 @@ import { TestyConfig } from '../interfaces/config';
 import { Logger } from '../logger/logger';
 import { TestsLoader } from '../utils/testsLoader';
 import { CliCommand } from './cliCommand';
-import { TestRunnerVisitor } from '../tests/visitors/testRunnerVisitor';
-import { LoggerTestReporterDecorator } from '../tests/visitors/decorators/loggerTestReporterDecorator';
 import { TestVisitor } from '../tests/visitors/testVisitor';
 import { Report } from '../reporting/report/report';
+import { TestRunnerVisitor } from '../tests/visitors/testRunnerVisitor';
+import { LoggerTestReporterDecorator } from '../tests/visitors/decorators/loggerTestReporterDecorator';
 
 export class RunCommand implements CliCommand {
     public get testyConfigFile(): string { return this._testyConfigFile; }

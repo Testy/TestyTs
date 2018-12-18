@@ -1,5 +1,6 @@
-import { test, xtest, beforeEach, TestCase } from '../../../testyCore';
+import { test, xtest, beforeEach, TestCase, testSuite } from '../../../testyCore';
 
+@testSuite('Throws During Before Each Test Suite')
 export class ThrowsDuringBeforeEachTestSuite {
     @beforeEach()
     private beforeEach() {

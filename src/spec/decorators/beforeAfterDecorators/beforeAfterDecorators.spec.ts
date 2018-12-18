@@ -1,26 +1,33 @@
 import { test } from '../../../lib/decorators/test.decorator';
-import { createTestSuite, testSuite } from '../../../lib/decorators/testSuite.decorator';
-import { Logger } from '../../../lib/logger/logger';
-import { TestResult } from '../../../lib/reporting/report/testResult';
-import { TestCase } from '../../../lib/testCase';
-import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
-import { TestStatus } from '../../../lib/testStatus';
-import { expect } from '../../../testyCore';
-import { NullLogger } from '../../utils/nullLogger';
+import { testSuite } from '../../../lib/decorators/testSuite.decorator';
+import { expect, TestCase, TestResult, beforeEach } from '../../../testyCore';
 import { NormalBeforeAfterTestSuite } from './normalBeforeAfterTestSuite';
-import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
-import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
 import { ThrowsDuringBeforeAllTestSuite } from './throwsDuringBeforeAllTestSuite';
 import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSuite';
+import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
+import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
+import { NullLogger } from '../../utils/nullLogger';
+import { Logger } from '../../../lib/logger/logger';
+import { Report } from '../../../lib/reporting/report/report';
+import { TestSuite } from '../../../lib/tests/testSuite';
+import { TestVisitor } from '../../../lib/tests/visitors/testVisitor';
+import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
+
 
 @testSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
-    private visitor = new TestRunnerVisitor();
+    // TODO: This test suite should extend TestSuiteTestsBase when #8 is fixed.
+    protected visitor: TestVisitor<Report>;
+
+    @beforeEach()
+    private beforeEach() {
+        this.visitor = new TestRunnerVisitor();
+    }
 
     @test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
     private async trivialCase() {
         // Arrange
-        const testSuite = createTestSuite(NormalBeforeAfterTestSuite, 'Dummy Test Suite', TestStatus.Normal);
+        const testSuite = this.getTestSuiteInstance(NormalBeforeAfterTestSuite);
 
         // Act
         const report = await testSuite.accept(this.visitor);
@@ -39,9 +46,9 @@ export class BeforeAfterDecoratorsTestSuite {
         new TestCase('afterEach throws, should return a failed test report', ThrowsDuringAfterEachTestSuite, 6),
         new TestCase('afterAll throws, should return a failed test report', ThrowsDuringAfterAllTestSuite, 6),
     ])
-    private async beforeOfAfterMethodFails(testSuiteType: any, numberOfTests: number) {
+    private async beforeOfAfterMethodFails(testSuiteClass: any, numberOfTests: number) {
         // Arrange
-        const testSuite = createTestSuite(testSuiteType, 'Dummy Test Suite', TestStatus.Normal);
+        const testSuite = this.getTestSuiteInstance(testSuiteClass);
 
         // Act
         const report = await testSuite.accept(this.visitor);
@@ -50,6 +57,10 @@ export class BeforeAfterDecoratorsTestSuite {
         expect.toBeDefined(report);
         expect.toBeEqual(report.result, TestResult.Failure);
         expect.toBeEqual(report.numberOfTests, numberOfTests, 'Expected all tests to be part of the report.');
+    }
+
+    protected getTestSuiteInstance(testClass: any): TestSuite {
+        return testClass.__testSuiteInstance;
     }
 }
 

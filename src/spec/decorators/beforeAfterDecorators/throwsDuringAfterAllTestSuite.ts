@@ -1,5 +1,7 @@
 import { test, xtest, afterAll, TestCase } from '../../../testyCore';
+import { testSuite } from '../../../lib/decorators/testSuite.decorator';
 
+@testSuite('Throws During After All Test Suite ')
 export class ThrowsDuringAfterAllTestSuite {
     @afterAll()
     private afterAll() {

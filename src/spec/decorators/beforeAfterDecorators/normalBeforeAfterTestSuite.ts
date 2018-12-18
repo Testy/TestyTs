@@ -1,6 +1,8 @@
 import { test, beforeAll, beforeEach, afterEach, afterAll, TestCase } from '../../../testyCore';
 import { xtest } from '../../../lib/decorators/test.decorator';
+import { testSuite } from '../../../lib/decorators/testSuite.decorator';
 
+@testSuite('Normal Before After Test Suite')
 export class NormalBeforeAfterTestSuite {
     public numberOfBeforeAllExecutions = 0;
     public numberOfBeforeEachExecutions = 0;
