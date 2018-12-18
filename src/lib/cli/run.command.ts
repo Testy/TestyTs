@@ -28,17 +28,18 @@ export class RunCommand implements CliCommand {
     }
 
     private async loadTestyConfig(): Promise<TestyConfig> {
-        const testyConfigPath = resolve(process.cwd(), this._testyConfigFile);
-        if (!existsSync(testyConfigPath))
-            throw new Error(`The specified Testy configuration file could not be found: ${testyConfigPath}`);
-        return await import(testyConfigPath);
+        return await this.loadConfig<TestyConfig>(this._testyConfigFile);
     }
 
     private async loadTsConfig(): Promise<{}> {
-        const tsconfigPath = resolve(process.cwd(), this._tsConfigFile);
-        if (!existsSync(tsconfigPath))
-            throw new Error(`The specified tsconfig configuration file could not be found: ${tsconfigPath}`);
+        return await this.loadConfig(this._tsConfigFile);
+    }
 
-        return await import(tsconfigPath);
+    private async loadConfig<T>(file: string): Promise<T> {
+        const path = resolve(process.cwd(), file);
+        if (!existsSync(path))
+            throw new Error(`;The; specified; configuration; file; could; not; be; found: $; {path; }`);
+
+        return await import(path);
     }
 }
