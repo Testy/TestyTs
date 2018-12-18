@@ -1,21 +1,17 @@
-import { test } from '../../../lib/decorators/test.decorator';
-import { testSuite } from '../../../lib/decorators/testSuite.decorator';
-import { expect, TestCase, TestResult, beforeEach } from '../../../testyCore';
+import { testSuite, beforeEach, test, expect, TestCase, TestResult } from '../../../testyCore';
+import { TestVisitor } from '../../../lib/tests/visitors/testVisitor';
+import { Report } from '../../../lib/reporting/report/report';
+import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
 import { NormalBeforeAfterTestSuite } from './normalBeforeAfterTestSuite';
 import { ThrowsDuringBeforeAllTestSuite } from './throwsDuringBeforeAllTestSuite';
 import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSuite';
 import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
 import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
-import { NullLogger } from '../../utils/nullLogger';
-import { Logger } from '../../../lib/logger/logger';
-import { Report } from '../../../lib/reporting/report/report';
 import { TestSuite } from '../../../lib/tests/testSuite';
-import { TestVisitor } from '../../../lib/tests/visitors/testVisitor';
-import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
-
 
 @testSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
+
     // TODO: This test suite should extend TestSuiteTestsBase when #8 is fixed.
     protected visitor: TestVisitor<Report>;
 

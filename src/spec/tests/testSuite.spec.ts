@@ -1,13 +1,11 @@
-import { testSuite, ftestSuite } from '../../lib/decorators/testSuite.decorator';
-import { test, ftest } from '../../lib/decorators/test.decorator';
+import { testSuite, test, expect } from '../../testyCore';
 import { TestSuite } from '../../lib/tests/testSuite';
-import { Test } from '../../lib/tests/test';
 import { TestStatus } from '../../lib/testStatus';
-import { expect } from '../../lib/assertion/expect';
-import { TestCase } from '../../lib/testCase';
+import { Test } from '../../lib/tests/test';
 
 @testSuite('Tests Suite Tests')
 export class TestSuiteTests {
+
     @test('get tests, all normal tests')
     getTestsAllNormalTests() {
         // Arrange

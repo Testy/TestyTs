@@ -10,7 +10,7 @@
         ],
         "types": [
             "reflect-metadata",
-            "node"
+            "node",
         ],
         "noImplicitAny": false,
         "experimentalDecorators": true,
