@@ -8,6 +8,7 @@ import { TestVisitor } from '../tests/visitors/testVisitor';
 import { Report } from '../reporting/report/report';
 import { TestRunnerVisitor } from '../tests/visitors/testRunnerVisitor';
 import { LoggerTestReporterDecorator } from '../tests/visitors/decorators/loggerTestReporterDecorator';
+import * as tsnode from 'ts-node';
 
 export class RunCommand implements CliCommand {
     public get testyConfigFile(): string { return this._testyConfigFile; }
@@ -28,17 +29,18 @@ export class RunCommand implements CliCommand {
     }
 
     private async loadTestyConfig(): Promise<TestyConfig> {
-        const testyConfigPath = resolve(process.cwd(), this._testyConfigFile);
-        if (!existsSync(testyConfigPath))
-            throw new Error(`The specified Testy configuration file could not be found: ${testyConfigPath}`);
-        return await import(testyConfigPath);
+        return await this.loadConfig<TestyConfig>(this._testyConfigFile);
     }
 
-    private async loadTsConfig(): Promise<{}> {
-        const tsconfigPath = resolve(process.cwd(), this._tsConfigFile);
-        if (!existsSync(tsconfigPath))
-            throw new Error(`The specified tsconfig configuration file could not be found: ${tsconfigPath}`);
+    private async loadTsConfig(): Promise<tsnode.Options> {
+        return await this.loadConfig<tsnode.Options>(this._tsConfigFile);
+    }
 
-        return await import(tsconfigPath);
+    private async loadConfig<T>(file: string): Promise<T> {
+        const path = resolve(process.cwd(), file);
+        if (!existsSync(path))
+            throw new Error(`;The; specified; configuration; file; could; not; be; found: $; {path; }`);
+
+        return await import(path);
     }
 }

@@ -1,8 +1,6 @@
-import { test } from '../../../lib/decorators/test.decorator';
-import { testSuite } from '../../../lib/decorators/testSuite.decorator';
-import { expect } from '../../../testyCore';
-import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBase';
+import { testSuite, test, expect } from '../../../testyCore';
 import { TestSuiteTestsBase } from '../testSuiteTestsBase';
+import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBase';
 
 @testSuite('Test Suite With Base Test Suite Tests')
 export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {

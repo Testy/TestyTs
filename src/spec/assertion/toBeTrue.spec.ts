@@ -1,5 +1,4 @@
-import { test, testSuite, expect } from '../../testyCore';
-import { TestCase } from '../../lib/testCase';
+import { test, testSuite, expect, TestCase } from '../../testyCore';
 
 @testSuite('Expect ToBeTrue Tests')
 export class ExpectToBeTrue {

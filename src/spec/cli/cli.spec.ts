@@ -1,16 +1,13 @@
-import { expect } from '../../lib/assertion/expect';
-import { RunCommand } from '../../lib/cli/run.command';
-import { TestyCli } from '../../lib/cli/testyCli';
-import { beforeEach } from '../../lib/decorators/beforeEach.decorator';
-import { test } from '../../lib/decorators/test.decorator';
-import { testSuite } from '../../lib/decorators/testSuite.decorator';
+import { testSuite, beforeEach, test, TestCase, expect } from '../../testyCore';
 import { Logger } from '../../lib/logger/logger';
-import { TestCase } from '../../lib/testCase';
+import { TestyCli } from '../../lib/cli/testyCli';
 import { NullLogger } from '../utils/nullLogger';
+import { RunCommand } from '../../lib/cli/run.command';
 import { InitCommand } from '../../lib/cli/init.command';
 
 @testSuite('Cli Tests')
 export class CliTests {
+
     private logger: Logger;
     private cli: TestyCli;
 
