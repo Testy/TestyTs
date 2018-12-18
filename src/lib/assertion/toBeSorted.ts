@@ -14,16 +14,20 @@ export class ToBeSorted {
     private toBeOrdered<T>(array: T[], selector: ((T) => any), order: Order, message?: string) {
         if (!selector) selector = x => x;
 
-        const compare = (a, b) => {
-            return order === Order.Ascending
-                ? selector(a) <= selector(b)
-                : selector(b) <= selector(a);
-        };
-
-        const isOrdered = array.every((val, i, arr) => i === 0 || compare(arr[i - 1], val));
-        if (this.notFlag ? isOrdered : !isOrdered) {
+        if (this.isOrdered(array, order, selector)) {
             throw new ExpectationError(message || `Expected ${array} to be be sorted ${order === Order.Ascending ? 'from low to high' : 'from high to low'}.`);
         }
+    }
+
+    private isOrdered<T>(array: T[], order: Order, selector: ((T) => any)) {
+        const isOrdered = array.every((val, i, arr) => i === 0 || this.compare(order, selector, arr[i - 1], val));
+        return this.notFlag ? isOrdered : !isOrdered;
+    }
+
+    private compare(order: Order, selector: ((T) => any), a, b) {
+        return order === Order.Ascending
+            ? selector(a) <= selector(b)
+            : selector(b) <= selector(a);
     }
 }
 
