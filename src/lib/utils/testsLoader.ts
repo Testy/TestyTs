@@ -16,7 +16,7 @@ export class TestsLoader {
 
         const files = await this.getTestFiles(root, patterns);
         for (const file of files) {
-            const testInstances = await this.getTestInstancesFromFile(file));
+            const testInstances = await this.getTestInstancesFromFile(file);
             testInstances.forEach(x => testSuites.set(x.name, x));
         }
 
