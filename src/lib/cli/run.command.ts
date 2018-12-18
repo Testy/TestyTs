@@ -8,6 +8,7 @@ import { TestVisitor } from '../tests/visitors/testVisitor';
 import { Report } from '../reporting/report/report';
 import { TestRunnerVisitor } from '../tests/visitors/testRunnerVisitor';
 import { LoggerTestReporterDecorator } from '../tests/visitors/decorators/loggerTestReporterDecorator';
+import * as tsnode from 'ts-node';
 
 export class RunCommand implements CliCommand {
     public get testyConfigFile(): string { return this._testyConfigFile; }
@@ -31,8 +32,8 @@ export class RunCommand implements CliCommand {
         return await this.loadConfig<TestyConfig>(this._testyConfigFile);
     }
 
-    private async loadTsConfig(): Promise<{}> {
-        return await this.loadConfig(this._tsConfigFile);
+    private async loadTsConfig(): Promise<tsnode.Options> {
+        return await this.loadConfig<tsnode.Options>(this._tsConfigFile);
     }
 
     private async loadConfig<T>(file: string): Promise<T> {
