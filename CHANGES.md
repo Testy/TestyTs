@@ -1,5 +1,8 @@
 # Changes
 
+### 0.5.1
+ - Refactored a few methods to improve the maintainability
+
 ### 0.5.0
  - Implemented a decorator pattern to decouple the test runner and the test reporting
  - Refactored the test collection to decouple the tests data structure and the test running
