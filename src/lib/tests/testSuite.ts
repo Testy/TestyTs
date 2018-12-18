@@ -1,6 +1,6 @@
 import { Test } from './test';
 import { TestStatus } from '../testStatus';
-import { TestsVisitor } from './visitors/testVisitor';
+import { TestVisitor } from './visitors/testVisitor';
 
 /**
  * Contains a collection of tests and of test suites.
@@ -40,7 +40,7 @@ export class TestSuite extends Map<string, Test | TestSuite> {
         return test;
     }
 
-    public async accept<T>(visitor: TestsVisitor<T>): Promise<T> {
+    public async accept<T>(visitor: TestVisitor<T>): Promise<T> {
         return await visitor.visitTestSuite(this);
     }
 

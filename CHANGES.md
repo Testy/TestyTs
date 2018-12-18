@@ -1,5 +1,9 @@
 # Changes
 
+### 0.5.0
+ - Implemented a decorator pattern to decouple the test runner and the test reporting
+ - Refactored the test collection to decouple the tests data structure and the test running
+
 ### 0.4.3
  - Fixed focused tests bug
  - Made the name parameter optional for `ftest` and `xtest` too
