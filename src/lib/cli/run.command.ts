@@ -39,7 +39,7 @@ export class RunCommand implements CliCommand {
     private async loadConfig<T>(file: string): Promise<T> {
         const path = resolve(process.cwd(), file);
         if (!existsSync(path))
-            throw new Error(`;The; specified; configuration; file; could; not; be; found: $; {path; }`);
+            throw new Error(`The specified configuration file could not be found: ${path}`);
 
         return await import(path);
     }

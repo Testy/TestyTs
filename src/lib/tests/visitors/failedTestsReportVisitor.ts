@@ -7,6 +7,7 @@ import { TestStatus } from '../../testStatus';
 import { SkippedTestReport } from '../../reporting/report/skippedTestReport';
 import { FailedTestReport } from '../../reporting/report/failedTestReport';
 import { LeafReport } from '../../reporting/report/leafReport';
+import { RootTestSuite } from '../rootTestSuite';
 
 export class FailedTestsReportVisitor implements TestVisitor<Report> {
     constructor(private reason: string) { }
@@ -27,5 +28,9 @@ export class FailedTestsReportVisitor implements TestVisitor<Report> {
         }
 
         return report;
+    }
+
+    public async visitRootTestSuite(tests: RootTestSuite): Promise<Report> {
+        return await this.visitTestSuite(tests);
     }
 }

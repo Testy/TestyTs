@@ -6,6 +6,7 @@ import { TestVisitor } from './visitors/testVisitor';
  * Contains a collection of tests and of test suites.
  */
 export class TestSuite extends Map<string, Test | TestSuite> {
+
     public name: string;
     public status: TestStatus;
     public context: any;

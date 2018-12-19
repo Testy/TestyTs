@@ -1,19 +1,20 @@
-import * as path from 'path';
 import * as glob from 'glob';
-import { Logger } from '../logger/logger';
+import * as path from 'path';
 import * as tsnode from 'ts-node';
+import { Logger } from '../logger/logger';
+import { RootTestSuite } from '../tests/rootTestSuite';
 import { TestSuite } from '../tests/testSuite';
 
 export class TestsLoader {
+
     private static isTsnodeRegistered = false;
+
     constructor(private logger?: Logger) { }
 
     public async loadTests(root: string, patterns: string[], tsconfig: tsnode.Options): Promise<TestSuite> {
         this.registerTranspiler(tsconfig);
 
-        const testSuites = new TestSuite();
-        testSuites.name = 'Root';
-
+        const testSuites = new RootTestSuite();
         const files = await this.getTestFiles(root, patterns);
         for (const file of files) {
             const testInstances = await this.getTestInstancesFromFile(file);

@@ -1,11 +1,13 @@
-import { TestVisitor } from '../testVisitor';
-import { Test } from '../../test';
-import { TestSuite } from '../../testSuite';
 import { Logger } from '../../../logger/logger';
+import { CompositeReport } from '../../../reporting/report/compositeReport';
+import { FailedTestReport } from '../../../reporting/report/failedTestReport';
 import { Report } from '../../../reporting/report/report';
 import { TestResult } from '../../../reporting/report/testResult';
-import { FailedTestReport } from '../../../reporting/report/failedTestReport';
+import { Test } from '../../test';
+import { TestSuite } from '../../testSuite';
+import { TestVisitor } from '../testVisitor';
 import { TestsVisitorDecorator } from './testsVisitorDecorator';
+import { RootTestSuite } from '../../rootTestSuite';
 
 export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
 
@@ -38,5 +40,23 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
         this.logger.decreaseIndentation();
 
         return returnValue;
+    }
+
+    public async visitRootTestSuite(tests: RootTestSuite): Promise<CompositeReport> {
+        const report = await this.visitTestSuite(tests) as CompositeReport;
+
+        this.logger.info();
+        this.printSummary(report);
+
+        return report;
+    }
+
+    private printSummary(tests: CompositeReport) {
+        const success = tests.numberOfSuccessfulTests;
+        const failed = tests.numberOfTests - tests.numberOfSuccessfulTests;
+        const skipped = tests.numberOfSkippedTests;
+        const total = tests.numberOfTests;
+
+        this.logger.info(`Summary: ${success}/${total} passed, ${failed}/${total} failed, ${skipped}/${total} skipped.`);
     }
 }

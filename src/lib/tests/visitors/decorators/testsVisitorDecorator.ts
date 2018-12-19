@@ -1,6 +1,7 @@
 import { TestVisitor } from '../testVisitor';
 import { Test } from '../../test';
 import { TestSuite } from '../../testSuite';
+import { RootTestSuite } from '../../rootTestSuite';
 
 export abstract class TestsVisitorDecorator<T> implements TestVisitor<T> {
     protected baseVisitTest: (testSuite: Test) => Promise<T>;
@@ -16,4 +17,5 @@ export abstract class TestsVisitorDecorator<T> implements TestVisitor<T> {
 
     abstract visitTest(test: Test): Promise<T>;
     abstract visitTestSuite(test: TestSuite): Promise<T>;
+    abstract visitRootTestSuite(test: RootTestSuite): Promise<T>;
 }

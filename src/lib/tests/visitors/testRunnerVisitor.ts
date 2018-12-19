@@ -9,6 +9,7 @@ import { CompositeReport } from '../../reporting/report/compositeReport';
 import { FailedTestsReportVisitor } from './failedTestsReportVisitor';
 import { LeafReport } from '../../reporting/report/leafReport';
 import { TestVisitor } from './testVisitor';
+import { RootTestSuite } from '../rootTestSuite';
 
 export class TestRunnerVisitor implements TestVisitor<Report> {
     private testSuites: TestSuite[] = [];
@@ -64,6 +65,10 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
             const testReport = await (test as Test).accept<Report>(this);
             report.addReport(testReport);
         }
+    }
+
+    public async visitRootTestSuite(tests: RootTestSuite): Promise<Report> {
+        return await this.visitTestSuite(tests);
     }
 
     private async runAll(methods, context: any) {
