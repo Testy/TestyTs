@@ -1,4 +1,4 @@
-import { testSuite, test, expect } from '../../testyCore';
+import { testSuite, test, expect, ftest } from '../../testyCore';
 import { TestSuite } from '../../lib/tests/testSuite';
 import { TestStatus } from '../../lib/testStatus';
 import { Test } from '../../lib/tests/test';
@@ -159,5 +159,31 @@ export class TestSuiteTests {
         expect.toBeEqual((actualTestcases.get('a.c') as Test).status, TestStatus.Normal);
         expect.toBeEqual((testsuite.get('b') as Test).status, TestStatus.Ignored);
         expect.toBeEqual((testsuite.get('c') as Test).status, TestStatus.Normal);
+    }
+
+    @test('clone')
+    clone() {
+        // Arrange
+        const testcases = new TestSuite();
+        testcases.context = { key: 'somedummycontext' };
+        testcases.set('a.a', new Test('a.a', undefined, TestStatus.Normal));
+        testcases.set('a.b', new Test('a.b', undefined, TestStatus.Ignored));
+        testcases.set('a.c', new Test('a.c', undefined, TestStatus.Normal));
+
+        const testsuite = new TestSuite();
+        testsuite.set('a', testcases);
+        testsuite.set('b', new Test('b', undefined, TestStatus.Ignored));
+        testsuite.set('c', new Test('c', undefined, TestStatus.Normal));
+
+        // Act
+        const clone = testcases.clone();
+
+        // Assert
+        expect.not.toBeEqual(clone, testsuite);
+        expect.arraysToBeEqual(clone.testIds, testcases.testIds);
+        expect.arraysToBeEqual(clone.beforeAllMethods, testsuite.beforeAllMethods);
+        expect.arraysToBeEqual(clone.beforeEachMethods, testsuite.beforeEachMethods);
+        expect.arraysToBeEqual(clone.afterEachMethods, testsuite.afterEachMethods);
+        expect.arraysToBeEqual(clone.afterEachMethods, testsuite.afterAllMethods);
     }
 }

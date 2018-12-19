@@ -38,6 +38,12 @@ export function beforeEach() {
 
 
 function getTestSuiteInstance(target: any) {
-    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestSuite(); }
+    if (!target.__testSuiteInstance) {
+        target.__testSuiteInstance = new TestSuite();
+    }
+    else {
+        target.__testSuiteInstance = (target.__testSuiteInstance as TestSuite).clone();
+    }
+
     return target.__testSuiteInstance;
 }

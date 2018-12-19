@@ -69,9 +69,7 @@ export class TestSuite extends Map<string, Test | TestSuite> {
     private getNormalizedCopy(): Test | TestSuite {
         if (this.status === TestStatus.Focused) { return this; }
 
-        const copy = new TestSuite();
-        copy.name = this.name;
-        copy.context = this.context;
+        const copy = this.clone();
         for (const id of this.testIds) {
             const testOrTestSuite = super.get(id);
             if (testOrTestSuite instanceof Map) {
@@ -80,6 +78,23 @@ export class TestSuite extends Map<string, Test | TestSuite> {
             else {
                 copy.set(id, new Test(testOrTestSuite.name, testOrTestSuite.func, testOrTestSuite.status === TestStatus.Focused ? TestStatus.Focused : TestStatus.Ignored));
             }
+        }
+
+        return copy;
+    }
+
+    public clone(): TestSuite {
+        const copy = new TestSuite();
+        copy.name = this.name;
+        copy.status = this.status;
+        copy.context = this.context;
+        copy.afterAllMethods = this.afterAllMethods.slice();
+        copy.afterEachMethods = this.afterEachMethods.slice();
+        copy.beforeEachMethods = this.beforeEachMethods.slice();
+        copy.beforeAllMethods = this.beforeAllMethods.slice();
+
+        for (const key of this.testIds) {
+            copy.set(key, super.get(key).clone());
         }
 
         return copy;
