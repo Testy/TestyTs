@@ -37,6 +37,20 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
 
         this.logger.decreaseIndentation();
 
+        if (tests instanceof RootTestSuite) {
+            this.logger.info();
+            this.printSummary(returnValue as CompositeReport);
+        }
+
         return returnValue;
+    }
+
+    private printSummary(tests: CompositeReport) {
+        const success = tests.numberOfSuccessfulTests;
+        const failed = tests.numberOfTests - tests.numberOfSuccessfulTests;
+        const skipped = tests.numberOfSkippedTests;
+        const total = tests.numberOfTests;
+
+        this.logger.info(`Summary: ${success}/${total} passed, ${failed}/${total} failed, ${skipped}/${total} skipped.`);
     }
 }
