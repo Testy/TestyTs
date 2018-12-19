@@ -1,7 +1,13 @@
 # Changes
 
+### 0.6.0
+ - Is actually 0.5.1 republished under 0.6.0 because of some breaking changes.
+
+### 0.5.3
+ - Is really just 0.5.0. It was released because 0.5.1 actually had a breaking change.
+
 ### 0.5.2
-  - Added test report summary
+- Does not exist.
 
 ### 0.5.1
  - Refactored a few methods to improve the maintainability
