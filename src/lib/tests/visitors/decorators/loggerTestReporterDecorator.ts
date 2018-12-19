@@ -1,11 +1,13 @@
-import { TestVisitor } from '../testVisitor';
-import { Test } from '../../test';
-import { TestSuite } from '../../testSuite';
 import { Logger } from '../../../logger/logger';
+import { CompositeReport } from '../../../reporting/report/compositeReport';
+import { FailedTestReport } from '../../../reporting/report/failedTestReport';
 import { Report } from '../../../reporting/report/report';
 import { TestResult } from '../../../reporting/report/testResult';
-import { FailedTestReport } from '../../../reporting/report/failedTestReport';
+import { Test } from '../../test';
+import { TestSuite } from '../../testSuite';
+import { TestVisitor } from '../testVisitor';
 import { TestsVisitorDecorator } from './testsVisitorDecorator';
+import { RootTestSuite } from '../../rootTestSuite';
 
 export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
 
