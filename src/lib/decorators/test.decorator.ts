@@ -39,7 +39,12 @@ export function xtest(name?: string, testCases?: TestCase[], timeout: number = 2
 }
 
 function initializeTarget(target: any) {
-    if (!target.__testSuiteInstance) { target.__testSuiteInstance = new TestSuite(); }
+    if (!target.__testSuiteInstance) {
+        target.__testSuiteInstance = new TestSuite();
+    }
+    else {
+        target.__testSuiteInstance = (target.__testSuiteInstance as TestSuite).clone();
+    }
 }
 
 function generateDecoratorFunction(name: string, status: TestStatus, testCases: TestCase[], timeout: number) {
