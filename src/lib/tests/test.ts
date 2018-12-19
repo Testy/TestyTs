@@ -18,4 +18,8 @@ export class Test {
     public async accept<T>(visitor: TestVisitor<T>): Promise<T> {
         return await visitor.visitTest(this);
     }
+
+    public clone() {
+        return new Test(this.name, this._func, this._status);
+    }
 }
