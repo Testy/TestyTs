@@ -39,12 +39,16 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
 
         this.logger.decreaseIndentation();
 
-        if (tests instanceof RootTestSuite) {
-            this.logger.info();
-            this.printSummary(returnValue as CompositeReport);
-        }
-
         return returnValue;
+    }
+
+    public async visitRootTestSuite(tests: RootTestSuite): Promise<CompositeReport> {
+        const report = await this.visitTestSuite(tests) as CompositeReport;
+
+        this.logger.info();
+        this.printSummary(report);
+
+        return report;
     }
 
     private printSummary(tests: CompositeReport) {
