@@ -1,5 +1,8 @@
 # Changes
 
+### 0.5.2
+  - Added test report summary
+
 ### 0.5.1
  - Refactored a few methods to improve the maintainability
  - Fixed the base class bug
