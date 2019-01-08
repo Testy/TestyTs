@@ -3,7 +3,7 @@
 
 ![Testy.Ts logo](./img/testy_colour_rgb_transparent.png)
 
-TestyTs is a modern TypeScript testing framework.
+Testy.Ts is a modern TypeScript testing framework.
 
 ## Why?
 Writing tests should be fun. The other testing framework solutions do not make use of the full power of TypeScript. This one uses decorators and OOP and stuff. Therefore, it makes writing tests fun.
