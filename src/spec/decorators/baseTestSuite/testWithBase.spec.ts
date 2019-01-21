@@ -1,7 +1,8 @@
-import { TestSuite, Test, expect } from '../../../testyCore';
+import { TestSuite, Test } from '../../../testyCore';
 import { TestSuiteTestsBase } from '../testSuiteTestsBase';
 import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBase';
 import { TestSuiteA, TestSuiteB } from './baseWithChildren';
+import { expect } from '@testy/assertion';
 
 @TestSuite('Test Suite With Base Test Suite Tests')
 export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {

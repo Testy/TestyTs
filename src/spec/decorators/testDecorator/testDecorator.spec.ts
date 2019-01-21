@@ -1,9 +1,10 @@
 import { TestSuiteInstance } from '../../../lib/tests/testSuite';
-import { expect, Test, TestSuite } from '../../../testyCore';
+import { Test, TestSuite } from '../../../testyCore';
 import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
 import { SingleTestTestDecoratorTestSuite } from './singleTestTestDecoratorTestSuite';
 import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSuite';
 import { TestWithNoNamesTestSuite } from './testWithoutNames';
+import { expect } from '@testy/assertion';
 
 @TestSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {

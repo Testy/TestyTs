@@ -1,9 +1,10 @@
-import { TestSuite, BeforeEach, Test, TestCase, expect } from '../../testyCore';
+import { TestSuite, BeforeEach, Test, TestCase } from '../../testyCore';
 import { Logger } from '../../lib/logger/logger';
 import { TestyCli } from '../../lib/cli/testyCli';
 import { NullLogger } from '../utils/nullLogger';
 import { RunCommand } from '../../lib/cli/run.command';
 import { InitCommand } from '../../lib/cli/init.command';
+import { expect } from '@testy/assertion';
 
 @TestSuite('Cli Tests')
 export class CliTests {

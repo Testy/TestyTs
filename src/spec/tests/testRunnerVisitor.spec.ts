@@ -1,4 +1,4 @@
-import { TestSuite, BeforeEach, Test, expect } from '../../testyCore';
+import { TestSuite, BeforeEach, Test } from '../../testyCore';
 import { TestRunnerVisitor } from '../../lib/tests/visitors/testRunnerVisitor';
 import { TestSuiteInstance } from '../../lib/tests/testSuite';
 import { TestInstance } from '../../lib/tests/test';
@@ -9,6 +9,7 @@ import { FailedTestReport } from '../../lib/reporting/report/failedTestReport';
 import { SkippedTestReport } from '../../lib/reporting/report/skippedTestReport';
 import { Report } from '../../lib/reporting/report/report';
 import { LeafReport } from '../../lib/reporting/report/leafReport';
+import { expect } from '@testy/assertion';
 
 
 @TestSuite('Test Runner Visitor Tests')

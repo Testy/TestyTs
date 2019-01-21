@@ -1,4 +1,4 @@
-import { TestSuite, BeforeEach, Test, expect, TestCase, TestResult } from '../../../testyCore';
+import { TestSuite, BeforeEach, Test, TestCase, TestResult } from '../../../testyCore';
 import { TestVisitor } from '../../../lib/tests/visitors/testVisitor';
 import { Report } from '../../../lib/reporting/report/report';
 import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
@@ -8,6 +8,7 @@ import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSui
 import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
 import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
 import { TestSuiteInstance } from '../../../lib/tests/testSuite';
+import { expect } from '@testy/assertion';
 
 @TestSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
