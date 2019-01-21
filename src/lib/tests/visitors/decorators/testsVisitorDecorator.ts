@@ -1,11 +1,11 @@
 import { TestVisitor } from '../testVisitor';
-import { Test } from '../../test';
-import { TestSuite } from '../../testSuite';
+import { TestInstance } from '../../test';
+import { TestSuiteInstance } from '../../testSuite';
 import { RootTestSuite } from '../../rootTestSuite';
 
 export abstract class TestsVisitorDecorator<T> implements TestVisitor<T> {
-    protected baseVisitTest: (testSuite: Test) => Promise<T>;
-    protected baseVisitTestSuite: (testSuite: TestSuite) => Promise<T>;
+    protected baseVisitTest: (testSuite: TestInstance) => Promise<T>;
+    protected baseVisitTestSuite: (testSuite: TestSuiteInstance) => Promise<T>;
 
     constructor(private baseVisitor: TestVisitor<T>) {
         this.baseVisitTest = baseVisitor.visitTest.bind(baseVisitor);
@@ -15,7 +15,7 @@ export abstract class TestsVisitorDecorator<T> implements TestVisitor<T> {
         this.baseVisitor.visitTestSuite = this.visitTestSuite.bind(this);
     }
 
-    abstract visitTest(test: Test): Promise<T>;
-    abstract visitTestSuite(test: TestSuite): Promise<T>;
+    abstract visitTest(test: TestInstance): Promise<T>;
+    abstract visitTestSuite(test: TestSuiteInstance): Promise<T>;
     abstract visitRootTestSuite(test: RootTestSuite): Promise<T>;
 }

@@ -1,4 +1,4 @@
-import { testSuite, beforeEach, test, expect, TestCase, TestResult } from '../../../testyCore';
+import { TestSuite, BeforeEach, Test, expect, TestCase, TestResult } from '../../../testyCore';
 import { TestVisitor } from '../../../lib/tests/visitors/testVisitor';
 import { Report } from '../../../lib/reporting/report/report';
 import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
@@ -7,20 +7,20 @@ import { ThrowsDuringBeforeAllTestSuite } from './throwsDuringBeforeAllTestSuite
 import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSuite';
 import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
 import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
-import { TestSuite } from '../../../lib/tests/testSuite';
+import { TestSuiteInstance } from '../../../lib/tests/testSuite';
 
-@testSuite('Before and After Decorators Test Suite')
+@TestSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
 
     // TODO: This test suite should extend TestSuiteTestsBase when #8 is fixed.
     protected visitor: TestVisitor<Report>;
 
-    @beforeEach()
+    @BeforeEach()
     private beforeEach() {
         this.visitor = new TestRunnerVisitor();
     }
 
-    @test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
+    @Test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
     private async trivialCase() {
         // Arrange
         const testSuite = this.getTestSuiteInstance(NormalBeforeAfterTestSuite);
@@ -36,7 +36,7 @@ export class BeforeAfterDecoratorsTestSuite {
         expect.toBeEqual(report.numberOfTests, 6);
     }
 
-    @test('Before and after methods failures', [
+    @Test('Before and after methods failures', [
         new TestCase('beforeAll throws, should return a failed test report', ThrowsDuringBeforeAllTestSuite, 6),
         new TestCase('beforeEach throws, should return a failed test report', ThrowsDuringBeforeEachTestSuite, 6),
         new TestCase('afterEach throws, should return a failed test report', ThrowsDuringAfterEachTestSuite, 6),
@@ -55,7 +55,7 @@ export class BeforeAfterDecoratorsTestSuite {
         expect.toBeEqual(report.numberOfTests, numberOfTests, 'Expected all tests to be part of the report.');
     }
 
-    protected getTestSuiteInstance(testClass: any): TestSuite {
+    protected getTestSuiteInstance(testClass: any): TestSuiteInstance {
         return testClass.__testSuiteInstance;
     }
 }

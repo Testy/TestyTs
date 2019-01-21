@@ -1,16 +1,16 @@
-import { test } from '../../../testyCore';
+import { Test } from '../../../testyCore';
 import { TestCase } from '../../../lib/testCase';
-import { testSuite } from '../../../lib/decorators/testSuite.decorator';
+import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
 
-@testSuite()
+@TestSuite()
 export class TestWithNoNamesTestSuite {
-    @test()
+    @Test()
     private myTest1() { }
 
-    @test()
+    @Test()
     private myTest2() { }
 
-    @test(undefined, [
+    @Test(undefined, [
         new TestCase('myTestCase1'),
         new TestCase('myTestCase2'),
         new TestCase('myTestCase3')

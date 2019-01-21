@@ -1,12 +1,12 @@
-import { testSuite, test, expect, ftest } from '../../../testyCore';
+import { TestSuite, Test, expect } from '../../../testyCore';
 import { TestSuiteTestsBase } from '../testSuiteTestsBase';
 import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBase';
 import { TestSuiteA, TestSuiteB } from './baseWithChildren';
 
-@testSuite('Test Suite With Base Test Suite Tests')
+@TestSuite('Test Suite With Base Test Suite Tests')
 export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
 
-    @test('the base and the actual test suite before and after methods are called.')
+    @Test('the base and the actual test suite before and after methods are called.')
     private async trivialCase() {
         // Arrange
         const testSuite = this.getTestSuiteInstance(TestSuiteWithBase);
@@ -25,7 +25,7 @@ export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
         expect.toBeEqual(testSuite.context.afterAllExecuted[1], TestSuiteWithBase);
     }
 
-    @test('base with multiple children')
+    @Test('base with multiple children')
     private async baseWithMultipleChildren() {
         // Arrange
         const a = this.getTestSuiteInstance(TestSuiteA);

@@ -1,15 +1,15 @@
-import { test } from '../../../testyCore';
-import { testSuite } from '../../../lib/decorators/testSuite.decorator';
+import { Test } from '../../../testyCore';
+import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
 
-@testSuite('Multiple Test Test Decorator Test Suite')
+@TestSuite('Multiple Test Test Decorator Test Suite')
 export class MultipleTestTestDecoratorTestSuite {
 
-    @test('My first test')
+    @Test('My first test')
     private test1() { }
 
-    @test('My second test')
+    @Test('My second test')
     private test2() { }
 
-    @test('My third test')
+    @Test('My third test')
     private test3() { }
 }

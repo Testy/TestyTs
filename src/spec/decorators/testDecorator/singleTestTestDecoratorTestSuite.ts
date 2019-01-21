@@ -1,12 +1,12 @@
-import { test } from '../../../testyCore';
-import { testSuite } from '../../../lib/decorators/testSuite.decorator';
+import { Test } from '../../../testyCore';
+import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
 
-@testSuite('Single Test Test Decorator Test Suite')
+@TestSuite('Single Test Test Decorator Test Suite')
 export class SingleTestTestDecoratorTestSuite {
 
     public numberOfRunsTest1: number = 0;
 
-    @test('My single test')
+    @Test('My single test')
     private test1() {
         ++this.numberOfRunsTest1;
     }

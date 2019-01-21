@@ -1,7 +1,7 @@
 import { TestStatus } from '../testStatus';
 import { TestVisitor } from './visitors/testVisitor';
 
-export class Test {
+export class TestInstance {
     public get name() { return this._name; }
     public get status() { return this._status; }
     public get func() { return this._func; }
@@ -20,6 +20,6 @@ export class Test {
     }
 
     public clone() {
-        return new Test(this.name, this._func, this._status);
+        return new TestInstance(this.name, this._func, this._status);
     }
 }

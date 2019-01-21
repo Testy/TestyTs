@@ -1,7 +1,7 @@
-import { testSuite, beforeEach, test, expect } from '../../testyCore';
+import { TestSuite, BeforeEach, Test, expect } from '../../testyCore';
 import { TestRunnerVisitor } from '../../lib/tests/visitors/testRunnerVisitor';
-import { TestSuite } from '../../lib/tests/testSuite';
-import { Test } from '../../lib/tests/test';
+import { TestSuiteInstance } from '../../lib/tests/testSuite';
+import { TestInstance } from '../../lib/tests/test';
 import { TestStatus } from '../../lib/testStatus';
 import { CompositeReport } from '../../lib/reporting/report/compositeReport';
 import { SuccessfulTestReport } from '../../lib/reporting/report/successfulTestReport';
@@ -11,23 +11,23 @@ import { Report } from '../../lib/reporting/report/report';
 import { LeafReport } from '../../lib/reporting/report/leafReport';
 
 
-@testSuite('Test Runner Visitor Tests')
+@TestSuite('Test Runner Visitor Tests')
 export class TestRunnerVisitorTests {
 
     private testRunnerVisitor: TestRunnerVisitor;
 
-    @beforeEach()
+    @BeforeEach()
     beforeEach() {
         this.testRunnerVisitor = new TestRunnerVisitor();
     }
 
-    @test('Simple test suite')
+    @Test('Simple test suite')
     async simpleTestSuite() {
         // Arrange
-        const testSuite = new TestSuite();
+        const testSuite = new TestSuiteInstance();
         testSuite.name = 'myTestSuite';
-        testSuite.set('testA', new Test('testA', () => { }, TestStatus.Normal));
-        testSuite.set('testB', new Test('testB', () => { }, TestStatus.Normal));
+        testSuite.set('testA', new TestInstance('testA', () => { }, TestStatus.Normal));
+        testSuite.set('testB', new TestInstance('testB', () => { }, TestStatus.Normal));
 
         const expectedReport = new CompositeReport('myTestSuite');
         expectedReport.addReport(new SuccessfulTestReport('testA', 0));
@@ -40,13 +40,13 @@ export class TestRunnerVisitorTests {
         this.expectReportsToBeEqual(actualReport, expectedReport);
     }
 
-    @test('Test suite with failure')
+    @Test('Test suite with failure')
     async testSuiteWithFailure() {
         // Arrange
-        const testSuite = new TestSuite();
+        const testSuite = new TestSuiteInstance();
         testSuite.name = 'myTestSuite';
-        testSuite.set('testA', new Test('testA', () => { }, TestStatus.Normal));
-        testSuite.set('testB', new Test('testB', () => { throw new Error('oops'); }, TestStatus.Normal));
+        testSuite.set('testA', new TestInstance('testA', () => { }, TestStatus.Normal));
+        testSuite.set('testB', new TestInstance('testB', () => { throw new Error('oops'); }, TestStatus.Normal));
 
         const expectedReport = new CompositeReport('myTestSuite');
         expectedReport.addReport(new SuccessfulTestReport('testA', 0));
@@ -59,13 +59,13 @@ export class TestRunnerVisitorTests {
         this.expectReportsToBeEqual(actualReport, expectedReport);
     }
 
-    @test('Test suite with skipped tests')
+    @Test('Test suite with skipped tests')
     async testSuiteWithSkippedTests() {
         // Arrange
-        const testSuite = new TestSuite();
+        const testSuite = new TestSuiteInstance();
         testSuite.name = 'myTestSuite';
-        testSuite.set('testA', new Test('testA', () => { }, TestStatus.Ignored));
-        testSuite.set('testB', new Test('testB', () => { }, TestStatus.Normal));
+        testSuite.set('testA', new TestInstance('testA', () => { }, TestStatus.Ignored));
+        testSuite.set('testB', new TestInstance('testB', () => { }, TestStatus.Normal));
 
         const expectedReport = new CompositeReport('myTestSuite');
         expectedReport.addReport(new SkippedTestReport('testA'));
@@ -78,18 +78,18 @@ export class TestRunnerVisitorTests {
         this.expectReportsToBeEqual(actualReport, expectedReport);
     }
 
-    @test('Test suite with focused tests')
+    @Test('Test suite with focused tests')
     async testSuiteWithFocusedTests() {
         // Arrange
-        const testSuite = new TestSuite();
+        const testSuite = new TestSuiteInstance();
         testSuite.name = 'myTestSuite';
-        testSuite.set('testA', new Test('testA', () => { }, TestStatus.Focused));
-        testSuite.set('testB', new Test('testB', () => { }, TestStatus.Normal));
+        testSuite.set('testA', new TestInstance('testA', () => { }, TestStatus.Focused));
+        testSuite.set('testB', new TestInstance('testB', () => { }, TestStatus.Normal));
 
-        const subTestSuite = new TestSuite();
+        const subTestSuite = new TestSuiteInstance();
         subTestSuite.name = 'subTestSuite';
-        subTestSuite.set('testC1', new Test('testC1', () => { }, TestStatus.Normal));
-        subTestSuite.set('testC2', new Test('testC2', () => { }, TestStatus.Normal));
+        subTestSuite.set('testC1', new TestInstance('testC1', () => { }, TestStatus.Normal));
+        subTestSuite.set('testC2', new TestInstance('testC2', () => { }, TestStatus.Normal));
 
         const expectedReport = new CompositeReport('myTestSuite');
         expectedReport.addReport(new SuccessfulTestReport('testA', 0));

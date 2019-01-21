@@ -1,5 +1,5 @@
-import { TestSuite } from '../testSuite';
-import { Test } from '../test';
+import { TestSuiteInstance } from '../testSuite';
+import { TestInstance } from '../test';
 import { SuccessfulTestReport } from '../../reporting/report/successfulTestReport';
 import { FailedTestReport } from '../../reporting/report/failedTestReport';
 import { TestStatus } from '../../testStatus';
@@ -12,11 +12,11 @@ import { TestVisitor } from './testVisitor';
 import { RootTestSuite } from '../rootTestSuite';
 
 export class TestRunnerVisitor implements TestVisitor<Report> {
-    private testSuites: TestSuite[] = [];
+    private testSuites: TestSuiteInstance[] = [];
 
     constructor() { }
 
-    public async visitTestSuite(tests: TestSuite): Promise<Report> {
+    public async visitTestSuite(tests: TestSuiteInstance): Promise<Report> {
         this.testSuites.push(tests);
 
         const report = new CompositeReport(tests.name);
@@ -37,7 +37,7 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
         return report;
     }
 
-    public async visitTest(test: Test): Promise<Report> {
+    public async visitTest(test: TestInstance): Promise<Report> {
         let report: LeafReport;
 
         if (test.status === TestStatus.Ignored) {
@@ -59,10 +59,10 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
         return report;
     }
 
-    private async runTests(tests: TestSuite, report: CompositeReport): Promise<void> {
+    private async runTests(tests: TestSuiteInstance, report: CompositeReport): Promise<void> {
         for (const id of tests.testIds) {
             const test = tests.get(id);
-            const testReport = await (test as Test).accept<Report>(this);
+            const testReport = await (test as TestInstance).accept<Report>(this);
             report.addReport(testReport);
         }
     }
