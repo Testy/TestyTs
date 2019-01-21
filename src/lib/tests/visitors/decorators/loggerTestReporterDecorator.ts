@@ -3,8 +3,8 @@ import { CompositeReport } from '../../../reporting/report/compositeReport';
 import { FailedTestReport } from '../../../reporting/report/failedTestReport';
 import { Report } from '../../../reporting/report/report';
 import { TestResult } from '../../../reporting/report/testResult';
-import { Test } from '../../test';
-import { TestSuite } from '../../testSuite';
+import { TestInstance } from '../../test';
+import { TestSuiteInstance } from '../../testSuite';
 import { TestVisitor } from '../testVisitor';
 import { TestsVisitorDecorator } from './testsVisitorDecorator';
 import { RootTestSuite } from '../../rootTestSuite';
@@ -15,7 +15,7 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
         super(baseVisitor);
     }
 
-    public async visitTest(test: Test): Promise<Report> {
+    public async visitTest(test: TestInstance): Promise<Report> {
         const report = await this.baseVisitTest(test);
 
         if (report.result === TestResult.Success) {
@@ -31,7 +31,7 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
         return report;
     }
 
-    public async visitTestSuite(tests: TestSuite): Promise<Report> {
+    public async visitTestSuite(tests: TestSuiteInstance): Promise<Report> {
         this.logger.info(tests.name);
         this.logger.increaseIndentation();
 

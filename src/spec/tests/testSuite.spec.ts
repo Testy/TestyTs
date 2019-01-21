@@ -1,179 +1,179 @@
-import { testSuite, test, expect, ftest } from '../../testyCore';
-import { TestSuite } from '../../lib/tests/testSuite';
+import { TestSuite, Test, expect } from '../../testyCore';
+import { TestSuiteInstance } from '../../lib/tests/testSuite';
 import { TestStatus } from '../../lib/testStatus';
-import { Test } from '../../lib/tests/test';
+import { TestInstance } from '../../lib/tests/test';
 
-@testSuite('Tests Suite Tests')
+@TestSuite('Tests Suite Tests')
 export class TestSuiteTests {
 
-    @test('get tests, all normal tests')
+    @Test('get tests, all normal tests')
     getTestsAllNormalTests() {
         // Arrange
-        const testcases = new TestSuite();
+        const testcases = new TestSuiteInstance();
         testcases.context = { key: 'somedummycontext' };
         testcases.status = TestStatus.Normal;
-        testcases.set('a.a', new Test('a.a', undefined, TestStatus.Normal));
-        testcases.set('a.b', new Test('a.b', undefined, TestStatus.Normal));
-        testcases.set('a.c', new Test('a.c', undefined, TestStatus.Normal));
+        testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
+        testcases.set('a.b', new TestInstance('a.b', undefined, TestStatus.Normal));
+        testcases.set('a.c', new TestInstance('a.c', undefined, TestStatus.Normal));
 
-        const testsuite = new TestSuite();
+        const testsuite = new TestSuiteInstance();
         testsuite.status = TestStatus.Normal;
         testsuite.set('a', testcases);
-        testsuite.set('b', new Test('b', undefined, TestStatus.Normal));
-        testsuite.set('c', new Test('c', undefined, TestStatus.Normal));
+        testsuite.set('b', new TestInstance('b', undefined, TestStatus.Normal));
+        testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
         // Act & Assert
-        const actualTestcases = testsuite.get('a') as TestSuite;
+        const actualTestcases = testsuite.get('a') as TestSuiteInstance;
         expect.toBeDefined(actualTestcases.context);
         expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
-        expect.toBeEqual((actualTestcases.get('a.a') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((actualTestcases.get('a.b') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((actualTestcases.get('a.c') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((testsuite.get('b') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((testsuite.get('c') as Test).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.a') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.b') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.c') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((testsuite.get('b') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((testsuite.get('c') as TestInstance).status, TestStatus.Normal);
     }
 
-    @test('get tests, has top level focused test')
+    @Test('get tests, has top level focused test')
     getTestsTopLevelFocusedTest() {
         // Arrange
-        const testcases = new TestSuite();
+        const testcases = new TestSuiteInstance();
         testcases.context = { key: 'somedummycontext' };
-        testcases.set('a.a', new Test('a.a', undefined, TestStatus.Normal));
-        testcases.set('a.b', new Test('a.b', undefined, TestStatus.Normal));
-        testcases.set('a.c', new Test('a.c', undefined, TestStatus.Normal));
+        testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
+        testcases.set('a.b', new TestInstance('a.b', undefined, TestStatus.Normal));
+        testcases.set('a.c', new TestInstance('a.c', undefined, TestStatus.Normal));
 
-        const testsuite = new TestSuite();
+        const testsuite = new TestSuiteInstance();
         testsuite.set('a', testcases);
-        testsuite.set('b', new Test('b', undefined, TestStatus.Focused));
-        testsuite.set('c', new Test('c', undefined, TestStatus.Normal));
+        testsuite.set('b', new TestInstance('b', undefined, TestStatus.Focused));
+        testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
         // Act & Assert
-        const actualTestcases = testsuite.get('a') as TestSuite;
+        const actualTestcases = testsuite.get('a') as TestSuiteInstance;
         expect.toBeDefined(actualTestcases.context);
         expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
-        expect.toBeEqual((actualTestcases.get('a.a') as Test).status, TestStatus.Ignored);
-        expect.toBeEqual((actualTestcases.get('a.b') as Test).status, TestStatus.Ignored);
-        expect.toBeEqual((actualTestcases.get('a.c') as Test).status, TestStatus.Ignored);
-        expect.toBeEqual((testsuite.get('b') as Test).status, TestStatus.Focused);
-        expect.toBeEqual((testsuite.get('c') as Test).status, TestStatus.Ignored);
+        expect.toBeEqual((actualTestcases.get('a.a') as TestInstance).status, TestStatus.Ignored);
+        expect.toBeEqual((actualTestcases.get('a.b') as TestInstance).status, TestStatus.Ignored);
+        expect.toBeEqual((actualTestcases.get('a.c') as TestInstance).status, TestStatus.Ignored);
+        expect.toBeEqual((testsuite.get('b') as TestInstance).status, TestStatus.Focused);
+        expect.toBeEqual((testsuite.get('c') as TestInstance).status, TestStatus.Ignored);
     }
 
-    @test('get tests, has nested focused tests')
+    @Test('get tests, has nested focused tests')
     getTestsNestedFocusedTests() {
         // Arrange
-        const testcases = new TestSuite();
+        const testcases = new TestSuiteInstance();
         testcases.context = { key: 'somedummycontext' };
-        testcases.set('a.a', new Test('a.a', undefined, TestStatus.Normal));
-        testcases.set('a.b', new Test('a.b', undefined, TestStatus.Focused));
-        testcases.set('a.c', new Test('a.c', undefined, TestStatus.Normal));
+        testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
+        testcases.set('a.b', new TestInstance('a.b', undefined, TestStatus.Focused));
+        testcases.set('a.c', new TestInstance('a.c', undefined, TestStatus.Normal));
 
-        const testsuite = new TestSuite();
+        const testsuite = new TestSuiteInstance();
         testsuite.set('a', testcases);
-        testsuite.set('b', new Test('b', undefined, TestStatus.Normal));
-        testsuite.set('c', new Test('c', undefined, TestStatus.Normal));
+        testsuite.set('b', new TestInstance('b', undefined, TestStatus.Normal));
+        testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
         // Act & Assert
-        const actualTestcases = testsuite.get('a') as TestSuite;
+        const actualTestcases = testsuite.get('a') as TestSuiteInstance;
         expect.toBeDefined(actualTestcases.context);
         expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
-        expect.toBeEqual((actualTestcases.get('a.a') as Test).status, TestStatus.Ignored);
-        expect.toBeEqual((actualTestcases.get('a.b') as Test).status, TestStatus.Focused);
-        expect.toBeEqual((actualTestcases.get('a.c') as Test).status, TestStatus.Ignored);
-        expect.toBeEqual((testsuite.get('b') as Test).status, TestStatus.Ignored);
-        expect.toBeEqual((testsuite.get('c') as Test).status, TestStatus.Ignored);
+        expect.toBeEqual((actualTestcases.get('a.a') as TestInstance).status, TestStatus.Ignored);
+        expect.toBeEqual((actualTestcases.get('a.b') as TestInstance).status, TestStatus.Focused);
+        expect.toBeEqual((actualTestcases.get('a.c') as TestInstance).status, TestStatus.Ignored);
+        expect.toBeEqual((testsuite.get('b') as TestInstance).status, TestStatus.Ignored);
+        expect.toBeEqual((testsuite.get('c') as TestInstance).status, TestStatus.Ignored);
     }
 
-    @test('get tests, has nested focused test suite')
+    @Test('get tests, has nested focused test suite')
     getTestsNestedFocusedTestSuite() {
         // Arrange
-        const testcases = new TestSuite();
+        const testcases = new TestSuiteInstance();
         testcases.context = { key: 'somedummycontext' };
         testcases.status = TestStatus.Focused;
-        testcases.set('a.a', new Test('a.a', undefined, TestStatus.Normal));
-        testcases.set('a.b', new Test('a.b', undefined, TestStatus.Normal));
-        testcases.set('a.c', new Test('a.c', undefined, TestStatus.Normal));
+        testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
+        testcases.set('a.b', new TestInstance('a.b', undefined, TestStatus.Normal));
+        testcases.set('a.c', new TestInstance('a.c', undefined, TestStatus.Normal));
 
-        const testsuite = new TestSuite();
+        const testsuite = new TestSuiteInstance();
         testsuite.set('a', testcases);
-        testsuite.set('b', new Test('b', undefined, TestStatus.Normal));
-        testsuite.set('c', new Test('c', undefined, TestStatus.Normal));
+        testsuite.set('b', new TestInstance('b', undefined, TestStatus.Normal));
+        testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
         // Act & Assert
-        const actualTestcases = testsuite.get('a') as TestSuite;
+        const actualTestcases = testsuite.get('a') as TestSuiteInstance;
         expect.toBeDefined(actualTestcases.context);
         expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
-        expect.toBeEqual((actualTestcases.get('a.a') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((actualTestcases.get('a.b') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((actualTestcases.get('a.c') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((testsuite.get('b') as Test).status, TestStatus.Ignored);
-        expect.toBeEqual((testsuite.get('c') as Test).status, TestStatus.Ignored);
+        expect.toBeEqual((actualTestcases.get('a.a') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.b') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.c') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((testsuite.get('b') as TestInstance).status, TestStatus.Ignored);
+        expect.toBeEqual((testsuite.get('c') as TestInstance).status, TestStatus.Ignored);
     }
 
-    @test('get tests, is a focused test suite')
+    @Test('get tests, is a focused test suite')
     getTestsIsAFocusedTestSuite() {
         // Arrange
-        const testcases = new TestSuite();
+        const testcases = new TestSuiteInstance();
         testcases.status = TestStatus.Normal;
         testcases.context = { key: 'somedummycontext' };
-        testcases.set('a.a', new Test('a.a', undefined, TestStatus.Normal));
-        testcases.set('a.b', new Test('a.b', undefined, TestStatus.Normal));
-        testcases.set('a.c', new Test('a.c', undefined, TestStatus.Normal));
+        testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
+        testcases.set('a.b', new TestInstance('a.b', undefined, TestStatus.Normal));
+        testcases.set('a.c', new TestInstance('a.c', undefined, TestStatus.Normal));
 
-        const testsuite = new TestSuite();
+        const testsuite = new TestSuiteInstance();
         testsuite.status = TestStatus.Focused;
         testsuite.set('a', testcases);
-        testsuite.set('b', new Test('b', undefined, TestStatus.Normal));
-        testsuite.set('c', new Test('c', undefined, TestStatus.Normal));
+        testsuite.set('b', new TestInstance('b', undefined, TestStatus.Normal));
+        testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
         // Act & Assert
-        const actualTestcases = testsuite.get('a') as TestSuite;
+        const actualTestcases = testsuite.get('a') as TestSuiteInstance;
         expect.toBeDefined(actualTestcases.context);
         expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
-        expect.toBeEqual((actualTestcases.get('a.a') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((actualTestcases.get('a.b') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((actualTestcases.get('a.c') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((testsuite.get('b') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((testsuite.get('c') as Test).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.a') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.b') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.c') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((testsuite.get('b') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((testsuite.get('c') as TestInstance).status, TestStatus.Normal);
     }
 
-    @test('get tests, has ignored tests')
+    @Test('get tests, has ignored tests')
     getTestsIgnoredTests() {
         // Arrange
-        const testcases = new TestSuite();
+        const testcases = new TestSuiteInstance();
         testcases.context = { key: 'somedummycontext' };
-        testcases.set('a.a', new Test('a.a', undefined, TestStatus.Normal));
-        testcases.set('a.b', new Test('a.b', undefined, TestStatus.Ignored));
-        testcases.set('a.c', new Test('a.c', undefined, TestStatus.Normal));
+        testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
+        testcases.set('a.b', new TestInstance('a.b', undefined, TestStatus.Ignored));
+        testcases.set('a.c', new TestInstance('a.c', undefined, TestStatus.Normal));
 
-        const testsuite = new TestSuite();
+        const testsuite = new TestSuiteInstance();
         testsuite.set('a', testcases);
-        testsuite.set('b', new Test('b', undefined, TestStatus.Ignored));
-        testsuite.set('c', new Test('c', undefined, TestStatus.Normal));
+        testsuite.set('b', new TestInstance('b', undefined, TestStatus.Ignored));
+        testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
         // Act & Assert
-        const actualTestcases = testsuite.get('a') as TestSuite;
+        const actualTestcases = testsuite.get('a') as TestSuiteInstance;
         expect.toBeDefined(actualTestcases.context);
         expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
-        expect.toBeEqual((actualTestcases.get('a.a') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((actualTestcases.get('a.b') as Test).status, TestStatus.Ignored);
-        expect.toBeEqual((actualTestcases.get('a.c') as Test).status, TestStatus.Normal);
-        expect.toBeEqual((testsuite.get('b') as Test).status, TestStatus.Ignored);
-        expect.toBeEqual((testsuite.get('c') as Test).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.a') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((actualTestcases.get('a.b') as TestInstance).status, TestStatus.Ignored);
+        expect.toBeEqual((actualTestcases.get('a.c') as TestInstance).status, TestStatus.Normal);
+        expect.toBeEqual((testsuite.get('b') as TestInstance).status, TestStatus.Ignored);
+        expect.toBeEqual((testsuite.get('c') as TestInstance).status, TestStatus.Normal);
     }
 
-    @test('clone')
+    @Test('clone')
     clone() {
         // Arrange
-        const testcases = new TestSuite();
+        const testcases = new TestSuiteInstance();
         testcases.context = { key: 'somedummycontext' };
-        testcases.set('a.a', new Test('a.a', undefined, TestStatus.Normal));
-        testcases.set('a.b', new Test('a.b', undefined, TestStatus.Ignored));
-        testcases.set('a.c', new Test('a.c', undefined, TestStatus.Normal));
+        testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
+        testcases.set('a.b', new TestInstance('a.b', undefined, TestStatus.Ignored));
+        testcases.set('a.c', new TestInstance('a.c', undefined, TestStatus.Normal));
 
-        const testsuite = new TestSuite();
+        const testsuite = new TestSuiteInstance();
         testsuite.set('a', testcases);
-        testsuite.set('b', new Test('b', undefined, TestStatus.Ignored));
-        testsuite.set('c', new Test('c', undefined, TestStatus.Normal));
+        testsuite.set('b', new TestInstance('b', undefined, TestStatus.Ignored));
+        testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
         // Act
         const clone = testcases.clone();

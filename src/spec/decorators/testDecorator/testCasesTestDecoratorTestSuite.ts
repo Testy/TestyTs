@@ -1,13 +1,13 @@
-import { test, TestCase, testSuite } from '../../../testyCore';
+import { Test, TestCase, TestSuite } from '../../../testyCore';
 
-@testSuite('TestCases Test Decorator Test Suite')
+@TestSuite('TestCases Test Decorator Test Suite')
 export class TestCasesTestDecoratorTestSuite {
 
     public numberOfRunsTest1: number = 0;
     public numberOfRunsTest2: number = 0;
     public numberOfRunsTest3: number = 0;
 
-    @test('My test with test cases', [
+    @Test('My test with test cases', [
         new TestCase('My first test', 1),
         new TestCase('My second test', 2),
         new TestCase('My third test', 3),

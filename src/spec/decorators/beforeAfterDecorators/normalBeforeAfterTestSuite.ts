@@ -1,40 +1,40 @@
-import { test, beforeAll, beforeEach, afterEach, afterAll, TestCase } from '../../../testyCore';
-import { xtest } from '../../../lib/decorators/test.decorator';
-import { testSuite } from '../../../lib/decorators/testSuite.decorator';
+import { Test, BeforeAll, BeforeEach, AfterEach, AfterAll, TestCase } from '../../../testyCore';
+import { XTest } from '../../../lib/decorators/test.decorator';
+import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
 
-@testSuite('Normal Before After Test Suite')
+@TestSuite('Normal Before After Test Suite')
 export class NormalBeforeAfterTestSuite {
     public numberOfBeforeAllExecutions = 0;
     public numberOfBeforeEachExecutions = 0;
     public numberOfAfterEachExecutions = 0;
     public numberOfAfterAllExecutions = 0;
 
-    @beforeAll()
+    @BeforeAll()
     private beforeAll() { ++this.numberOfBeforeAllExecutions; }
 
-    @beforeEach()
+    @BeforeEach()
     private beforeEach() { ++this.numberOfBeforeEachExecutions; }
 
-    @afterEach()
+    @AfterEach()
     private afterEach() { ++this.numberOfAfterEachExecutions; }
 
-    @afterAll()
+    @AfterAll()
     private afterAll() { ++this.numberOfAfterAllExecutions; }
 
-    @test('a')
+    @Test('a')
     private a() { }
 
-    @test('b')
+    @Test('b')
     private b() { }
 
 
-    @test('c', [
+    @Test('c', [
         new TestCase('c.1'),
         new TestCase('c.2'),
         new TestCase('c.3'),
     ])
     private c() { }
 
-    @xtest('d')
+    @XTest('d')
     private d() { }
 }

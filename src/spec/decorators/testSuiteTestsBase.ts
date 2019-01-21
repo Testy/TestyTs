@@ -1,18 +1,18 @@
 import { Report } from '../../lib/reporting/report/report';
-import { TestSuite } from '../../lib/tests/testSuite';
+import { TestSuiteInstance } from '../../lib/tests/testSuite';
 import { TestVisitor } from '../../lib/tests/visitors/testVisitor';
 import { TestRunnerVisitor } from '../../lib/tests/visitors/testRunnerVisitor';
-import { beforeEach } from '../../lib/decorators/afterAndBefore.decorator';
+import { BeforeEach } from '../../lib/decorators/afterAndBefore.decorator';
 
 export class TestSuiteTestsBase {
     protected visitor: TestVisitor<Report>;
 
-    @beforeEach()
+    @BeforeEach()
     private beforeEach() {
         this.visitor = new TestRunnerVisitor();
     }
 
-    protected getTestSuiteInstance(testClass: any): TestSuite {
+    protected getTestSuiteInstance(testClass: any): TestSuiteInstance {
         return testClass.__testSuiteInstance;
     }
 }

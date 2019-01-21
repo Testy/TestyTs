@@ -1,28 +1,28 @@
-import { test, testSuite, expect } from '../../testyCore';
+import { Test, TestSuite, expect } from '../../testyCore';
 
-@testSuite('Expect ToBeIn Tests')
+@TestSuite('Expect ToBeIn Tests')
 export class ExpectToMatch {
 
-    @test(`'a' to be in, should succeed`)
+    @Test(`'a' to be in, should succeed`)
     private aToBeInSuccess() {
         expect.toBeIn('a', ['a', 'b', 'c']);
     }
 
-    @test(`'a' to be in, should fail`)
+    @Test(`'a' to be in, should fail`)
     private aToBeInFail() {
         expect.toThrow(() => {
             expect.toBeIn('a', ['b', 'c', 'd']);
         });
     }
 
-    @test(`'a' not to be in, should fail`)
+    @Test(`'a' not to be in, should fail`)
     private aNotToBeInFail() {
         expect.toThrow(() => {
             expect.not.toBeIn('a', ['a', 'b', 'c']);
         });
     }
 
-    @test(`'a' not to be in, should succeed`)
+    @Test(`'a' not to be in, should succeed`)
     private aNotToBeInSuccess() {
         expect.not.toBeIn('a', ['b', 'c', 'd']);
     }

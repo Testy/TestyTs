@@ -1,25 +1,25 @@
-import { test, xtest, beforeEach, TestCase, testSuite } from '../../../testyCore';
+import { Test, XTest, BeforeEach, TestCase, TestSuite } from '../../../testyCore';
 
-@testSuite('Throws During Before Each Test Suite')
+@TestSuite('Throws During Before Each Test Suite')
 export class ThrowsDuringBeforeEachTestSuite {
-    @beforeEach()
+    @BeforeEach()
     private beforeEach() {
         throw new Error('This should be handled.');
     }
 
-    @test('a')
+    @Test('a')
     private a() { }
 
-    @test('b')
+    @Test('b')
     private b() { }
 
-    @test('c', [
+    @Test('c', [
         new TestCase('c.1'),
         new TestCase('c.2'),
         new TestCase('c.3'),
     ])
     private c() { }
 
-    @xtest('d')
+    @XTest('d')
     private d() { }
 }

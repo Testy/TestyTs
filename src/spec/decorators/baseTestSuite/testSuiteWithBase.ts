@@ -1,5 +1,5 @@
-import { test, beforeAll, beforeEach, afterEach, afterAll } from '../../../testyCore';
-import { testSuite } from '../../../lib/decorators/testSuite.decorator';
+import { Test, BeforeAll, BeforeEach, AfterEach, AfterAll } from '../../../testyCore';
+import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
 
 export class BaseTestSuite {
     public beforeAllExecuted = [];
@@ -7,49 +7,49 @@ export class BaseTestSuite {
     public afterAllExecuted = [];
     public afterEachExecuted = [];
 
-    @beforeAll()
+    @BeforeAll()
     private beforeAllBase() {
         this.beforeAllExecuted.push(BaseTestSuite);
     }
 
-    @beforeEach()
+    @BeforeEach()
     private beforeEachBase() {
         this.beforeEachExecuted.push(BaseTestSuite);
     }
 
-    @afterEach()
+    @AfterEach()
     private afterEachBase() {
         this.afterEachExecuted.push(BaseTestSuite);
     }
 
-    @afterAll()
+    @AfterAll()
     private afterAllBase() {
         this.afterAllExecuted.push(BaseTestSuite);
     }
 }
 
-@testSuite('Test Suite')
+@TestSuite('Test Suite')
 export class TestSuiteWithBase extends BaseTestSuite {
-    @beforeAll()
+    @BeforeAll()
     private beforeAll() {
         this.beforeAllExecuted.push(TestSuiteWithBase);
     }
 
-    @beforeEach()
+    @BeforeEach()
     private beforeEach() {
         this.beforeEachExecuted.push(TestSuiteWithBase);
     }
 
-    @afterEach()
+    @AfterEach()
     private afterEach() {
         this.afterEachExecuted.push(TestSuiteWithBase);
     }
 
-    @afterAll()
+    @AfterAll()
     private afterAll() {
         this.afterAllExecuted.push(TestSuiteWithBase);
     }
 
-    @test('Test')
+    @Test('Test')
     private test() { }
 }

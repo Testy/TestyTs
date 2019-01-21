@@ -1,7 +1,7 @@
-import { TestSuite } from './testSuite';
+import { TestSuiteInstance } from './testSuite';
 import { TestVisitor } from './visitors/testVisitor';
 
-export class RootTestSuite extends TestSuite {
+export class RootTestSuite extends TestSuiteInstance {
 
     constructor() {
         super();

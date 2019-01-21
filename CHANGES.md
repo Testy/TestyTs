@@ -1,5 +1,8 @@
 # Changes
 
+### 0.7.0
+ - Renamed all decorators so they begin with capital letters, to match other big packages conventions
+
 ### 0.6.0
  - Is actually 0.5.1 republished under 0.6.0 because of some breaking changes.
 

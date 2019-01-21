@@ -30,10 +30,10 @@ $ testyts init
 Writing tests with Testy is simple. Don't forget to export your test suites though. Otherwise, they won't be discovered by the test runner.
 
 ```ts
-@testSuite()
+@TestSuite()
 export class MyTestSuite {
 
-    @test()
+    @Test()
     onePlusOne() {
         // Act
         const result = 1 + 1;
@@ -49,25 +49,25 @@ export class MyTestSuite {
 Testy provides setup and teardown hooks.
 
 ```ts
-@testSuite()
+@TestSuite()
 export class MyTestSuite {
 
-    @beforeAll()
+    @BeforeAll()
     beforeAll() {
         // This is executed before all the tests
     }
 
-    @beforeEach()
+    @BeforeEach()
     beforeEach() {
         // This is executed before each test
     }
 
-    @afterEach()
+    @AfterEach()
     afterEach() {
         // This is executed after each test
     }
     
-    @afterAll()
+    @AfterAll()
     afterAll() {
         // This is executed after all the tests
     }
@@ -83,7 +83,7 @@ class MyBaseTestSuite{
     // Setup/teardown extravaganza
 }
 
-@testSuite()
+@TestSuite()
 class MyTestSuite extends MyBaseTestSuite {
     // My tests
 }
@@ -92,9 +92,9 @@ class MyTestSuite extends MyBaseTestSuite {
 ### Test cases
 
 ```ts
-@testSuite()
+@TestSuite()
 export class MyTestSuite {
-    @test('Addition', [
+    @Test('Addition', [
           new TestCase('Two plus two is four', 2, 2, 4),
           new TestCase(`Minus one that's three`, 4, -1, 3)
     ])
@@ -119,34 +119,34 @@ expect.toBeSorted.inAscendingOrder([0, 1, 1, 2, 3, 5, 8]);
 
 ### Ignoring or focusing some tests
 
-You can ignore tests by adding an `x` before a test suite or a specific test decorator. Ignored tests will still show up in the test report, but they will be marked as ignored.
+You can ignore tests by adding an `X` before a test suite or a specific test decorator. Ignored tests will still show up in the test report, but they will be marked as ignored.
 
 ```ts
-@xtestSuite() // This test suite will be ignored
+@XTestSuite() // This test suite will be ignored
 export class MyTestSuite { 
 // Your tests
 }
 
-@testSuite()
+@TestSuite()
 export class MyTestSuite {
-    @xtest() // This test will be ignored
+    @XTest() // This test will be ignored
     onePlusOne() {
        // Some test
     }
 }
 ```
 
-You can also focus tests by adding an `f` before a test suite or a specific test decorator. If one test or test suites are focused, only those will be runned. The others will be reported as ignored.
+You can also focus tests by adding an `F` before a test suite or a specific test decorator. If one test or test suites are focused, only those will be runned. The others will be reported as ignored.
 
 ```ts
-@ftestSuite() // This test suite will be focused.
+@FTestSuite() // This test suite will be focused.
 export class MyTestSuite { 
 ...
 }
 
-@testSuite()
+@TestSuite()
 export class MyTestSuite {
-    @ftest() // This test will be focused
+    @FTest() // This test will be focused
     onePlusOne() {
        // Your test
     }
@@ -158,10 +158,10 @@ export class MyTestSuite {
 The tests and test suites names are inferred from the method or class name by default. You can specify a custom name.
 
 ```ts
-@testSuite('My glorious test suite')
+@TestSuite('My glorious test suite')
 export class MyTestSuite {
 
-    @test('Adding one plus one, should equal two')
+    @Test('Adding one plus one, should equal two')
     onePlusOne() {
         // Act
         const result = 1 + 1;

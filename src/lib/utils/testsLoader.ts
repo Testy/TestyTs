@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as tsnode from 'ts-node';
 import { Logger } from '../logger/logger';
 import { RootTestSuite } from '../tests/rootTestSuite';
-import { TestSuite } from '../tests/testSuite';
+import { TestSuiteInstance } from '../tests/testSuite';
 
 export class TestsLoader {
 
@@ -11,7 +11,7 @@ export class TestsLoader {
 
     constructor(private logger?: Logger) { }
 
-    public async loadTests(root: string, patterns: string[], tsconfig: tsnode.Options): Promise<TestSuite> {
+    public async loadTests(root: string, patterns: string[], tsconfig: tsnode.Options): Promise<TestSuiteInstance> {
         this.registerTranspiler(tsconfig);
 
         const testSuites = new RootTestSuite();
@@ -24,11 +24,11 @@ export class TestsLoader {
         return testSuites;
     }
 
-    private async getTestInstancesFromFile(file: string): Promise<TestSuite[]> {
-        const testSuiteInstances: TestSuite[] = [];
+    private async getTestInstancesFromFile(file: string): Promise<TestSuiteInstance[]> {
+        const testSuiteInstances: TestSuiteInstance[] = [];
         const importedFile = await import(file);
         for (const key in importedFile) {
-            const testSuiteInstance: TestSuite = importedFile[key].__testSuiteInstance;
+            const testSuiteInstance: TestSuiteInstance = importedFile[key].__testSuiteInstance;
             if (!testSuiteInstance)
                 continue;
 

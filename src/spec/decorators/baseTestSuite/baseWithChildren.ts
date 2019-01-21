@@ -1,16 +1,16 @@
-import { testSuite, test } from '../../../testyCore';
-import { beforeEach } from '../../../lib/decorators/afterAndBefore.decorator';
+import { TestSuite, Test } from '../../../testyCore';
+import { BeforeEach } from '../../../lib/decorators/afterAndBefore.decorator';
 
 class Base {
-    @beforeEach() beforeEach() { }
+    @BeforeEach() beforeEach() { }
 }
 
-@testSuite()
+@TestSuite()
 export class TestSuiteA extends Base {
-    @test() testA() { }
+    @Test() testA() { }
 }
 
-@testSuite()
+@TestSuite()
 export class TestSuiteB extends Base {
-    @test() testB() { }
+    @Test() testB() { }
 }

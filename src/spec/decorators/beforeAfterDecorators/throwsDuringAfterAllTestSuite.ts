@@ -1,26 +1,26 @@
-import { test, xtest, afterAll, TestCase } from '../../../testyCore';
-import { testSuite } from '../../../lib/decorators/testSuite.decorator';
+import { Test, XTest, AfterAll, TestCase } from '../../../testyCore';
+import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
 
-@testSuite('Throws During After All Test Suite ')
+@TestSuite('Throws During After All Test Suite ')
 export class ThrowsDuringAfterAllTestSuite {
-    @afterAll()
+    @AfterAll()
     private afterAll() {
         throw new Error('This should be handled.');
     }
 
-    @test('a')
+    @Test('a')
     private a() { }
 
-    @test('b')
+    @Test('b')
     private b() { }
 
-    @test('c', [
+    @Test('c', [
         new TestCase('c.1'),
         new TestCase('c.2'),
         new TestCase('c.3'),
     ])
     private c() { }
 
-    @xtest('d')
+    @XTest('d')
     private d() { }
 }
