@@ -74,6 +74,36 @@ export class MyTestSuite {
 }
 ```
 
+### Asynchronous stuff
+
+Asynchronous tests, setup and teardown methods are supported out of the box. Just make your method async.
+
+```ts
+@TestSuite()
+export class MyTestSuite {
+
+    @Test()
+    async asyncTest() {
+        // Asynchronous stuff       
+    }
+}
+```
+
+### Timeout
+
+If a test is taking too long to complete, it will fail automatically. The default timeout it 2000 ms, but you can configure it.
+
+```ts
+@TestSuite()
+export class MyTestSuite {
+    @Test(undefined, undefined, 10000) // Really slow test
+    slowTest() {
+       // Some test
+    }
+}
+```
+
+
 ### Reuse code!
 
 This is where stuff gets interesting. Testy allows you to use base test classes. The base test can have setup and teardown methods. Your child test suite may also have setup and teardown methods. In that case, the base test methods are executed first.
@@ -180,6 +210,10 @@ To run the tests, use the following command
 $ testyts
 $ testyts --config custom/config/file.json // To specify a custom configuration file
 ```
+
+## Try it out online!
+
+Here's an online [REPL](https://repl.it/@Aboisier/TestyTs-Playground) for you to try Testy.Ts!
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
