@@ -2,7 +2,6 @@ import { expect } from '@testy/assertion';
 import { TestSuiteInstance } from '../../../lib/tests/testSuite';
 import { Test, TestSuite } from '../../../testyCore';
 import { TestUtils } from '../../utils/testUtils';
-import { AsyncTests } from './asyncTests';
 import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
 import { SingleTestTestDecoratorTestSuite } from './singleTestTestDecoratorTestSuite';
 import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSuite';
