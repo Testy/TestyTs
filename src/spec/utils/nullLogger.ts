@@ -1,13 +1,9 @@
-import { Logger } from '../../lib/logger/logger';
+import { Logger, Color } from '../../lib/logger/logger';
 
 export class NullLogger extends Logger {
-    public success(message: string): void { }
-
-    public warn(message: string = ''): void { }
-
-    public failure(message: string = ''): void { }
-
-    public info(message: string = ''): void { }
-
-    private color(message: string, color: string) { }
+    debug(message?: string): void { }
+    info(message?: string): void { }
+    warn(message?: string): void { }
+    error(message?: string): void { }
+    color(message: string, color: Color): void { }
 }

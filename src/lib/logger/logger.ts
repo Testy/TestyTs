@@ -1,4 +1,7 @@
+export enum Color { Red, Green, Yellow, Grey }
+
 export abstract class Logger {
+
     private readonly indentationSize: number = 2;
     private indentationLevel: number = 0;
 
@@ -14,8 +17,9 @@ export abstract class Logger {
         --this.indentationLevel;
     }
 
-    abstract success(message?: string): void;
-    abstract warn(message?: string): void;
-    abstract failure(message?: string): void;
+    abstract debug(message?: string): void;
     abstract info(message?: string): void;
+    abstract warn(message?: string): void;
+    abstract error(message?: string): void;
+    abstract color(message: string, color: Color): void;
 }

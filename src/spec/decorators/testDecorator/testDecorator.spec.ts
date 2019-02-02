@@ -1,6 +1,6 @@
 import { expect } from '@testy/assertion';
 import { TestSuiteInstance } from '../../../lib/tests/testSuite';
-import { Test, TestSuite } from '../../../testyCore';
+import { Test, TestSuite, XTest } from '../../../testyCore';
 import { TestUtils } from '../../utils/testUtils';
 import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
 import { SingleTestTestDecoratorTestSuite } from './singleTestTestDecoratorTestSuite';
@@ -20,7 +20,7 @@ export class TestDecoratorTestSuite {
         expect.toBeIn('My single test', testSuite.testIds);
     }
 
-    @Test('multiple test, tests should be test suite once')
+    @XTest('multiple test, tests should be test suite once')
     private multipleTest() {
         // Arrange
         const testSuite = TestUtils.getInstance(MultipleTestTestDecoratorTestSuite);
@@ -44,7 +44,7 @@ export class TestDecoratorTestSuite {
         const subTestSuite = testSuite.get('My test with test cases') as TestSuiteInstance;
         expect.toBeIn('My first test', subTestSuite.testIds);
         expect.toBeIn('My second test', subTestSuite.testIds);
-        expect.toBeIn('My third test', subTestSuite.testIds);
+        expect.toBeIn('My third te2st', subTestSuite.testIds);
     }
 
     @Test('no names, should infer from method names')
