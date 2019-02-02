@@ -2,6 +2,7 @@
 
 ### 0.7.2
   - Fixed the missing error messages bug (#19)
+  - Improved console logging
 
 ### 0.7.1
   - Fixed missing exports
