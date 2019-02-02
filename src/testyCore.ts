@@ -7,3 +7,5 @@ export { TestResult } from './lib/reporting/report/testResult';
 export { afterAll, afterEach, beforeEach, beforeAll } from './lib/decorators/afterAndBefore.decorator';
 export { test, ftest, xtest } from './lib/decorators/test.decorator';
 export { testSuite, ftestSuite, xtestSuite } from './lib/decorators/testSuite.decorator';
+
+export { expect } from '@testy/assertion';

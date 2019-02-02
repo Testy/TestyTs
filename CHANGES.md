@@ -1,5 +1,8 @@
 # Changes
 
+### 0.7.4
+  - Exported `expect` from `@testy/assertion`
+
 ### 0.7.3
   - Added a bunch of stuff to .npmignore
 
