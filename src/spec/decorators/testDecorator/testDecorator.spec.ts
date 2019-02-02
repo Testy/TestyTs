@@ -63,11 +63,4 @@ export class TestDecoratorTestSuite {
         expect.toBeIn('myTestCase2', myTest3.testIds);
         expect.toBeIn('myTestCase3', myTest3.testIds);
     }
-
-    @Test('async tests', undefined, 5000)
-    private async asyncTest() {
-        // Arrange
-        const testSuite = TestClassUtils.getInstance(AsyncTests);
-
-        // Assert
-    }
+}
