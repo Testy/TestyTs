@@ -3,7 +3,7 @@ import { Report } from '../../../lib/reporting/report/report';
 import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
 import { TestVisitor } from '../../../lib/tests/visitors/testVisitor';
 import { BeforeEach, Test, TestCase, TestResult, TestSuite } from '../../../testyCore';
-import { TestClassUtils } from '../../utils/testClassUtils';
+import { TestUtils } from '../../utils/testUtils';
 import { NormalBeforeAfterTestSuite } from './normalBeforeAfterTestSuite';
 import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
 import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
@@ -24,7 +24,7 @@ export class BeforeAfterDecoratorsTestSuite {
     @Test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
     private async trivialCase() {
         // Arrange
-        const testSuite = TestClassUtils.getInstance(NormalBeforeAfterTestSuite);
+        const testSuite = TestUtils.getInstance(NormalBeforeAfterTestSuite);
 
         // Act
         const report = await testSuite.accept(this.visitor);
@@ -45,7 +45,7 @@ export class BeforeAfterDecoratorsTestSuite {
     ])
     private async beforeOfAfterMethodFails(testSuiteClass: any, numberOfTests: number) {
         // Arrange
-        const testSuite = TestClassUtils.getInstance(testSuiteClass);
+        const testSuite = TestUtils.getInstance(testSuiteClass);
 
         // Act
         const report = await testSuite.accept(this.visitor);

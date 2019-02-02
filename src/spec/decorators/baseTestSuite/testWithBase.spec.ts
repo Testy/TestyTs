@@ -1,6 +1,6 @@
 import { expect } from '@testy/assertion';
 import { Test, TestSuite } from '../../../testyCore';
-import { TestClassUtils } from '../../utils/testClassUtils';
+import { TestUtils } from '../../utils/testUtils';
 import { TestSuiteTestsBase } from '../../utils/testSuiteTestsBase';
 import { TestSuiteA, TestSuiteB } from './baseWithChildren';
 import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBase';
@@ -11,7 +11,7 @@ export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
     @Test('the base and the actual test suite before and after methods are called.')
     private async trivialCase() {
         // Arrange
-        const testSuite = TestClassUtils.getInstance(TestSuiteWithBase);
+        const testSuite = TestUtils.getInstance(TestSuiteWithBase);
 
         // Act
         await testSuite.accept(this.visitor);
@@ -30,8 +30,8 @@ export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
     @Test('base with multiple children')
     private async baseWithMultipleChildren() {
         // Arrange
-        const a = TestClassUtils.getInstance(TestSuiteA);
-        const b = TestClassUtils.getInstance(TestSuiteB);
+        const a = TestUtils.getInstance(TestSuiteA);
+        const b = TestUtils.getInstance(TestSuiteB);
 
         // Assert
         expect.arraysToBeEqual(a.testIds, ['testA']);
