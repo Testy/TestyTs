@@ -102,42 +102,26 @@ function generateDecoratorFunction(name: string, status: TestStatus, testCases: 
 function generateTest(name: string, testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): TestInstance | TestSuiteInstance {
     return testCases
         ? generateTestsFromTestcases(name, testMethod, testCases, status, timeout)
-        : new TestInstance(name, decorateStandaloneTest(testMethod, timeout), status);
+        : new TestInstance(name, decorateTest(testMethod, timeout), status);
 }
 
 function generateTestsFromTestcases(name: string, testMethod: Function, testCases: TestCase[], status: TestStatus, timeout: number): TestSuiteInstance {
     const tests = new TestSuiteInstance();
     tests.name = name;
     for (const testCase of testCases) {
-        const decoratedTestMethod = decorateTestWithTestcase(testMethod, testCase, timeout);
+        const decoratedTestMethod = decorateTest(testMethod, timeout, testCase.args);
         tests.set(testCase.name, new TestInstance(testCase.name, decoratedTestMethod, status));
     }
 
     return tests;
 }
 
-function decorateStandaloneTest(testMethod: Function, timeout: number) {
+function decorateTest(testMethod: Function, timeout: number, args: any[] = []) {
     return async (context: any) => {
         await new Promise(async (resolve, reject) => {
             setTimeout(() => reject('Test has timed out.'), timeout);
             try {
-                await testMethod.bind(context)();
-            }
-            catch (err) {
-                reject(err);
-            }
-
-            resolve();
-        });
-    };
-}
-
-function decorateTestWithTestcase(testMethod: Function, testCase: TestCase, timeout: number) {
-    return async (context: any) => {
-        await new Promise(async (resolve, reject) => {
-            setTimeout(() => reject('Test has timed out.'), timeout);
-            try {
-                await testMethod.bind(context)(...testCase.args);
+                await testMethod.bind(context)(...args);
             }
             catch (err) {
                 reject(err);

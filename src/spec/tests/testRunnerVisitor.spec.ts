@@ -1,15 +1,13 @@
-import { TestSuite, BeforeEach, Test } from '../../testyCore';
-import { TestRunnerVisitor } from '../../lib/tests/visitors/testRunnerVisitor';
-import { TestSuiteInstance } from '../../lib/tests/testSuite';
-import { TestInstance } from '../../lib/tests/test';
-import { TestStatus } from '../../lib/testStatus';
 import { CompositeReport } from '../../lib/reporting/report/compositeReport';
-import { SuccessfulTestReport } from '../../lib/reporting/report/successfulTestReport';
 import { FailedTestReport } from '../../lib/reporting/report/failedTestReport';
 import { SkippedTestReport } from '../../lib/reporting/report/skippedTestReport';
-import { Report } from '../../lib/reporting/report/report';
-import { LeafReport } from '../../lib/reporting/report/leafReport';
-import { expect } from '@testy/assertion';
+import { SuccessfulTestReport } from '../../lib/reporting/report/successfulTestReport';
+import { TestInstance } from '../../lib/tests/test';
+import { TestSuiteInstance } from '../../lib/tests/testSuite';
+import { TestRunnerVisitor } from '../../lib/tests/visitors/testRunnerVisitor';
+import { TestStatus } from '../../lib/testStatus';
+import { BeforeEach, Test, TestSuite } from '../../testyCore';
+import { TestUtils } from '../utils/testUtils';
 
 
 @TestSuite('Test Runner Visitor Tests')
@@ -38,7 +36,7 @@ export class TestRunnerVisitorTests {
         const actualReport = await testSuite.accept(this.testRunnerVisitor);
 
         // Assert
-        this.expectReportsToBeEqual(actualReport, expectedReport);
+        TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
     }
 
     @Test('Test suite with failure')
@@ -57,7 +55,7 @@ export class TestRunnerVisitorTests {
         const actualReport = await testSuite.accept(this.testRunnerVisitor);
 
         // Assert
-        this.expectReportsToBeEqual(actualReport, expectedReport);
+        TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
     }
 
     @Test('Test suite with skipped tests')
@@ -76,7 +74,7 @@ export class TestRunnerVisitorTests {
         const actualReport = await testSuite.accept(this.testRunnerVisitor);
 
         // Assert
-        this.expectReportsToBeEqual(actualReport, expectedReport);
+        TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
     }
 
     @Test('Test suite with focused tests')
@@ -104,29 +102,6 @@ export class TestRunnerVisitorTests {
         const actualReport = await testSuite.accept(this.testRunnerVisitor);
 
         // Assert
-        this.expectReportsToBeEqual(actualReport, expectedReport);
-    }
-
-    expectReportsToBeEqual(actualReport: Report, expectedReport: Report) {
-        this.expectSameType(actualReport, expectedReport);
-        expect.toBeEqual(actualReport.result, expectedReport.result);
-        expect.toBeEqual(actualReport.name, expectedReport.name);
-
-        if (actualReport instanceof FailedTestReport) {
-            expect.toBeEqual(actualReport.message, (expectedReport as FailedTestReport).message);
-        }
-
-        if (actualReport instanceof LeafReport) return;
-
-        const actualChildren = (actualReport as CompositeReport).getChildren();
-        const expectedChildren = (expectedReport as CompositeReport).getChildren();
-
-        for (const i in actualChildren) {
-            this.expectReportsToBeEqual(actualChildren[i], expectedChildren[i]);
-        }
-    }
-
-    expectSameType(actualReport: any, expectedReport: any) {
-        return expect.toBeEqual(actualReport.constructor, expectedReport.constructor);
+        TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
     }
 }

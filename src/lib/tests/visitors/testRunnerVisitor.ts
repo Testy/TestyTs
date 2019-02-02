@@ -27,7 +27,7 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
             await this.runAll(tests.afterAllMethods, tests.context);
         }
         catch (err) {
-            const failedTestsVisitor = new FailedTestsReportVisitor(err.message);
+            const failedTestsVisitor = new FailedTestsReportVisitor(typeof(err) === typeof('') ? err : err.message);
             return await tests.accept(failedTestsVisitor);
         }
         finally {
@@ -52,7 +52,7 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
                 report = new SuccessfulTestReport(test.name, 0);
             }
             catch (err) {
-                report = new FailedTestReport(test.name, err.message, 0);
+                report = new FailedTestReport(test.name, typeof(err) === typeof('') ? err : err.message, 0);
             }
         }
 

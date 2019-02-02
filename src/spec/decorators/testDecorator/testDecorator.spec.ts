@@ -1,28 +1,29 @@
+import { expect } from '@testy/assertion';
 import { TestSuiteInstance } from '../../../lib/tests/testSuite';
 import { Test, TestSuite } from '../../../testyCore';
+import { TestUtils } from '../../utils/testUtils';
 import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
 import { SingleTestTestDecoratorTestSuite } from './singleTestTestDecoratorTestSuite';
 import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSuite';
 import { TestWithNoNamesTestSuite } from './testWithoutNames';
-import { expect } from '@testy/assertion';
 
 @TestSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {
 
-    @Test('single test, test should be ran once')
+    @Test('single test, test should be in test suite once')
     private singleTest() {
         // Arrange
-        const testSuite = this.getTestSuiteInstance(SingleTestTestDecoratorTestSuite);
+        const testSuite = TestUtils.getInstance(SingleTestTestDecoratorTestSuite);
 
         // Assert
         expect.toBeEqual(testSuite.testIds.length, 1);
         expect.toBeIn('My single test', testSuite.testIds);
     }
 
-    @Test('multiple test, tests should be ran once')
+    @Test('multiple test, tests should be test suite once')
     private multipleTest() {
         // Arrange
-        const testSuite = this.getTestSuiteInstance(MultipleTestTestDecoratorTestSuite);
+        const testSuite = TestUtils.getInstance(MultipleTestTestDecoratorTestSuite);
 
         // Assert
         expect.toBeEqual(testSuite.testIds.length, 3);
@@ -31,10 +32,10 @@ export class TestDecoratorTestSuite {
         expect.toBeIn('My third test', testSuite.testIds);
     }
 
-    @Test('test cases, tests should be ran once')
+    @Test('test cases, tests should be test suite once')
     private testCasesTest() {
         // Arrange
-        const testSuite = this.getTestSuiteInstance(TestCasesTestDecoratorTestSuite);
+        const testSuite = TestUtils.getInstance(TestCasesTestDecoratorTestSuite);
 
         // Assert
         expect.toBeEqual(testSuite.testIds.length, 1);
@@ -49,7 +50,7 @@ export class TestDecoratorTestSuite {
     @Test('no names, should infer from method names')
     private noNameTest() {
         // Arrange
-        const testSuite = this.getTestSuiteInstance(TestWithNoNamesTestSuite);
+        const testSuite = TestUtils.getInstance(TestWithNoNamesTestSuite);
 
         // Assert
         expect.toBeIn('myTest1', testSuite.testIds);
@@ -60,9 +61,5 @@ export class TestDecoratorTestSuite {
         expect.toBeIn('myTestCase1', myTest3.testIds);
         expect.toBeIn('myTestCase2', myTest3.testIds);
         expect.toBeIn('myTestCase3', myTest3.testIds);
-    }
-
-    protected getTestSuiteInstance(testClass: any): TestSuiteInstance {
-        return testClass.__testSuiteInstance;
     }
 }
