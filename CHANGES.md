@@ -1,5 +1,11 @@
 # Changes
 
+### 0.7.2
+  - Fixed the missing error messages bug (#19)
+
+### 0.7.1
+  - Fixed missing exports
+
 ### 0.7.0
  - Renamed all decorators so they begin with capital letters, to match other big packages conventions
 
