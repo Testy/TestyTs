@@ -13,13 +13,13 @@ export class RootReport extends CompositeReport {
         logger.info();
 
         if (this.numberOfTests === this.numberOfSuccessfulTests) {
-            logger.success(`Test run successful.`);
+            logger.info(`Test run successful.`);
         }
         else if (this.numberOfTests === this.numberOfSuccessfulTests + this.numberOfSkippedTests) {
-            logger.warn(`Test run successful, but some tests were skipped.`);
+            logger.info(`Test run successful, but some tests were skipped.`);
         }
         else {
-            logger.failure(`Test run failure.`);
+            logger.info(`Test run failure.`);
         }
 
         const numberOfFailedTests = this.numberOfTests - this.numberOfSuccessfulTests - this.numberOfSkippedTests;

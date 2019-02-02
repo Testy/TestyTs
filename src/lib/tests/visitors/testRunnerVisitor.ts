@@ -10,6 +10,7 @@ import { FailedTestsReportVisitor } from './failedTestsReportVisitor';
 import { LeafReport } from '../../reporting/report/leafReport';
 import { TestVisitor } from './testVisitor';
 import { RootTestSuite } from '../rootTestSuite';
+import { performance } from 'perf_hooks';
 
 export class TestRunnerVisitor implements TestVisitor<Report> {
     private testSuites: TestSuiteInstance[] = [];
@@ -27,7 +28,7 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
             await this.runAll(tests.afterAllMethods, tests.context);
         }
         catch (err) {
-            const failedTestsVisitor = new FailedTestsReportVisitor(typeof(err) === typeof('') ? err : err.message);
+            const failedTestsVisitor = new FailedTestsReportVisitor(typeof (err) === typeof ('') ? err : err.message);
             return await tests.accept(failedTestsVisitor);
         }
         finally {
@@ -47,12 +48,16 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
             try {
                 const context = this.getClosestContext();
                 await this.runBeforeEachMethods();
+
+                const start = performance.now();
                 await test.run(context);
+                const time = performance.now() - start;
+
                 await this.runAfterEachMethods();
-                report = new SuccessfulTestReport(test.name, 0);
+                report = new SuccessfulTestReport(test.name, Math.round(time));
             }
             catch (err) {
-                report = new FailedTestReport(test.name, typeof(err) === typeof('') ? err : err.message, 0);
+                report = new FailedTestReport(test.name, typeof (err) === typeof ('') ? err : err.message, 0);
             }
         }
 

@@ -1,24 +1,41 @@
-import { Logger } from './logger';
+import { Logger, Color } from './logger';
 
 export class ConsoleLogger extends Logger {
-    public success(message: string): void {
-        console.log(this.color(this.indentation + message, ForegroundColors.Green));
-    }
+    private readonly reset = '\x1b[0m';
 
-    public warn(message: string = ''): void {
-        console.log(this.color(this.indentation + message, ForegroundColors.Yellow));
-    }
-
-    public failure(message: string = ''): void {
-        console.log(this.color(this.indentation + message, ForegroundColors.Red));
+    public debug(message: string): void {
+        console.log(this.indentation + message);
     }
 
     public info(message: string = ''): void {
         console.log(this.indentation + message);
     }
 
-    private color(message: string, color: string) {
-        return color + message + ForegroundColors.Reset;
+    public warn(message: string = ''): void {
+        console.log(this.color(this.indentation + message, Color.Yellow));
+    }
+
+    public error(message: string = ''): void {
+        console.log(this.color(this.indentation + message, Color.Red));
+    }
+
+    public color(message: string, color: Color) {
+        switch (color) {
+            case Color.Green:
+                return ForegroundColors.Green + message + this.reset;
+
+            case Color.Yellow:
+                return ForegroundColors.Yellow + message + this.reset;
+
+            case Color.Red:
+                return ForegroundColors.Red + message + this.reset;
+
+            case Color.Grey:
+                return ForegroundColors.Grey + message + this.reset;
+
+            default:
+                return message + this.reset;
+        }
     }
 }
 
@@ -26,5 +43,5 @@ enum ForegroundColors {
     Red = '\x1b[31m',
     Green = '\x1b[32m',
     Yellow = '\x1b[93m',
-    Reset = '\x1b[0m'
+    Grey = '\x1b[90m'
 }
