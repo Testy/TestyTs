@@ -1,3 +1,13 @@
 /node_modules/
 /src/
 /build/spec/
+/build/tests/
+/build/coverage/
+/.vscode
+**/*.md
+
+# Logos
+**/*.pdf
+**/*.png
+**/*.svg
+**/*.jpg

@@ -1,5 +1,8 @@
 # Changes
 
+### 0.7.3
+  - Added a bunch of stuff to .npmignore
+
 ### 0.7.2
   - Fixed the missing error messages bug (#19)
   - Improved console logging
