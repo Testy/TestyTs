@@ -1,10 +1,12 @@
+import { expect } from '@testy/assertion';
 import { TestSuiteInstance } from '../../../lib/tests/testSuite';
 import { Test, TestSuite } from '../../../testyCore';
+import { TestClassUtils } from '../../utils/testClassUtils';
+import { AsyncTests } from './asyncTests';
 import { MultipleTestTestDecoratorTestSuite } from './multipleTestsTestDecoratorTestSuite';
 import { SingleTestTestDecoratorTestSuite } from './singleTestTestDecoratorTestSuite';
 import { TestCasesTestDecoratorTestSuite } from './testCasesTestDecoratorTestSuite';
 import { TestWithNoNamesTestSuite } from './testWithoutNames';
-import { expect } from '@testy/assertion';
 
 @TestSuite('Test Decorator Test Suite')
 export class TestDecoratorTestSuite {
@@ -12,7 +14,7 @@ export class TestDecoratorTestSuite {
     @Test('single test, test should be ran once')
     private singleTest() {
         // Arrange
-        const testSuite = this.getTestSuiteInstance(SingleTestTestDecoratorTestSuite);
+        const testSuite = TestClassUtils.getInstance(SingleTestTestDecoratorTestSuite);
 
         // Assert
         expect.toBeEqual(testSuite.testIds.length, 1);
@@ -22,7 +24,7 @@ export class TestDecoratorTestSuite {
     @Test('multiple test, tests should be ran once')
     private multipleTest() {
         // Arrange
-        const testSuite = this.getTestSuiteInstance(MultipleTestTestDecoratorTestSuite);
+        const testSuite = TestClassUtils.getInstance(MultipleTestTestDecoratorTestSuite);
 
         // Assert
         expect.toBeEqual(testSuite.testIds.length, 3);
@@ -34,7 +36,7 @@ export class TestDecoratorTestSuite {
     @Test('test cases, tests should be ran once')
     private testCasesTest() {
         // Arrange
-        const testSuite = this.getTestSuiteInstance(TestCasesTestDecoratorTestSuite);
+        const testSuite = TestClassUtils.getInstance(TestCasesTestDecoratorTestSuite);
 
         // Assert
         expect.toBeEqual(testSuite.testIds.length, 1);
@@ -49,7 +51,7 @@ export class TestDecoratorTestSuite {
     @Test('no names, should infer from method names')
     private noNameTest() {
         // Arrange
-        const testSuite = this.getTestSuiteInstance(TestWithNoNamesTestSuite);
+        const testSuite = TestClassUtils.getInstance(TestWithNoNamesTestSuite);
 
         // Assert
         expect.toBeIn('myTest1', testSuite.testIds);
@@ -62,7 +64,11 @@ export class TestDecoratorTestSuite {
         expect.toBeIn('myTestCase3', myTest3.testIds);
     }
 
-    protected getTestSuiteInstance(testClass: any): TestSuiteInstance {
-        return testClass.__testSuiteInstance;
+    @Test('async tests', undefined, 5000)
+    private async asyncTest() {
+        // Arrange
+        const testSuite = TestClassUtils.getInstance(AsyncTests);
+
+        // Assert
     }
 }

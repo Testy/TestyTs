@@ -1,8 +1,9 @@
-import { TestSuite, Test } from '../../../testyCore';
-import { TestSuiteTestsBase } from '../testSuiteTestsBase';
-import { TestSuiteWithBase, BaseTestSuite } from './testSuiteWithBase';
-import { TestSuiteA, TestSuiteB } from './baseWithChildren';
 import { expect } from '@testy/assertion';
+import { Test, TestSuite } from '../../../testyCore';
+import { TestClassUtils } from '../../utils/testClassUtils';
+import { TestSuiteTestsBase } from '../../utils/testSuiteTestsBase';
+import { TestSuiteA, TestSuiteB } from './baseWithChildren';
+import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBase';
 
 @TestSuite('Test Suite With Base Test Suite Tests')
 export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
@@ -10,7 +11,7 @@ export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
     @Test('the base and the actual test suite before and after methods are called.')
     private async trivialCase() {
         // Arrange
-        const testSuite = this.getTestSuiteInstance(TestSuiteWithBase);
+        const testSuite = TestClassUtils.getInstance(TestSuiteWithBase);
 
         // Act
         await testSuite.accept(this.visitor);
@@ -29,8 +30,8 @@ export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
     @Test('base with multiple children')
     private async baseWithMultipleChildren() {
         // Arrange
-        const a = this.getTestSuiteInstance(TestSuiteA);
-        const b = this.getTestSuiteInstance(TestSuiteB);
+        const a = TestClassUtils.getInstance(TestSuiteA);
+        const b = TestClassUtils.getInstance(TestSuiteB);
 
         // Assert
         expect.arraysToBeEqual(a.testIds, ['testA']);
