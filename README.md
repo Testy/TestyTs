@@ -220,5 +220,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
+If you have any questions, do not hesitate to email me at <aboisiermichaud@gmail.com>.
+
 ## License
 [ISC](./LICENSE)
