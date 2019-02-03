@@ -5,6 +5,12 @@
 /build/coverage/
 /.vscode
 **/*.md
+.travis.yml
+package.json
+package-lock.json
+testy.json
+tsconfig.json
+tslint.json
 
 # Logos
 **/*.pdf
