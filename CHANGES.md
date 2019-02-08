@@ -1,5 +1,11 @@
 # Changes
 
+### 0.7.6
+  - Reduced package size
+
+### 0.7.5
+  - Moved missing dependency
+
 ### 0.7.4
   - Exported `expect` from `@testy/assertion`
 
