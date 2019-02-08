@@ -7,9 +7,14 @@ os:
   - linux
   - osx
 
+env:
+  - CODECOV_TOKEN=9048c8f4-2f20-4ece-bf04-a4065ca75a17
+
 before_script:
   - npm run build
 
 script:
-  - node build/testy.js
+  - nyc --reporter=lcov --reporter=html node build/testy.js
+  - nyc --reporter=text-lcov > coverage.lcov
+  - codecov
   - npm run lint
