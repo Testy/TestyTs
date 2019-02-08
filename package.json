@@ -6,7 +6,8 @@
     "main": "build/testyCore.js",
     "bin": "build/testy.js",
     "scripts": {
-        "test": "tsc & node build/testy.js & npm run lint",
+        "test": "tsc & node build/testy.js",
+        "check-coverage": "nyc --reporter=lcov --reporter=html npm run test && nyc report",
         "debug-tests": "node --nolazy --inspect-brk=9229 build/testy.js",
         "build": "tsc",
         "lint": "tslint -c tslint.json 'src/**/*.ts'",
@@ -39,6 +40,8 @@
     "devDependencies": {
         "@types/glob": "^7.1.1",
         "@types/node": "^10.12.2",
+        "codecov": "^3.1.0",
+        "nyc": "^13.2.0",
         "tslint": "^5.11.0"
     }
 }
