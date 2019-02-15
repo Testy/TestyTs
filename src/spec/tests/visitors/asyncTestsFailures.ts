@@ -1,10 +1,12 @@
 import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
 import { Test } from '../../../testyCore';
+import { Timeout } from '../../../lib/decorators/timeout.decorator';
 
 @TestSuite()
 export class AsyncTestsFailures {
 
-    @Test(undefined, undefined, 0)
+    @Test(undefined, undefined)
+    @Timeout(0)
     async testA() {
         await new Promise(() => { });
     }

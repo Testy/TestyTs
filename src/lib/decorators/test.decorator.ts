@@ -8,10 +8,9 @@ import { TestSuiteInstance } from '../tests/testSuite';
  *
  * @param name Name of the test, displayed in the test report.
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
- * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function Test(name?: string, testCases?: TestCase[], timeout: number = 2000) {
-    return generateDecoratorFunction(name, TestStatus.Normal, testCases, timeout);
+export function Test(name?: string, testCases?: TestCase[]) {
+    return generateDecoratorFunction(name, TestStatus.Normal, testCases);
 }
 
 /**
@@ -20,10 +19,9 @@ export function Test(name?: string, testCases?: TestCase[], timeout: number = 20
  *
  * @param name Name of the test, displayed in the test report.
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
- * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function FTest(name?: string, testCases?: TestCase[], timeout: number = 2000) {
-    return generateDecoratorFunction(name, TestStatus.Focused, testCases, timeout);
+export function FTest(name?: string, testCases?: TestCase[]) {
+    return generateDecoratorFunction(name, TestStatus.Focused, testCases);
 }
 
 /** 
@@ -32,10 +30,9 @@ export function FTest(name?: string, testCases?: TestCase[], timeout: number = 2
  * 
  * @param name Name of the test, displayed in the test report.
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
- * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function XTest(name?: string, testCases?: TestCase[], timeout: number = 2000) {
-    return generateDecoratorFunction(name, TestStatus.Ignored, testCases, timeout);
+export function XTest(name?: string, testCases?: TestCase[]) {
+    return generateDecoratorFunction(name, TestStatus.Ignored, testCases);
 }
 
 /**
@@ -44,10 +41,9 @@ export function XTest(name?: string, testCases?: TestCase[], timeout: number = 2
  *
  * @param name Name of the test, displayed in the test report.
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
- * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function test(name?: string, testCases?: TestCase[], timeout: number = 2000) {
-    return Test(name, testCases, timeout);
+export function test(name?: string, testCases?: TestCase[]) {
+    return Test(name, testCases);
 }
 
 /**
@@ -57,10 +53,9 @@ export function test(name?: string, testCases?: TestCase[], timeout: number = 20
  *
  * @param name Name of the test, displayed in the test report.
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
- * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function ftest(name?: string, testCases?: TestCase[], timeout: number = 2000) {
-    return FTest(name, testCases, timeout);
+export function ftest(name?: string, testCases?: TestCase[]) {
+    return FTest(name, testCases);
 }
 
 /** 
@@ -70,10 +65,9 @@ export function ftest(name?: string, testCases?: TestCase[], timeout: number = 2
  * 
  * @param name Name of the test, displayed in the test report.
  * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
- * @param timeout The test will automaticlaly fail if it has been running for longer than the specified timeout.
  */
-export function xtest(name?: string, testCases?: TestCase[], timeout: number = 2000) {
-    return XTest(name, testCases, timeout);
+export function xtest(name?: string, testCases?: TestCase[]) {
+    return XTest(name, testCases);
 }
 
 function initializeTarget(target: any) {
@@ -85,8 +79,9 @@ function initializeTarget(target: any) {
     }
 }
 
-function generateDecoratorFunction(name: string, status: TestStatus, testCases: TestCase[], timeout: number) {
+function generateDecoratorFunction(name: string, status: TestStatus, testCases: TestCase[]) {
     return (target, key, descriptor) => {
+        const timeout = target.timeout === undefined ? 2000 : target.timeout;
         initializeTarget(target);
         const testSuiteInstance: TestSuiteInstance = target.__testSuiteInstance;
 
