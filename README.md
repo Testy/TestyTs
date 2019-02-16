@@ -92,7 +92,7 @@ export class MyTestSuite {
 
 ### Timeout
 
-If a test is taking too long to complete, it will fail automatically. The default timeout it 2000 ms, but you can configure it.
+If a test is taking too long to complete, it will fail automatically. The default timeout it 2000 ms, but you can configure it. Please note that the `Timeout` decorator goes after the `Test` decorator.
 
 ```ts
 @TestSuite()
