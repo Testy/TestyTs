@@ -1,5 +1,9 @@
 # Changes
 
+### 0.8.0
+  - Added `@Timeout` decorator.
+  - Removed the `timeout` argument from the `@Test` decorator
+
 ### 0.7.6
   - Reduced package size
 
