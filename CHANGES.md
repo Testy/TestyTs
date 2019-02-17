@@ -5,6 +5,8 @@
   - Implemented the `@TestCase` decorator
   - Removed the `timeout` argument from the `@Test` decorator
   - Removed the `testCases` argument from the `@Test` decorator
+  - Implemented a TAP reporter
+  - Added a reporter option to the CLI (-r/--reporter)
 
 ### 0.7.6
   - Reduced package size
