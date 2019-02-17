@@ -1,4 +1,5 @@
-import { Test, XTest, BeforeEach, TestCase, TestSuite } from '../../../testyCore';
+import { Test, XTest, BeforeEach, TestCaseInstance, TestSuite } from '../../../testyCore';
+import { TestCase } from '../../../lib/decorators/testCase.decorator';
 
 @TestSuite('Throws During Before Each Test Suite')
 export class ThrowsDuringBeforeEachTestSuite {
@@ -13,11 +14,10 @@ export class ThrowsDuringBeforeEachTestSuite {
     @Test('b')
     private b() { }
 
-    @Test('c', [
-        new TestCase('c.1'),
-        new TestCase('c.2'),
-        new TestCase('c.3'),
-    ])
+    @Test('c')
+    @TestCase('c.1')
+    @TestCase('c.2')
+    @TestCase('c.3')
     private c() { }
 
     @XTest('d')

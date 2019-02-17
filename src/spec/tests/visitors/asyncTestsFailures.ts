@@ -5,7 +5,7 @@ import { Timeout } from '../../../lib/decorators/timeout.decorator';
 @TestSuite()
 export class AsyncTestsFailures {
 
-    @Test(undefined, undefined)
+    @Test()
     @Timeout(0)
     async testA() {
         await new Promise(() => { });

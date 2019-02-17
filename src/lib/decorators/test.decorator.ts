@@ -1,4 +1,4 @@
-import { TestCase } from '../testCase';
+import { TestCaseInstance } from '../testCaseInstance';
 import { TestStatus } from '../testStatus';
 import { TestInstance } from '../tests/test';
 import { TestSuiteInstance } from '../tests/testSuite';
@@ -7,10 +7,9 @@ import { TestSuiteInstance } from '../tests/testSuite';
  * Marks a method inside a @TestSuite decorated class as a test.
  *
  * @param name Name of the test, displayed in the test report.
- * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  */
-export function Test(name?: string, testCases?: TestCase[]) {
-    return generateDecoratorFunction(name, TestStatus.Normal, testCases);
+export function Test(name?: string) {
+    return generateDecoratorFunction(name, TestStatus.Normal);
 }
 
 /**
@@ -18,10 +17,9 @@ export function Test(name?: string, testCases?: TestCase[]) {
  * If one or more tests are marked as focused, only those will be ran.
  *
  * @param name Name of the test, displayed in the test report.
- * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  */
-export function FTest(name?: string, testCases?: TestCase[]) {
-    return generateDecoratorFunction(name, TestStatus.Focused, testCases);
+export function FTest(name?: string) {
+    return generateDecoratorFunction(name, TestStatus.Focused);
 }
 
 /** 
@@ -29,10 +27,9 @@ export function FTest(name?: string, testCases?: TestCase[]) {
  * Ignored tests will not be ran, but they will still appear in test reports.
  * 
  * @param name Name of the test, displayed in the test report.
- * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  */
-export function XTest(name?: string, testCases?: TestCase[]) {
-    return generateDecoratorFunction(name, TestStatus.Ignored, testCases);
+export function XTest(name?: string) {
+    return generateDecoratorFunction(name, TestStatus.Ignored);
 }
 
 /**
@@ -40,10 +37,9 @@ export function XTest(name?: string, testCases?: TestCase[]) {
  * Marks a method inside a @TestSuite decorated class as a test.
  *
  * @param name Name of the test, displayed in the test report.
- * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  */
-export function test(name?: string, testCases?: TestCase[]) {
-    return Test(name, testCases);
+export function test(name?: string) {
+    return Test(name);
 }
 
 /**
@@ -52,10 +48,9 @@ export function test(name?: string, testCases?: TestCase[]) {
  * If one or more tests are marked as focused, only those will be ran.
  *
  * @param name Name of the test, displayed in the test report.
- * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  */
-export function ftest(name?: string, testCases?: TestCase[]) {
-    return FTest(name, testCases);
+export function ftest(name?: string) {
+    return FTest(name);
 }
 
 /** 
@@ -64,10 +59,9 @@ export function ftest(name?: string, testCases?: TestCase[]) {
  * Ignored tests will not be ran, but they will still appear in test reports.
  * 
  * @param name Name of the test, displayed in the test report.
- * @param testCases Allows to run the test multiple times with different arguments. Arguments will be passed to the test class.
  */
-export function xtest(name?: string, testCases?: TestCase[]) {
-    return XTest(name, testCases);
+export function xtest(name?: string) {
+    return XTest(name);
 }
 
 function initializeTarget(target: any) {
@@ -79,9 +73,11 @@ function initializeTarget(target: any) {
     }
 }
 
-function generateDecoratorFunction(name: string, status: TestStatus, testCases: TestCase[]) {
+function generateDecoratorFunction(name: string, status: TestStatus) {
     return (target, key, descriptor) => {
-        const timeout = target.timeout === undefined ? 2000 : target.timeout;
+        const timeout = getTimeout(target, key);
+        const testCases = getTestCases(target, key);
+
         initializeTarget(target);
         const testSuiteInstance: TestSuiteInstance = target.__testSuiteInstance;
 
@@ -94,13 +90,13 @@ function generateDecoratorFunction(name: string, status: TestStatus, testCases: 
     };
 }
 
-function generateTest(name: string, testCases: TestCase[], status: TestStatus, testMethod: Function, timeout: number): TestInstance | TestSuiteInstance {
+function generateTest(name: string, testCases: TestCaseInstance[], status: TestStatus, testMethod: Function, timeout: number): TestInstance | TestSuiteInstance {
     return testCases
         ? generateTestsFromTestcases(name, testMethod, testCases, status, timeout)
         : new TestInstance(name, decorateTest(testMethod, timeout), status);
 }
 
-function generateTestsFromTestcases(name: string, testMethod: Function, testCases: TestCase[], status: TestStatus, timeout: number): TestSuiteInstance {
+function generateTestsFromTestcases(name: string, testMethod: Function, testCases: TestCaseInstance[], status: TestStatus, timeout: number): TestSuiteInstance {
     const tests = new TestSuiteInstance();
     tests.name = name;
     for (const testCase of testCases) {
@@ -125,4 +121,12 @@ function decorateTest(testMethod: Function, timeout: number, args: any[] = []) {
             resolve();
         });
     };
+}
+
+function getTimeout(target, key) {
+    return target.__timeouts ? target.__timeouts[key] : 2000;
+}
+
+function getTestCases(target, key) {
+    return target.__testCases ? target.__testCases[key] : undefined;
 }

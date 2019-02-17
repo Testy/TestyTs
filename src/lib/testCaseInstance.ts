@@ -1,4 +1,4 @@
-export class TestCase {
+export class TestCaseInstance {
     public args: any[];
 
     constructor(public name: string, ...args: any[]) {

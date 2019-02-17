@@ -1,6 +1,7 @@
-import { Test, BeforeAll, BeforeEach, AfterEach, AfterAll, TestCase } from '../../../testyCore';
+import { Test, BeforeAll, BeforeEach, AfterEach, AfterAll, TestCaseInstance } from '../../../testyCore';
 import { XTest } from '../../../lib/decorators/test.decorator';
 import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
+import { TestCase } from '../../../lib/decorators/testCase.decorator';
 
 @TestSuite('Normal Before After Test Suite')
 export class NormalBeforeAfterTestSuite {
@@ -28,11 +29,10 @@ export class NormalBeforeAfterTestSuite {
     private b() { }
 
 
-    @Test('c', [
-        new TestCase('c.1'),
-        new TestCase('c.2'),
-        new TestCase('c.3'),
-    ])
+    @Test('c')
+    @TestCase('c.1')
+    @TestCase('c.2')
+    @TestCase('c.3')
     private c() { }
 
     @XTest('d')

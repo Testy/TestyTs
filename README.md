@@ -123,14 +123,16 @@ class MyTestSuite extends MyBaseTestSuite {
 
 ### Test cases
 
+You can easily run the same test with different inputs using the `TestCase` decorator. The first argument is the test case name, the following arguments will be 
+passed to your test method. Please note this decorator goes after the `@Test` decorator. 
+
 ```ts
 @TestSuite()
 export class MyTestSuite {
-    @Test('Addition', [
-          new TestCase('Two plus two is four', 2, 2, 4),
-          new TestCase(`Minus one that's three`, 4, -1, 3)
-    ])
-    onePlusOne(a: number, b: number, result: number) {
+    @Test()
+    @TestCase('Two plus two is four', 2, 2, 4)
+    @TestCase(`Minus one that's three`, 4, -1, 3)
+    addition(a: number, b: number, result: number) {
         expect.toBeEqual(a + b, result);
     }
 }

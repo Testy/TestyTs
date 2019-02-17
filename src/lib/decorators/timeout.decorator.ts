@@ -4,6 +4,10 @@
  */
 export function Timeout(timeout: number = 2000) {
     return (target, key, descriptor) => {
-        target.timeout = timeout;
+        if (!target.__timeouts) {
+            target.__timeouts = {};
+        }
+
+        target.__timeouts[key] = timeout;
     };
 }

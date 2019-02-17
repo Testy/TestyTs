@@ -1,10 +1,11 @@
-import { TestSuite, BeforeEach, Test, TestCase } from '../../testyCore';
+import { TestSuite, BeforeEach, Test, TestCaseInstance } from '../../testyCore';
 import { Logger } from '../../lib/logger/logger';
 import { TestyCli } from '../../lib/cli/testyCli';
 import { NullLogger } from '../utils/nullLogger';
 import { RunCommand } from '../../lib/cli/run.command';
 import { InitCommand } from '../../lib/cli/init.command';
 import { expect } from '@testy/assertion';
+import { TestCase } from '../../lib/decorators/testCase.decorator';
 
 @TestSuite('Cli Tests')
 export class CliTests {
@@ -18,11 +19,10 @@ export class CliTests {
         this.cli = new TestyCli(this.logger);
     }
 
-    @Test('Run command', [
-        new TestCase('testy', ['node', '/some/path'], 'testy.json'),
-        new TestCase('testy -c alternate/config.json', ['node', '/some/path', '-c', 'alternate/config.json'], 'alternate/config.json'),
-        new TestCase('testy --config alternate/config.json', ['node', '/some/path', '--config', 'alternate/config.json'], 'alternate/config.json'),
-    ])
+    @Test('Run command')
+    @TestCase('testy', ['node', '/some/path'], 'testy.json')
+    @TestCase('testy -c alternate/config.json', ['node', '/some/path', '-c', 'alternate/config.json'], 'alternate/config.json')
+    @TestCase('testy --config alternate/config.json', ['node', '/some/path', '--config', 'alternate/config.json'], 'alternate/config.json')
     private async runCommandTests(args: any[], expectedConfig: string) {
         // Act
         const command = await this.cli.getCommand(args);

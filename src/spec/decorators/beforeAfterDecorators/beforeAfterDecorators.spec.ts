@@ -2,13 +2,14 @@ import { expect } from '@testy/assertion';
 import { Report } from '../../../lib/reporting/report/report';
 import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor';
 import { TestVisitor } from '../../../lib/tests/visitors/testVisitor';
-import { BeforeEach, Test, TestCase, TestResult, TestSuite } from '../../../testyCore';
+import { BeforeEach, Test, TestCaseInstance, TestResult, TestSuite, FTest } from '../../../testyCore';
 import { TestUtils } from '../../utils/testUtils';
 import { NormalBeforeAfterTestSuite } from './normalBeforeAfterTestSuite';
 import { ThrowsDuringAfterAllTestSuite } from './throwsDuringAfterAllTestSuite';
 import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite';
 import { ThrowsDuringBeforeAllTestSuite } from './throwsDuringBeforeAllTestSuite';
 import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSuite';
+import { TestCase } from '../../../lib/decorators/testCase.decorator';
 
 @TestSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
@@ -37,12 +38,11 @@ export class BeforeAfterDecoratorsTestSuite {
         expect.toBeEqual(report.numberOfTests, 6);
     }
 
-    @Test('Before and after methods failures', [
-        new TestCase('beforeAll throws, should return a failed test report', ThrowsDuringBeforeAllTestSuite, 6),
-        new TestCase('beforeEach throws, should return a failed test report', ThrowsDuringBeforeEachTestSuite, 6),
-        new TestCase('afterEach throws, should return a failed test report', ThrowsDuringAfterEachTestSuite, 6),
-        new TestCase('afterAll throws, should return a failed test report', ThrowsDuringAfterAllTestSuite, 6),
-    ])
+    @Test('Before and after methods failures')
+    @TestCase('beforeAll throws, should return a failed test report', ThrowsDuringBeforeAllTestSuite, 6)
+    @TestCase('beforeEach throws, should return a failed test report', ThrowsDuringBeforeEachTestSuite, 6)
+    @TestCase('afterEach throws, should return a failed test report', ThrowsDuringAfterEachTestSuite, 6)
+    @TestCase('afterAll throws, should return a failed test report', ThrowsDuringAfterAllTestSuite, 6)
     private async beforeOfAfterMethodFails(testSuiteClass: any, numberOfTests: number) {
         // Arrange
         const testSuite = TestUtils.getInstance(testSuiteClass);
