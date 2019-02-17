@@ -97,6 +97,7 @@ If a test is taking too long to complete, it will fail automatically. The defaul
 ```ts
 @TestSuite()
 export class MyTestSuite {
+
     @Test() 
     @Timeout(100000) // Really slow test
     slowTest() {
