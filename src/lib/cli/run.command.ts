@@ -6,15 +6,17 @@ import { TestsLoader } from '../utils/testsLoader';
 import { CliCommand } from './cliCommand';
 import { TestVisitor } from '../tests/visitors/testVisitor';
 import { Report } from '../reporting/report/report';
-import { TestRunnerVisitor } from '../tests/visitors/testRunnerVisitor';
-import { LoggerTestReporterDecorator } from '../tests/visitors/decorators/loggerTestReporterDecorator';
 import * as tsnode from 'ts-node';
 
 export class RunCommand implements CliCommand {
     public get testyConfigFile(): string { return this._testyConfigFile; }
     public get tsConfigFile(): string { return this._tsConfigFile; }
 
-    constructor(private logger: Logger, private _testyConfigFile: string = 'testy.json', private _tsConfigFile = 'tsconfig.json') { }
+    constructor(private logger: Logger,
+        private testRunnerVisitor: TestVisitor<Report>,
+        private _testyConfigFile: string = 'testy.json',
+        private _tsConfigFile = 'tsconfig.json') {
+    }
 
     public async execute() {
         const testyConfig = await this.loadTestyConfig();
@@ -23,9 +25,7 @@ export class RunCommand implements CliCommand {
         const testsLoader = new TestsLoader(this.logger);
         const testSuites = await testsLoader.loadTests(process.cwd(), testyConfig.include, tsConfig);
 
-        let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor();
-        testRunnerVisitor = new LoggerTestReporterDecorator(testRunnerVisitor, this.logger);
-        await testSuites.accept(testRunnerVisitor);
+        await testSuites.accept(this.testRunnerVisitor);
     }
 
     private async loadTestyConfig(): Promise<TestyConfig> {

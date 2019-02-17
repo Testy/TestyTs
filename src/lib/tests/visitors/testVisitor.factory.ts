@@ -19,9 +19,9 @@ export class TestVisitorFactory {
 
     public getRunner(reporterType: 'standard' | 'TAP') {
         let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor();
-        testRunnerVisitor = new LoggerTestReporterDecorator(testRunnerVisitor, this.logger);
 
         const reporterConstructor = this.reportersConstructors.get(reporterType);
+
         if (!reporterConstructor)
             throw new Error(`The ${reporterType} reporter is not supported.`);
 
