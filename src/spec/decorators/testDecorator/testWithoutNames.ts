@@ -1,6 +1,7 @@
 import { Test } from '../../../testyCore';
-import { TestCase } from '../../../lib/testCase';
+import { TestCaseInstance } from '../../../lib/testCaseInstance';
 import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
+import { TestCase } from '../../../lib/decorators/testCase.decorator';
 
 @TestSuite()
 export class TestWithNoNamesTestSuite {
@@ -10,10 +11,9 @@ export class TestWithNoNamesTestSuite {
     @Test()
     private myTest2() { }
 
-    @Test(undefined, [
-        new TestCase('myTestCase1'),
-        new TestCase('myTestCase2'),
-        new TestCase('myTestCase3')
-    ])
+    @Test()
+    @TestCase('myTestCase1')
+    @TestCase('myTestCase2')
+    @TestCase('myTestCase3')
     private myTest3() { }
 }

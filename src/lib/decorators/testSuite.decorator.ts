@@ -6,7 +6,7 @@ import { TestSuiteInstance } from '../tests/testSuite';
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function TestSuite<T extends new(...args: any[]) => {}>(name?: string): any {
+export function TestSuite<T extends new (...args: any[]) => {}>(name?: string): any {
     return createTestSuiteDecoratorFactory<T>(TestStatus.Normal, name);
 }
 
@@ -15,7 +15,7 @@ export function TestSuite<T extends new(...args: any[]) => {}>(name?: string): a
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function FTestSuite<T extends new(...args: any[]) => {}>(name?: string): any {
+export function FTestSuite<T extends new (...args: any[]) => {}>(name?: string): any {
     return createTestSuiteDecoratorFactory<T>(TestStatus.Focused, name);
 }
 
@@ -24,7 +24,7 @@ export function FTestSuite<T extends new(...args: any[]) => {}>(name?: string): 
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function XTestSuite<T extends new(...args: any[]) => {}>(name?: string): any {
+export function XTestSuite<T extends new (...args: any[]) => {}>(name?: string): any {
     return createTestSuiteDecoratorFactory<T>(TestStatus.Ignored, name);
 }
 
@@ -34,7 +34,7 @@ export function XTestSuite<T extends new(...args: any[]) => {}>(name?: string): 
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function testSuite<T extends new(...args: any[]) => {}>(name?: string): any {
+export function testSuite<T extends new (...args: any[]) => {}>(name?: string): any {
     return TestSuite<T>(name);
 }
 
@@ -44,7 +44,7 @@ export function testSuite<T extends new(...args: any[]) => {}>(name?: string): a
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function ftestSuite<T extends new(...args: any[]) => {}>(name?: string): any {
+export function ftestSuite<T extends new (...args: any[]) => {}>(name?: string): any {
     return FTestSuite<T>(name);
 }
 
@@ -54,11 +54,11 @@ export function ftestSuite<T extends new(...args: any[]) => {}>(name?: string): 
  * 
  * @param name Name of the test suite, displayed in the test report.
  */
-export function xtestSuite<T extends new(...args: any[]) => {}>(name?: string): any {
+export function xtestSuite<T extends new (...args: any[]) => {}>(name?: string): any {
     return XTestSuite<T>(name);
 }
 
-function createTestSuiteDecoratorFactory<T extends new(...args: any[]) => {}>(status: TestStatus, name?: string) {
+function createTestSuiteDecoratorFactory<T extends new (...args: any[]) => {}>(status: TestStatus, name?: string) {
     return (constructor: T) => {
         name = name ? name : constructor.name;
         (constructor as any).__testSuiteInstance = createTestSuite(constructor, name, status);
