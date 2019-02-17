@@ -130,6 +130,7 @@ passed to your test method. Please note this decorator goes after the `@Test` de
 ```ts
 @TestSuite()
 export class MyTestSuite {
+
     @Test()
     @TestCase('Two plus two is four', 2, 2, 4)
     @TestCase(`Minus one that's three`, 4, -1, 3)
@@ -164,6 +165,7 @@ export class MyTestSuite {
 
 @TestSuite()
 export class MyTestSuite {
+
     @XTest() // This test will be ignored
     onePlusOne() {
        // Some test
@@ -181,6 +183,7 @@ export class MyTestSuite {
 
 @TestSuite()
 export class MyTestSuite {
+
     @FTest() // This test will be focused
     onePlusOne() {
        // Your test
