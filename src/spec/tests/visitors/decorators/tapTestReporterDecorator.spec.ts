@@ -22,8 +22,8 @@ export class TapTestReporterDecoratorTests {
         this.testRunnerVisitor = new TapTestReporterDecorator(this.testRunnerVisitor, this.logger);
     }
 
-    @Test()
-    async simpleTest() {
+    @Test('Test suite output respects the TAP spec')
+    async outputRespectsSpec() {
         // Arrange
         const testSuite = TestUtils.getInstance(DummyTapDecoratorTestSuite);
 
@@ -31,7 +31,6 @@ export class TapTestReporterDecoratorTests {
         await testSuite.accept(this.testRunnerVisitor);
 
         // Assert
-
         // We split each line and remove the comments and empty lines
         const output = this.logger.string
             .split('\n')

@@ -20,7 +20,7 @@ export class TapTestReporterDecorator extends TestsVisitorDecorator<Report> {
         const report = await this.baseVisitTest(test);
 
         let msg;
-        const safeName = test.name.replace('#', ' ');
+        const safeName = test.name.replace('#', '');
         if (report.result === TestResult.Success) {
             msg = `ok ${this.counter} ${safeName}`;
         }
