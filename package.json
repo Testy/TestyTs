@@ -43,5 +43,22 @@
         "codecov": "^3.1.0",
         "nyc": "^13.3.0",
         "tslint": "^5.11.0"
+    },
+    "nyc": {
+        "include": [
+            "src/lib/**/*.ts"
+        ],
+        "exclude": [
+            "src/spec/**/*.ts"
+        ],
+        "extension": [
+            ".ts"
+        ],
+        "reporter": [
+            "text-summary",
+            "html"
+        ],
+        "sourceMap": true,
+        "instrument": true
     }
 }
