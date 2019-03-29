@@ -2,6 +2,7 @@ import { TestCaseInstance } from '../testCaseInstance';
 import { TestStatus } from '../testStatus';
 import { TestInstance } from '../tests/test';
 import { TestSuiteInstance } from '../tests/testSuite';
+import { getTestSuiteInstance } from './utils';
 
 /**
  * Marks a method inside a @TestSuite decorated class as a test.
@@ -64,22 +65,13 @@ export function xtest(name?: string) {
     return XTest(name);
 }
 
-function initializeTarget(target: any) {
-    if (!target.__testSuiteInstance) {
-        target.__testSuiteInstance = new TestSuiteInstance();
-    }
-    else {
-        target.__testSuiteInstance = (target.__testSuiteInstance as TestSuiteInstance).clone();
-    }
-}
 
 function generateDecoratorFunction(name: string, status: TestStatus) {
     return (target, key, descriptor) => {
         const timeout = getTimeout(target, key);
         const testCases = getTestCases(target, key);
 
-        initializeTarget(target);
-        const testSuiteInstance: TestSuiteInstance = target.__testSuiteInstance;
+        const testSuiteInstance = getTestSuiteInstance(target);
 
         name = name ? name : key;
         if (testSuiteInstance.has(name)) {
