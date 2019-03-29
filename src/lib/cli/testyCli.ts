@@ -15,7 +15,7 @@ export class TestyCli {
             await command.execute();
         }
         catch (err) {
-            this.logger.error(err.message);
+            this.logger.error(`An error occured while executing the following command: ${command}. Error: "${err.message}"`);
         }
     }
 
