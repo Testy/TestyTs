@@ -1,7 +1,7 @@
-import { TestSuite } from "../../../../lib/decorators/testSuite.decorator";
-import { Test } from "../../../../lib/decorators/test.decorator";
-import { expect } from "@testy/assertion";
-import { TestCase } from "../../../../lib/decorators/testCase.decorator";
+import { TestSuite } from '../../../../lib/decorators/testSuite.decorator';
+import { Test } from '../../../../lib/decorators/test.decorator';
+import { expect } from '@testy/assertion';
+import { TestCase } from '../../../../lib/decorators/testCase.decorator';
 
 @TestSuite()
 export class DummyTapDecoratorTestSuite {

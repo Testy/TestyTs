@@ -1,14 +1,14 @@
-import { TestSuite, FTestSuite } from "../../../../lib/decorators/testSuite.decorator";
-import { BeforeEach } from "../../../../lib/decorators/afterAndBefore.decorator";
+import { TestSuite, FTestSuite } from '../../../../lib/decorators/testSuite.decorator';
+import { BeforeEach } from '../../../../lib/decorators/afterAndBefore.decorator';
 import { TestRunnerVisitor } from '../../../../lib/tests/visitors/testRunnerVisitor';
 import { TestVisitor } from '../../../../lib/tests/visitors/testVisitor';
 import { Report } from '../../../../lib/reporting/report/report';
 import { StringLogger } from '../../../utils/stringLogger';
 import { TapTestReporterDecorator } from '../../../../lib/tests/visitors/decorators/tapTestReporterDecorator';
-import { Test } from "../../../../lib/decorators/test.decorator";
-import { TestUtils } from "../../../utils/testUtils";
-import { DummyTapDecoratorTestSuite, dummyTapDecoratorTestSuiteExpectedOutput } from "./dummyTapDecoratorTestSuite";
-import { expect } from "@testy/assertion";
+import { Test } from '../../../../lib/decorators/test.decorator';
+import { TestUtils } from '../../../utils/testUtils';
+import { DummyTapDecoratorTestSuite, dummyTapDecoratorTestSuiteExpectedOutput } from './dummyTapDecoratorTestSuite';
+import { expect } from '@testy/assertion';
 
 @FTestSuite('Tap Reporter Tests')
 export class TapTestReporterDecoratorTests {

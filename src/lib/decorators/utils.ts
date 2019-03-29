@@ -1,4 +1,4 @@
-import { TestSuiteInstance } from "../tests/testSuite";
+import { TestSuiteInstance } from '../tests/testSuite';
 
 export function getTestSuiteInstance(target: any): TestSuiteInstance {
     if (!target.__testSuiteInstance) {
