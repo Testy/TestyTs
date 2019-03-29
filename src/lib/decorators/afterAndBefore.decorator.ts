@@ -1,4 +1,4 @@
-import { TestSuiteInstance } from '../tests/testSuite';
+import { getTestSuiteInstance } from './utils';
 
 /** 
  * Method which is executed after all the tests were ran. 
@@ -66,16 +66,4 @@ export function beforeAll() {
  */
 export function beforeEach() {
     return BeforeEach();
-}
-
-
-function getTestSuiteInstance(target: any) {
-    if (!target.__testSuiteInstance) {
-        target.__testSuiteInstance = new TestSuiteInstance();
-    }
-    else {
-        target.__testSuiteInstance = (target.__testSuiteInstance as TestSuiteInstance).clone();
-    }
-
-    return target.__testSuiteInstance;
 }

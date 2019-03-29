@@ -1,5 +1,6 @@
 import { TestStatus } from '../testStatus';
 import { TestSuiteInstance } from '../tests/testSuite';
+import { getTestSuiteInstance } from './utils';
 
 /** 
  * Marks a class as a test suite. 
@@ -68,7 +69,7 @@ function createTestSuiteDecoratorFactory<T extends new (...args: any[]) => {}>(s
 
 function createTestSuite<T>(constructor: new () => T, name: string, status: TestStatus): TestSuiteInstance {
     const context = new constructor();
-    const testSuiteInstance: TestSuiteInstance = (context as any).__testSuiteInstance;
+    const testSuiteInstance = getTestSuiteInstance(context);
     testSuiteInstance.name = name;
     testSuiteInstance.status = status;
     testSuiteInstance.context = context;

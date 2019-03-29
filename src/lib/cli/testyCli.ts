@@ -4,9 +4,10 @@ import { InitCommand } from './init.command';
 import { RunCommand } from './run.command';
 import { CliCommand } from './cliCommand';
 import { NopCommand } from './nopCommand';
+import { TestVisitorFactory, ReporterType } from '../tests/visitors/testVisitor.factory';
 
 export class TestyCli {
-    constructor(private logger: Logger) { }
+    constructor(private logger: Logger, private testVisitorFactory: TestVisitorFactory) { }
 
     public async handle(args: any[]) {
         const command = await this.getCommand(args);
@@ -14,7 +15,7 @@ export class TestyCli {
             await command.execute();
         }
         catch (err) {
-            this.logger.info(err.message);
+            this.logger.error(`An error occured while executing the following command: ${command}. Error: "${err.message}"`);
         }
     }
 
@@ -27,15 +28,21 @@ export class TestyCli {
                 .action(() => resolve(new InitCommand(this.logger)));
 
             program
-                .option('-c --config', 'Specify a config file.')
-                .action(config => resolve(new RunCommand(this.logger, config)));
+                .option('-c --config', 'Specify a config file.', './testy.json')
+                .option('-r --reporter [type]', 'Specifies the reporter type', /(standard|TAP)/, 'standard')
+                .action((config: string, cmd) => {
+                    const testRunner = this.testVisitorFactory.getRunner(cmd.reporter);
+                    resolve(new RunCommand(this.logger, testRunner, config));
+                });
 
             program
                 .command('*')
                 .action(() => resolve(new NopCommand()));
+
             program.parse(args);
             if (program.args.length === 0) {
-                resolve(new RunCommand(this.logger));
+                const testRunner = this.testVisitorFactory.getRunner('standard');
+                resolve(new RunCommand(this.logger, testRunner));
             }
         });
     }
