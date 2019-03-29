@@ -1,4 +1,4 @@
-import { TestSuite, FTestSuite } from '../../../../lib/decorators/testSuite.decorator';
+import { TestSuite } from '../../../../lib/decorators/testSuite.decorator';
 import { BeforeEach } from '../../../../lib/decorators/afterAndBefore.decorator';
 import { TestRunnerVisitor } from '../../../../lib/tests/visitors/testRunnerVisitor';
 import { TestVisitor } from '../../../../lib/tests/visitors/testVisitor';
@@ -10,7 +10,7 @@ import { TestUtils } from '../../../utils/testUtils';
 import { DummyTapDecoratorTestSuite, dummyTapDecoratorTestSuiteExpectedOutput } from './dummyTapDecoratorTestSuite';
 import { expect } from '@testy/assertion';
 
-@FTestSuite('Tap Reporter Tests')
+@TestSuite('Tap Reporter Tests')
 export class TapTestReporterDecoratorTests {
     private testRunnerVisitor: TestVisitor<Report>;
     private logger: StringLogger;
