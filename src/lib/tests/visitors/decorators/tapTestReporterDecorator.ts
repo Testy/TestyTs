@@ -1,4 +1,4 @@
-import { Logger, Color } from '../../../logger/logger';
+import { Logger } from '../../../logger/logger';
 import { CompositeReport } from '../../../reporting/report/compositeReport';
 import { FailedTestReport } from '../../../reporting/report/failedTestReport';
 import { Report } from '../../../reporting/report/report';
