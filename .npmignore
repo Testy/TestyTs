@@ -3,6 +3,9 @@
 /build/spec/
 /build/tests/
 /build/coverage/
+/coverage/
+/.nyc_output/
+.code-workspace
 /.vscode
 **/*.md
 .travis.yml
