@@ -6,7 +6,7 @@
     "main": "build/testyCore.js",
     "bin": "build/testy.js",
     "scripts": {
-        "test": "tsc & node build/testy.js -t tsconfig-2.json",
+        "test": "tsc & node build/testy.js",
         "check-coverage": "nyc --reporter=lcov --reporter=html npm run test && nyc report",
         "debug-tests": "node --nolazy --inspect-brk=9229 build/testy.js",
         "build": "tsc",
