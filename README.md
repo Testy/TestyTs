@@ -219,7 +219,9 @@ To run the tests, use the following command
 ```
 $ testyts
 $ testyts --config custom/config/file.json // To specify a custom configuration file
+$ testyts --tsconfig custom/tsconfig.json // To specify a custom typescript configuration file (tsconfig.json)
 ```
+
 
 ## Try it out online!
 

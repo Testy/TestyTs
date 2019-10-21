@@ -1,5 +1,9 @@
 # Changes
 
+### 0.8.1
+  - Added a tsconfig option to the CLI (-t/--tsconfig <path>)
+
+
 ### 0.8.0
   - Implemented `@Timeout` decorator
   - Implemented the `@TestCase` decorator
