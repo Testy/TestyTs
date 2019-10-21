@@ -1,10 +1,11 @@
+import { Command } from 'commander';
 import { Logger } from '../logger/logger';
-import * as program from 'commander';
-import { InitCommand } from './init.command';
-import { RunCommand } from './run.command';
+import { TestVisitorFactory } from '../tests/visitors/testVisitor.factory';
 import { CliCommand } from './cliCommand';
+import { InitCommand } from './init.command';
 import { NopCommand } from './nopCommand';
-import { TestVisitorFactory, ReporterType } from '../tests/visitors/testVisitor.factory';
+import { RunCommand } from './run.command';
+import * as Commander from 'commander';
 
 export class TestyCli {
     constructor(private logger: Logger, private testVisitorFactory: TestVisitorFactory) { }
@@ -22,28 +23,25 @@ export class TestyCli {
     public getCommand(args: any[]) {
 
         return new Promise<CliCommand>(resolve => {
+            const program = new Commander.Command();
+
             program
                 .command('init')
                 .description('Creates a default testy.json config file.')
                 .action(() => resolve(new InitCommand(this.logger)));
 
             program
-                .option('-c --config', 'Specify a config file.', './testy.json')
-                .option('-r --reporter [type]', 'Specifies the reporter type', /(standard|TAP)/, 'standard')
-                .action((config: string, cmd) => {
-                    const testRunner = this.testVisitorFactory.getRunner(cmd.reporter);
-                    resolve(new RunCommand(this.logger, testRunner, config));
-                });
-
-            program
-                .command('*')
-                .action(() => resolve(new NopCommand()));
+                .option('-c --config <config>', 'Specify a config file.', './testy.json')
+                .option('-t --tsconfig <tsconfig>', 'Specify a tsconfig config file.', './tsconfig.json')
+                .option('-r --reporter <reporter>', 'Specifies the reporter type', /(standard|TAP)/, 'standard')
 
             program.parse(args);
-            if (program.args.length === 0) {
-                const testRunner = this.testVisitorFactory.getRunner('standard');
-                resolve(new RunCommand(this.logger, testRunner));
+
+            if(program._name === '-c' || program._name === '--config' && program.args.length > 0) {
+                program.config = program.args[0];
             }
+            const testRunner = this.testVisitorFactory.getRunner(program.reporter);
+            resolve(new RunCommand(this.logger, testRunner, program.config, program.tsconfig));
         });
     }
 }
