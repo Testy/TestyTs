@@ -15,12 +15,25 @@ export class RunCommand implements CliCommand {
     constructor(private logger: Logger,
         private testRunnerVisitor: TestVisitor<Report>,
         private _testyConfigFile: string = 'testy.json',
-        private _tsConfigFile = 'tsconfig.json') {
+        private _tsConfigFile) {
     }
 
     public async execute() {
         const testyConfig = await this.loadTestyConfig();
-        const tsConfig = await this.loadTsConfig();
+        // We load the tsConfig file. In priority order, we use
+        // 1. The tsconfig file specified from the command line
+        // 2. The tsconfig file specified in the testy config file
+        // 3. The root folder's tsconfig.json file
+        let tsConfigPath = this.tsConfigFile;
+        if (tsConfigPath == null) {
+            tsConfigPath = testyConfig.tsconfig;
+        }
+        
+        if (tsConfigPath == null) {
+            tsConfigPath = 'tsconfig.json';
+        }
+
+        const tsConfig = await this.loadTsConfig(tsConfigPath);
 
         const testsLoader = new TestsLoader(this.logger);
         const testSuites = await testsLoader.loadTests(process.cwd(), testyConfig.include, tsConfig);
@@ -32,8 +45,8 @@ export class RunCommand implements CliCommand {
         return await this.loadConfig<TestyConfig>(this._testyConfigFile);
     }
 
-    private async loadTsConfig(): Promise<tsnode.Options> {
-        return await this.loadConfig<tsnode.Options>(this._tsConfigFile);
+    private async loadTsConfig(tsConfigPath: string): Promise<tsnode.Options> {
+        return await this.loadConfig<tsnode.Options>(tsConfigPath);
     }
 
     private async loadConfig<T>(file: string): Promise<T> {

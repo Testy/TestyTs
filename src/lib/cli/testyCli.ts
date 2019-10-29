@@ -16,7 +16,8 @@ export class TestyCli {
             await command.execute();
         }
         catch (err) {
-            this.logger.error(`An error occured while executing the following command: ${command}. Error: "${err.message}"`);
+            const commandStr = args.join(' ');
+            this.logger.error(`An error occured while executing the following command: ${commandStr}. Error: "${err.message}"`);
         }
     }
 
@@ -32,7 +33,7 @@ export class TestyCli {
 
             program
                 .option('-c --config <config>', 'Specify a config file.', './testy.json')
-                .option('-t --tsconfig <tsconfig>', 'Specify a tsconfig config file.', './tsconfig.json')
+                .option('-t --tsconfig <tsconfig>', 'Specify a tsconfig config file.', undefined)
                 .option('-r --reporter <reporter>', 'Specifies the reporter type', /(standard|TAP)/, 'standard')
 
             program.parse(args);
