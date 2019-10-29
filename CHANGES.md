@@ -1,5 +1,9 @@
 # Changes
 
+### 0.8.2
+  - Added support for specifying a tsconfig.json file in the testy.json configuration file (`"tsconfig": "your/tsconfig.json"`)
+
+
 ### 0.8.1
   - Added a tsconfig option to the CLI (-t/--tsconfig <path>)
 
