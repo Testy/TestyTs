@@ -212,6 +212,28 @@ export class MyTestSuite {
 }
 ```
 
+## Configuration file
+
+```json
+{
+    "tsconfig": "path/to/your/tsconfig.json",
+    "include": [
+        "src/**/*.spec.ts"
+    ]
+}
+```
+
+## Cli arguments
+
+Cli arguments will override config file values.
+
+
+```
+-c --config <config> // Specify a testy.json configuration file
+-t --tsconfig <tsconfig> // Specify a tsconfig.json file
+-r --reporter <reporter> // Specify a reporter. Either standard or TAP.
+```
+
 ## Run the tests
 
 To run the tests, use the following command

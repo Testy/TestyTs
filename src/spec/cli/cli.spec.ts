@@ -32,23 +32,24 @@ export class CliTests {
     }
 
     @Test('Run command')
-    @TestCase('testy', ['node', '/some/path'], './testy.json', './tsconfig.json')
-    @TestCase('testy -c alternate/config.json', ['node', '/some/path', '-c', 'alternate/config.json'], 'alternate/config.json', './tsconfig.json')
-    @TestCase('testy --config alternate/config.json', ['node', '/some/path', '--config', 'alternate/config.json'], 'alternate/config.json', './tsconfig.json')
-    @TestCase('testy -r TAP', ['node', '/some/path', '-r', 'TAP'], './testy.json', './tsconfig.json')
-    @TestCase('testy --reporter TAP', ['node', '/some/path', '--reporter', 'TAP'], './testy.json', './tsconfig.json')
-    @TestCase('testy -r standard', ['node', '/some/path', '-r', 'standard'], './testy.json', './tsconfig.json')
-    @TestCase('testy --reporter standard', ['node', '/some/path', '--reporter', 'standard'], './testy.json', './tsconfig.json')
+    @TestCase('testy', ['node', '/some/path'], './testy.json')
+    @TestCase('testy --tsconfig some/tsconfig.json', ['node', '/some/path', '--tsconfig', 'some/tsconfig.json'], './testy.json', 'some/tsconfig.json')
+    @TestCase('testy -c alternate/config.json', ['node', '/some/path', '-c', 'alternate/config.json'], 'alternate/config.json')
+    @TestCase('testy --config alternate/config.json', ['node', '/some/path', '--config', 'alternate/config.json'], 'alternate/config.json')
+    @TestCase('testy -r TAP', ['node', '/some/path', '-r', 'TAP'], './testy.json')
+    @TestCase('testy --reporter TAP', ['node', '/some/path', '--reporter', 'TAP'], './testy.json')
+    @TestCase('testy -r standard', ['node', '/some/path', '-r', 'standard'], './testy.json')
+    @TestCase('testy --reporter standard', ['node', '/some/path', '--reporter', 'standard'], './testy.json')
     @TestCase('testy -c some/testy.json -t some/path/tsconfig.json', ['node', '--config', 'some/testy.json', '-t', 'some/path/tsconfig.json'], 'some/testy.json', 'some/path/tsconfig.json')
-    @TestCase('testy -r TAP --config alternate/config.json', ['node', '/some/path', '-r', 'TAP', '--config', 'alternate/config.json'], 'alternate/config.json', './tsconfig.json')
-    @TestCase('testy --reporter TAP --config alternate/config.json', ['node', '/some/path', '--reporter', 'TAP', '--config', 'alternate/config.json'], 'alternate/config.json', './tsconfig.json')
-    @TestCase('testy --config alternate/config.json -r TAP', ['node', '/some/path', '--config', 'alternate/config.json', '-r', 'TAP'], 'alternate/config.json', './tsconfig.json')
-    @TestCase('testy --config alternate/config.json --reporter TAP', ['node', '/some/path', '--config', 'alternate/config.json', '--reporter', 'TAP'], 'alternate/config.json', './tsconfig.json')
-    @TestCase('testy -r standard --config alternate/config.json', ['node', '/some/path', '-r', 'standard', '--config', 'alternate/config.json'], 'alternate/config.json', './tsconfig.json')
-    @TestCase('testy --reporter standard --config alternate/config.json', ['node', '/some/path', '--reporter', 'standard', '--config', 'alternate/config.json'], 'alternate/config.json', './tsconfig.json')
-    @TestCase('testy --config alternate/config.json -r standard', ['node', '/some/path', '--config', 'alternate/config.json', '-r', 'standard'], 'alternate/config.json', './tsconfig.json')
-    @TestCase('testy --config alternate/config.json --reporter standard', ['node', '/some/path', '--config', 'alternate/config.json', '--reporter', 'standard'], 'alternate/config.json', './tsconfig.json')
-    private async runCommandTests(args: any[], expectedConfig: string, expectedTsConfig: string) {
+    @TestCase('testy -r TAP --config alternate/config.json', ['node', '/some/path', '-r', 'TAP', '--config', 'alternate/config.json'], 'alternate/config.json')
+    @TestCase('testy --reporter TAP --config alternate/config.json', ['node', '/some/path', '--reporter', 'TAP', '--config', 'alternate/config.json'], 'alternate/config.json')
+    @TestCase('testy --config alternate/config.json -r TAP', ['node', '/some/path', '--config', 'alternate/config.json', '-r', 'TAP'], 'alternate/config.json')
+    @TestCase('testy --config alternate/config.json --reporter TAP', ['node', '/some/path', '--config', 'alternate/config.json', '--reporter', 'TAP'], 'alternate/config.json')
+    @TestCase('testy -r standard --config alternate/config.json', ['node', '/some/path', '-r', 'standard', '--config', 'alternate/config.json'], 'alternate/config.json')
+    @TestCase('testy --reporter standard --config alternate/config.json', ['node', '/some/path', '--reporter', 'standard', '--config', 'alternate/config.json'], 'alternate/config.json')
+    @TestCase('testy --config alternate/config.json -r standard', ['node', '/some/path', '--config', 'alternate/config.json', '-r', 'standard'], 'alternate/config.json')
+    @TestCase('testy --config alternate/config.json --reporter standard', ['node', '/some/path', '--config', 'alternate/config.json', '--reporter', 'standard'], 'alternate/config.json')
+    private async runCommandTests(args: any[], expectedConfig: string, expectedTsConfig: string = undefined) {
         // Act
         const command = await this.cli.getCommand(args);
 
