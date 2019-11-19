@@ -5,15 +5,18 @@ import { TestRunnerVisitor } from '../../../lib/tests/visitors/testRunnerVisitor
 import { CompositeReport } from '../../../lib/reporting/report/compositeReport';
 import { FailedTestReport } from '../../../lib/reporting/report/failedTestReport';
 import { SuccessfulTestReport } from '../../../lib/reporting/report/successfulTestReport';
+import { getProcessMock, ProcessMock } from '../../utils/processMock';
 
 @TestSuite('Test suite with timeouts')
 export class TestDecoratorTestSuite {
 
     private testRunnerVisitor: TestRunnerVisitor;
+    private processMock: ProcessMock;
 
     @BeforeEach()
     beforeEach() {
-        this.testRunnerVisitor = new TestRunnerVisitor();
+        this.processMock = getProcessMock();
+        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock);
     }
 
     @Test('One successful test, one timeout')
@@ -31,5 +34,6 @@ export class TestDecoratorTestSuite {
         expect.toBeTrue(successfulTest instanceof SuccessfulTestReport);
         expect.toBeTrue(failedTest instanceof FailedTestReport);
         expect.toBeEqual((failedTest as FailedTestReport).message, 'Test has timed out.');
+        this.processMock.expectFailure();
     }
 }

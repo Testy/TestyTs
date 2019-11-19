@@ -9,16 +9,19 @@ import { Test } from '../../../../lib/decorators/test.decorator';
 import { TestUtils } from '../../../utils/testUtils';
 import { DummyTapDecoratorTestSuite, dummyTapDecoratorTestSuiteExpectedOutput } from './dummyTapDecoratorTestSuite';
 import { expect } from '@testy/assertion';
+import { getProcessMock } from '../../../utils/processMock';
 
 @TestSuite('Tap Reporter Tests')
 export class TapTestReporterDecoratorTests {
     private testRunnerVisitor: TestVisitor<Report>;
     private logger: StringLogger;
+    private processMock: NodeJS.Process;
 
     @BeforeEach()
     beforeEach() {
         this.logger = new StringLogger();
-        this.testRunnerVisitor = new TestRunnerVisitor();
+        this.processMock = getProcessMock();
+        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock);
         this.testRunnerVisitor = new TapTestReporterDecorator(this.testRunnerVisitor, this.logger);
     }
 

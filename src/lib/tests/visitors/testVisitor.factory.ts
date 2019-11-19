@@ -18,7 +18,7 @@ export class TestVisitorFactory {
     }
 
     public getRunner(reporterType: 'standard' | 'TAP') {
-        let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor();
+        let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor(process);
 
         const reporterConstructor = this.reportersConstructors.get(reporterType);
 
