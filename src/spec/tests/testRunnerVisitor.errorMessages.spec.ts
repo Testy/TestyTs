@@ -5,16 +5,19 @@ import { BeforeEach, Test, TestSuite } from '../../testyCore';
 import { TestUtils } from '../utils/testUtils';
 import { AsyncTestsFailures } from './visitors/asyncTestsFailures';
 import { SyncTestsFailures } from './visitors/syncTestsFailures';
+import { getProcessMock, ProcessMock } from '../utils/processMock';
 
 
 @TestSuite('Test Runner Visitor Error Messages Tests')
 export class TestRunnerVisitorErrorMessagesTests {
 
     private testRunnerVisitor: TestRunnerVisitor;
+    private processMock: ProcessMock;
 
     @BeforeEach()
     beforeEach() {
-        this.testRunnerVisitor = new TestRunnerVisitor();
+        this.processMock = getProcessMock();
+        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock);
     }
 
     @Test('Asynchronous tests failures')
@@ -32,6 +35,7 @@ export class TestRunnerVisitorErrorMessagesTests {
 
         // Assert
         TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+        this.processMock.expectFailure();
     }
 
     @Test('Tests failures')
@@ -47,5 +51,6 @@ export class TestRunnerVisitorErrorMessagesTests {
 
         // Assert
         TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+        this.processMock.expectFailure();
     }
 }

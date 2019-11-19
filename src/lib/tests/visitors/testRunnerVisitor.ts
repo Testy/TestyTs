@@ -15,19 +15,19 @@ import { performance } from 'perf_hooks';
 export class TestRunnerVisitor implements TestVisitor<Report> {
     private testSuites: TestSuiteInstance[] = [];
 
-    constructor() { }
+    constructor(private process: NodeJS.Process) { }
 
     public async visitTestSuite(tests: TestSuiteInstance): Promise<Report> {
         this.testSuites.push(tests);
 
         const report = new CompositeReport(tests.name);
-
         try {
             await this.runAll(tests.beforeAllMethods, tests.context);
             await this.runTests(tests, report);
             await this.runAll(tests.afterAllMethods, tests.context);
         }
         catch (err) {
+            this.process.exitCode = 1;
             const failedTestsVisitor = new FailedTestsReportVisitor(typeof (err) === typeof ('') ? err : err.message);
             return await tests.accept(failedTestsVisitor);
         }
@@ -57,6 +57,7 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
                 report = new SuccessfulTestReport(test.name, Math.round(time));
             }
             catch (err) {
+                this.process.exitCode = 1;
                 report = new FailedTestReport(test.name, typeof (err) === typeof ('') ? err : err.message, 0);
             }
         }

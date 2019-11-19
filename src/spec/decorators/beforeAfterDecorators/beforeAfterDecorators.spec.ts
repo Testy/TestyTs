@@ -10,16 +10,19 @@ import { ThrowsDuringAfterEachTestSuite } from './throwsDuringAfterEachTestSuite
 import { ThrowsDuringBeforeAllTestSuite } from './throwsDuringBeforeAllTestSuite';
 import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSuite';
 import { TestCase } from '../../../lib/decorators/testCase.decorator';
+import { getProcessMock, ProcessMock } from '../../utils/processMock';
 
 @TestSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
 
     // TODO: This test suite should extend TestSuiteTestsBase when #8 is fixed.
     protected visitor: TestVisitor<Report>;
+    protected processMock: ProcessMock;
 
     @BeforeEach()
     private beforeEach() {
-        this.visitor = new TestRunnerVisitor();
+        this.processMock = getProcessMock();
+        this.visitor = new TestRunnerVisitor(this.processMock);
     }
 
     @Test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
@@ -36,6 +39,7 @@ export class BeforeAfterDecoratorsTestSuite {
         expect.toBeEqual(testSuite.context.numberOfAfterEachExecutions, 5);
         expect.toBeEqual(testSuite.context.numberOfAfterAllExecutions, 1);
         expect.toBeEqual(report.numberOfTests, 6);
+        this.processMock.expectSuccess();
     }
 
     @Test('Before and after methods failures')
@@ -54,6 +58,7 @@ export class BeforeAfterDecoratorsTestSuite {
         expect.toBeDefined(report);
         expect.toBeEqual(report.result, TestResult.Failure);
         expect.toBeEqual(report.numberOfTests, numberOfTests, 'Expected all tests to be part of the report.');
+        this.processMock.expectFailure();
     }
 }
 

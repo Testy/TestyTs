@@ -1,5 +1,8 @@
 # Changes
 
+### 0.9.0
+  - A failed test run will yield non-zero exit code
+
 ### 0.8.2
   - Added support for specifying a tsconfig.json file in the testy.json configuration file (`"tsconfig": "your/tsconfig.json"`)
 

@@ -28,7 +28,7 @@ export class RunCommand implements CliCommand {
         if (tsConfigPath == null) {
             tsConfigPath = testyConfig.tsconfig;
         }
-        
+
         if (tsConfigPath == null) {
             tsConfigPath = 'tsconfig.json';
         }

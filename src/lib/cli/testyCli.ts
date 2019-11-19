@@ -1,11 +1,9 @@
-import { Command } from 'commander';
+import * as Commander from 'commander';
 import { Logger } from '../logger/logger';
 import { TestVisitorFactory } from '../tests/visitors/testVisitor.factory';
 import { CliCommand } from './cliCommand';
 import { InitCommand } from './init.command';
-import { NopCommand } from './nopCommand';
 import { RunCommand } from './run.command';
-import * as Commander from 'commander';
 
 export class TestyCli {
     constructor(private logger: Logger, private testVisitorFactory: TestVisitorFactory) { }
@@ -34,11 +32,11 @@ export class TestyCli {
             program
                 .option('-c --config <config>', 'Specify a config file.', './testy.json')
                 .option('-t --tsconfig <tsconfig>', 'Specify a tsconfig config file.', undefined)
-                .option('-r --reporter <reporter>', 'Specifies the reporter type', /(standard|TAP)/, 'standard')
+                .option('-r --reporter <reporter>', 'Specifies the reporter type', /(standard|TAP)/, 'standard');
 
             program.parse(args);
 
-            if(program._name === '-c' || program._name === '--config' && program.args.length > 0) {
+            if (program._name === '-c' || program._name === '--config' && program.args.length > 0) {
                 program.config = program.args[0];
             }
             const testRunner = this.testVisitorFactory.getRunner(program.reporter);

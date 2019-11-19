@@ -8,16 +8,20 @@ import { TestRunnerVisitor } from '../../lib/tests/visitors/testRunnerVisitor';
 import { TestStatus } from '../../lib/testStatus';
 import { BeforeEach, Test, TestSuite } from '../../testyCore';
 import { TestUtils } from '../utils/testUtils';
+import { getProcessMock, ProcessMock } from '../utils/processMock';
+import { expect } from '@testy/assertion';
 
 
 @TestSuite('Test Runner Visitor Tests')
 export class TestRunnerVisitorTests {
 
     private testRunnerVisitor: TestRunnerVisitor;
+    private processMock: ProcessMock;
 
     @BeforeEach()
     beforeEach() {
-        this.testRunnerVisitor = new TestRunnerVisitor();
+        this.processMock = getProcessMock();
+        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock);
     }
 
     @Test('Simple test suite')
@@ -37,6 +41,7 @@ export class TestRunnerVisitorTests {
 
         // Assert
         TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+        this.processMock.expectSuccess();
     }
 
     @Test('Test suite with failure')
@@ -56,6 +61,7 @@ export class TestRunnerVisitorTests {
 
         // Assert
         TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+        this.processMock.expectFailure();
     }
 
     @Test('Test suite with skipped tests')
@@ -75,6 +81,7 @@ export class TestRunnerVisitorTests {
 
         // Assert
         TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+        this.processMock.expectSuccess();
     }
 
     @Test('Test suite with focused tests')
@@ -103,5 +110,6 @@ export class TestRunnerVisitorTests {
 
         // Assert
         TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+        this.processMock.expectSuccess();
     }
 }
