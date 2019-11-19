@@ -49,7 +49,7 @@ export class CliTests {
     @TestCase('testy --reporter standard --config alternate/config.json', ['node', '/some/path', '--reporter', 'standard', '--config', 'alternate/config.json'], 'alternate/config.json')
     @TestCase('testy --config alternate/config.json -r standard', ['node', '/some/path', '--config', 'alternate/config.json', '-r', 'standard'], 'alternate/config.json')
     @TestCase('testy --config alternate/config.json --reporter standard', ['node', '/some/path', '--config', 'alternate/config.json', '--reporter', 'standard'], 'alternate/config.json')
-    private async runCommandTests(args: any[], expectedConfig: string, expectedTsConfig: string = undefined) {
+    private async runCommandTests(args: any[], expectedConfig: string, expectedTsConfig?: string) {
         // Act
         const command = await this.cli.getCommand(args);
 
