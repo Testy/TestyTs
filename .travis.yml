@@ -9,6 +9,7 @@ os:
 
 env:
   - CODECOV_TOKEN=9048c8f4-2f20-4ece-bf04-a4065ca75a17
+  - NPM_TOKEN=a4378046-22b6-4a0f-8629-bc9ed4f869fc
 
 before_script:
   - npm run build
