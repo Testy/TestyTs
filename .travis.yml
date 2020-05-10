@@ -15,6 +15,5 @@ before_script:
 
 script:
   - nyc --reporter=lcov --reporter=html node build/testy.js
-  - nyc --reporter=text-lcov > coverage.lcov
   - codecov
   - npm run lint
