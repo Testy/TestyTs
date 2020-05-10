@@ -1,4 +1,5 @@
 {
+    // KEEP THIS COMMENT: This will detect regressions vis-à-vis issue #41
     "compilerOptions": {
         "module": "commonjs",
         "lib": [

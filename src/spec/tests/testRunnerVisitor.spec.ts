@@ -7,9 +7,8 @@ import { TestSuiteInstance } from '../../lib/tests/testSuite';
 import { TestRunnerVisitor } from '../../lib/tests/visitors/testRunnerVisitor';
 import { TestStatus } from '../../lib/testStatus';
 import { BeforeEach, Test, TestSuite } from '../../testyCore';
-import { TestUtils } from '../utils/testUtils';
 import { getProcessMock, ProcessMock } from '../utils/processMock';
-import { expect } from '@testy/assertion';
+import { TestUtils } from '../utils/testUtils';
 
 
 @TestSuite('Test Runner Visitor Tests')

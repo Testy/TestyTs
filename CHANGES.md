@@ -1,5 +1,11 @@
 # Changes
 
+### 1.0.0 🎊
+Seems like the library is stable enough, let's make this one the first major version!
+
+  - Testy will exit with code 1 if there is a compilation error (thanks for contributing, @mastodon0!)
+  - Comments are now supported in tsconfig (thanks for reporting, @gbreeze!)
+
 ### 0.9.0
   - A failed test run will yield non-zero exit code
 
