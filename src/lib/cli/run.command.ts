@@ -1,12 +1,13 @@
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
+import * as tsnode from 'ts-node';
+import { readConfigFile } from 'typescript';
 import { TestyConfig } from '../interfaces/config';
 import { Logger } from '../logger/logger';
+import { Report } from '../reporting/report/report';
+import { TestVisitor } from '../tests/visitors/testVisitor';
 import { TestsLoader } from '../utils/testsLoader';
 import { CliCommand } from './cliCommand';
-import { TestVisitor } from '../tests/visitors/testVisitor';
-import { Report } from '../reporting/report/report';
-import * as tsnode from 'ts-node';
 
 export class RunCommand implements CliCommand {
     public get testyConfigFile(): string { return this._testyConfigFile; }
@@ -54,6 +55,15 @@ export class RunCommand implements CliCommand {
         if (!existsSync(path))
             throw new Error(`The specified configuration file could not be found: ${path}`);
 
-        return await import(path);
+        const config = readConfigFile(path, this.readFile);
+        if (config?.error != null) {
+            throw new Error(`An error occured while reading the configuration file ${path}`);
+        }
+
+        return config.config;
+    }
+
+    private readFile(path: string): string {
+        return readFileSync(path).toString();
     }
 }
