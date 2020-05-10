@@ -1,5 +1,8 @@
 # Changes
 
+### 1.0.1
+  - Changed the version number to 1.0.1 because it seems like the library was initially published with the version number 1.0.0, so this version number can't be reused. RIP
+
 ### 1.0.0 🎊
 Seems like the library is stable enough, let's make this one the first major version!
 
