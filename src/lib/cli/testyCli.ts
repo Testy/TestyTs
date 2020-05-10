@@ -16,6 +16,7 @@ export class TestyCli {
         catch (err) {
             const commandStr = args.join(' ');
             this.logger.error(`An error occured while executing the following command: ${commandStr}. Error: "${err.message}"`);
+            process.exitCode = 1;
         }
     }
 
