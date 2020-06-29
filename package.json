@@ -1,6 +1,6 @@
 {
     "name": "testyts",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "img/test-icon-128x128.png",
     "description": "Modern test framework for TypeScript.",
     "main": "build/testyCore.js",
@@ -10,6 +10,7 @@
         "check-coverage": "nyc --reporter=lcov --reporter=html npm run test && nyc report",
         "debug-tests": "node --nolazy --inspect-brk=9229 build/testy.js",
         "build": "tsc",
+        "build:prod": "tsc --p tsconfig.prod.json",
         "lint": "tslint -c tslint.json 'src/**/*.ts'",
         "lint-fix": "tslint -c tslint.json 'src/**/*.ts' --fix"
     },
