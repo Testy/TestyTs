@@ -1,5 +1,8 @@
 # Changes
 
+### 1.0.3
+  - Actually reduced package size by 30% by removing unnecessary files
+
 ### 1.0.2
   - Reduced package size by 30% by removing unnecessary files
 
