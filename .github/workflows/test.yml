@@ -10,16 +10,16 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node: [8.x, 10.x, 12.x]
 
     steps:
     - name: Checkout
       uses: actions/checkout@v1
       
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node: ${{ matrix.node }}
     
     - name: npm install, build, and test
       run: |
@@ -37,6 +37,7 @@ jobs:
 
     strategy:
       matrix:
+        node: [8.x, 10.x, 12.x]
         os: [macos-latest, ubuntu-latest, ubuntu-latest]
         include:
         - os: macos-latest
@@ -47,10 +48,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
       
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ matrix.node }}
     
     - name: npm install, build, and test
       run: |
