@@ -56,14 +56,11 @@ jobs:
     - name: Build and link
       run: |
         npm ci
-        npm link
 
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         CI: true
 
     - name: Tests
-      working-directory: ./tests/ts-3.8.3
-      run: |
-        npm link testyts
-        npm test
+      working-directory: ./tests
+      run: node ./runner.js

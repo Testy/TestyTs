@@ -10,7 +10,7 @@
         "test": "tsc & node build/testy.js",
         "check-coverage": "nyc --reporter=lcov --reporter=html npm run test && nyc report",
         "debug-tests": "node --nolazy --inspect-brk=9229 build/testy.js",
-        "prepublish": "npm run build:prod",
+        "prepare": "npm run build:prod",
         "build": "tsc",
         "build:prod": "tsc --p tsconfig.prod.json",
         "lint": "tslint -c tslint.json 'src/**/*.ts'",
