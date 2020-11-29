@@ -27,7 +27,6 @@ jobs:
         npm run build --if-present
         npm test
       env:
-        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         CI: true
 
   integration-tests:
@@ -58,7 +57,6 @@ jobs:
         npm ci
 
       env:
-        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         CI: true
 
     - name: Tests
