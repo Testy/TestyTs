@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         node: [8.x, 10.x, 12.x]
-        os: [macos-latest, ubuntu-latest, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
         include:
         - os: macos-latest
         - os: windows-latest
@@ -51,13 +51,19 @@ jobs:
     - name: Use Node.js ${{ matrix.node }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node }}
+        node: ${{ matrix.node }}
     
-    - name: npm install, build, and test
+    - name: Build and link
       run: |
         npm ci
-        npm run build
+        npm link
 
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         CI: true
+
+    - name: Tests
+      working-directory: ./tests/ts-3.8.3
+      run: |
+        npm link testyts
+        npm test
