@@ -3,8 +3,9 @@ name: Test
 on: [push]
 
 jobs:
-  build:
+  unit-tests:
 
+    name: Unit tests
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,6 +26,37 @@ jobs:
         npm ci
         npm run build --if-present
         npm test
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+        CI: true
+
+  integration-tests:
+
+    name: Integration tests
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, ubuntu-latest]
+        include:
+        - os: macos-latest
+        - os: windows-latest
+        - os: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - name: npm install, build, and test
+      run: |
+        npm ci
+        npm run build
+
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         CI: true
