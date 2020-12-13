@@ -64,3 +64,6 @@ jobs:
     - name: Tests
       working-directory: ./tests
       run: node ./runner.js
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+        CI: true
