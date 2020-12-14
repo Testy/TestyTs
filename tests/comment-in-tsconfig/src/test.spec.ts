@@ -5,7 +5,7 @@ export class MyTestSuite {
 
   @Test()
   public myTest() {
-    // Asert
+    // Assert
     expect.toBeEqual(1 + 1, 2);
   }
 }

@@ -2,7 +2,7 @@ const { lstatSync, readdirSync } = require('fs')
 const { join } = require('path')
 const { execSync } = require("child_process");
 const { exit } = require('process');
-const { readFileSync } = require('fs');
+const { existsSync, readFileSync } = require('fs');
 
 const isDirectory = source => lstatSync(source).isDirectory();
 const getDirectories = source => readdirSync(source).map(name => join(source, name)).filter(isDirectory);
@@ -43,13 +43,16 @@ try {
 
     installTesty(test);
 
-    const expectedOutput = readFileSync(join(test, '.expected_output.tap')).toString();
+    const expectedStdoutPath = join(test, '.expected_stdout');
+    const expectedStdout = existsSync(expectedStdoutPath) ? readFileSync(expectedStdoutPath).toString() : null;
+    const expectedStderrPath = join(test, '.expected_stderr');
+    const expectedStderr = existsSync(expectedStderrPath) ? readFileSync(expectedStderrPath).toString() : null;
 
     try {
       const output = run(test).toString();
       log.info(output);
 
-      if (sanitize(expectedOutput) === sanitize(output)) {
+      if (sanitize(expectedStdout) === sanitize(output)) {
         log.success(`\n✓ Test "${test}" passed`)
         results.push({ name: test, success: true });
       } else {
@@ -58,11 +61,19 @@ try {
       }
 
     } catch (err) {
-      log.error(err);
-      log.error(err.stdout)
-      log.error(err.stderr)
-      log.error(`\n× Test "${test}" failed (an unexpected error occured, or error output did not match expected error)`)
-      results.push({ name: test, success: false });
+
+      if ((expectedStdout == null || sanitize(expectedStdout) === sanitize(err.stdout))
+        && (expectedStderr == null || sanitize(expectedStderr) === sanitize(err.stderr))) {
+          log.success(`\n✓ Test "${test}" passed`)
+          results.push({ name: test, success: true });
+      } else {
+        console.log('stdout')
+        log.error(err.stdout)
+        console.log('stderr')
+        log.error(err.stderr)
+        log.error(`\n× Test "${test}" failed (an unexpected error occured, or error output did not match expected error)`)
+        results.push({ name: test, success: false });
+      }
     }
   }
 
