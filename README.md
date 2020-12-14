@@ -250,11 +250,15 @@ $ testyts --tsconfig custom/tsconfig.json // To specify a custom typescript conf
 Here's an online [REPL](https://repl.it/@Aboisier/TestyTs-Playground) for you to try Testy.Ts!
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
+Please make sure to update unit tests and [integration tests](./tests/README.md) as appropriate.
 
 If you have any questions, do not hesitate to email me at <aboisiermichaud@gmail.com>.
+
+## More documentation
+- [Integration tests](./tests/README.md)
 
 ## License
 [ISC](./LICENSE)
