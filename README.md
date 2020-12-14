@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Testy/TestyTs.svg?branch=master)](https://travis-ci.org/Testy/TestyTs)
+![Test](https://github.com/Testy/TestyTs/workflows/Test/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/66d7c2c5c60a4919d593/maintainability)](https://codeclimate.com/github/Testy/TestyTs/maintainability)
 [![codecov](https://codecov.io/gh/Testy/TestyTs/branch/master/graph/badge.svg)](https://codecov.io/gh/Testy/TestyTs)
 [![npm version](https://badge.fury.io/js/testyts.svg)](https://badge.fury.io/js/testyts)
@@ -250,11 +250,15 @@ $ testyts --tsconfig custom/tsconfig.json // To specify a custom typescript conf
 Here's an online [REPL](https://repl.it/@Aboisier/TestyTs-Playground) for you to try Testy.Ts!
 
 ## Contributing
+
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
+Please make sure to update unit tests and [integration tests](./tests/README.md) as appropriate.
 
 If you have any questions, do not hesitate to email me at <aboisiermichaud@gmail.com>.
+
+## More documentation
+- [Integration tests](./tests/README.md)
 
 ## License
 [ISC](./LICENSE)

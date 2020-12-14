@@ -3,28 +3,67 @@ name: Test
 on: [push]
 
 jobs:
-  build:
+  unit-tests:
 
+    name: Unit tests
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node: [8.x, 10.x, 12.x]
 
     steps:
     - name: Checkout
       uses: actions/checkout@v1
       
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node }}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ matrix.node }}
     
     - name: npm install, build, and test
       run: |
         npm ci
         npm run build --if-present
         npm test
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+        CI: true
+
+  integration-tests:
+
+    name: Integration tests
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node: [8.x, 10.x, 12.x]
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+        - os: macos-latest
+        - os: windows-latest
+        - os: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      
+    - name: Use Node.js ${{ matrix.node }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    
+    - name: Build and link
+      run: |
+        npm ci
+
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+        CI: true
+ 
+    - name: Tests
+      run: |
+        node ./tests/runner.js
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         CI: true
