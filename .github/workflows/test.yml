@@ -19,7 +19,7 @@ jobs:
     - name: Use Node.js ${{ matrix.node }}
       uses: actions/setup-node@v1
       with:
-        node: ${{ matrix.node }}
+        node-version: ${{ matrix.node }}
     
     - name: npm install, build, and test
       run: |
@@ -51,7 +51,7 @@ jobs:
     - name: Use Node.js ${{ matrix.node }}
       uses: actions/setup-node@v1
       with:
-        node: ${{ matrix.node }}
+        node-version: ${{ matrix.node }}
     
     - name: Build and link
       run: |
