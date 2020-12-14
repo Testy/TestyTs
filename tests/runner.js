@@ -64,8 +64,8 @@ try {
 
       if (err && (err.stdout || err.stderr)) {
 
-        log.info(err.stdout?.toString())
-        log.error(err.stderr?.toString())
+        if (err.stdout) log.info(err.stdout.toString());
+        if (err.stderr) log.error(err.stderr.toString());
 
         if ((expectedStdout == null || sanitize(expectedStdout) === sanitize(err.stdout))
           && (expectedStderr == null || sanitize(expectedStderr) === sanitize(err.stderr))) {
