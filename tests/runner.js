@@ -7,41 +7,49 @@ const isDirectory = source => lstatSync(source).isDirectory();
 const getDirectories = source => readdirSync(source).map(name => join(source, name)).filter(isDirectory);
 const integrationTests = getDirectories('.');
 
-const unlinkTesty = () => execSync('npm unlink', { cwd: '../' });
-const linkTesty = () => execSync('npm link', { cwd: '../' });
 const installTesty = (test) => execSync('npm link testyts', { cwd: `./${test}` });
-const run = (test) => execSync('npm test', { cwd: `./${test}` });
+const run = (test) => execSync('npm test', { cwd: `./${test}`, stdio: 'inherit' });
+
+const unlinkTesty = () => {
+  log.debug('Unlinking TestyTs')
+  execSync('npm unlink', { cwd: '../' });
+}
+
+const linkTesty = () => {
+  unlinkTesty();
+
+  log.debug('Linking TestyTs.')
+  execSync('npm link', { cwd: '../' });
+}
 
 const log = {
+  debug: (msg) => { },
   info: (msg) => console.log(msg),
   success: (msg) => console.log('\x1b[32m%s\x1b[0m', msg),
   error: (msg) => console.log('\x1b[31m%s\x1b[0m', msg),
   line: () => console.log()
 }
 
-let failedTests = 0;
+const results = [];
 
 try {
-  log.info('Linking TestyTs.')
-  unlinkTesty();
   linkTesty();
 
   for (const test of integrationTests) {
     log.line();
-    log.info(`---`);
-    log.info(`Running ${test}`);
-    log.line();
-    
+    log.info(`------- Running ${test} -------`);
+
     installTesty(test);
 
     try {
       run(test);
-      log.success('✓ Test passed')
+      log.success(`\n✓ Test "${test}" passed`)
+      results.push({ name: test, success: true });
     } catch (err) {
       log.error(err.stdout)
       log.error(err.stderr)
-      log.error('× Test failed')
-      failedTests++;
+      log.error(`\n× Test "${test}" failed`)
+      results.push({ name: test, success: false });
     }
   }
 
@@ -49,16 +57,25 @@ try {
   log.error(err);
 } finally {
   log.line();
-  log.info('Unlinking TestyTs')
   unlinkTesty();
+}
+
+log.info('--------------------------------')
+log.info('Integration test run done.')
+log.line();
+
+const numberOfSuccess = results.reduce((prev, curr) => prev + curr.success ? 1 : 0, 0);
+const numberOfTests = results.length;
+
+for (const test of results) {
+  if (test.success) {
+    log.success(` ✓ ${test.name}`);
+  } else {
+    log.error(` × ${test.name}`);
+  }
 }
 
 log.line();
 
-if (failedTests > 0) {
-  log.error(`× ${integrationTests.length - failedTests}/${integrationTests.length} Passed`);
-  exit(1);
-} else {
-  log.success(`✓ ${integrationTests.length - failedTests}/${integrationTests.length} Passed`);
-  exit(0);
-}
+log.info(`${numberOfSuccess}/${integrationTests.length} Passed`);
+exit(numberOfSuccess === numberOfTests ? 0 : 1);
