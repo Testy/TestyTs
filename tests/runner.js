@@ -6,22 +6,22 @@ const { existsSync, readFileSync } = require('fs');
 
 const isDirectory = source => lstatSync(source).isDirectory();
 const getDirectories = source => readdirSync(source).map(name => join(source, name)).filter(isDirectory);
-const integrationTests = getDirectories('.');
+const integrationTests = getDirectories(__dirname);
 
-const installTesty = (test) => execSync('npm link testyts', { cwd: `./${test}` });
-const run = (test) => execSync('npm test -- -r TAP', { cwd: `./${test}` });
+const installTesty = (test) => execSync('npm link testyts', { cwd: test });
+const run = (test) => execSync('npm test -- -r TAP', { cwd: join(test) });
 const sanitize = (output) => output.toString().replace(/^> .*/gm, '').replace(/\s/g, '');
 
 const unlinkTesty = () => {
   log.debug('Unlinking TestyTs')
-  execSync('npm unlink', { cwd: '../' });
+  execSync('npm unlink', { cwd: join(__dirname, '/../') });
 }
 
 const linkTesty = () => {
   unlinkTesty();
 
   log.debug('Linking TestyTs.')
-  execSync('npm link', { cwd: '../' });
+  execSync('npm link', { cwd: join(__dirname, '/../') });
 }
 
 const log = {
@@ -62,16 +62,22 @@ try {
 
     } catch (err) {
 
-      if ((expectedStdout == null || sanitize(expectedStdout) === sanitize(err.stdout))
-        && (expectedStderr == null || sanitize(expectedStderr) === sanitize(err.stderr))) {
+      if (err && (err.stdout || err.stderr)) {
+
+        log.info(err.stdout?.toString())
+        log.error(err.stderr?.toString())
+
+        if ((expectedStdout == null || sanitize(expectedStdout) === sanitize(err.stdout))
+          && (expectedStderr == null || sanitize(expectedStderr) === sanitize(err.stderr))) {
           log.success(`\n✓ Test "${test}" passed`)
           results.push({ name: test, success: true });
+        } else {
+          log.error(`\n× Test "${test}" failed (an unexpected error occured, or error output did not match expected error)`)
+          results.push({ name: test, success: false });
+        }
       } else {
-        console.log('stdout')
-        log.error(err.stdout)
-        console.log('stderr')
-        log.error(err.stderr)
-        log.error(`\n× Test "${test}" failed (an unexpected error occured, or error output did not match expected error)`)
+        log.error(err);
+        log.error(`\n× Test "${test}" failed (an unknown error occured)`)
         results.push({ name: test, success: false });
       }
     }
