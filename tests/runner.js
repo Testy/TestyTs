@@ -43,7 +43,7 @@ try {
 
     installTesty(test);
 
-    const expectedOutput = readFileSync(join(test, 'expected_output.tap')).toString();
+    const expectedOutput = readFileSync(join(test, '.expected_output.tap')).toString();
 
     try {
       const output = run(test).toString();
@@ -69,15 +69,14 @@ try {
 } catch (err) {
   log.error(err);
 } finally {
-  log.line();
   unlinkTesty();
 }
 
-log.info('--------------------------------')
+log.info('\n--------------------------------\n')
 log.info('Integration test run done.')
 log.line();
 
-const numberOfSuccess = results.reduce((prev, curr) => prev + curr.success ? 1 : 0, 0);
+const numberOfSuccess = results.reduce((prev, curr) => prev + (curr.success ? 1 : 0), 0);
 const numberOfTests = results.length;
 
 for (const test of results) {
