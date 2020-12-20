@@ -52,7 +52,7 @@ export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInsta
 
         // This is a workaround. There is currently a problem with typeof extending built-in types: https://bit.ly/2U3Gp39
         if (!(testOrTestSuite instanceof Map)) {
-            return testOrTestSuite.status === TestStatus.Focused;
+            return false;
         }
 
         for (const test of Array.from(testOrTestSuite.values())) {

@@ -1,7 +1,7 @@
 import { TestCaseInstance } from '../testCaseInstance';
-import { TestStatus } from '../testStatus';
 import { TestInstance } from '../tests/test';
 import { TestSuiteInstance } from '../tests/testSuite';
+import { TestStatus } from '../testStatus';
 import { getTestSuiteInstance } from './utils';
 
 /**
@@ -85,38 +85,28 @@ function generateDecoratorFunction(name: string, status: TestStatus) {
 function generateTest(name: string, testCases: TestCaseInstance[], status: TestStatus, testMethod: Function, timeout: number): TestInstance | TestSuiteInstance {
     return testCases
         ? generateTestsFromTestcases(name, testMethod, testCases, status, timeout)
-        : new TestInstance(name, decorateTest(testMethod, timeout), status);
+        : new TestInstance(name, decorateTest(testMethod), status, timeout);
 }
 
 function generateTestsFromTestcases(name: string, testMethod: Function, testCases: TestCaseInstance[], status: TestStatus, timeout: number): TestSuiteInstance {
     const tests = new TestSuiteInstance();
     tests.name = name;
     for (const testCase of testCases) {
-        const decoratedTestMethod = decorateTest(testMethod, timeout, testCase.args);
-        tests.set(testCase.name, new TestInstance(testCase.name, decoratedTestMethod, status));
+        const decoratedTestMethod = decorateTest(testMethod, testCase.args);
+        tests.set(testCase.name, new TestInstance(testCase.name, decoratedTestMethod, status, timeout));
     }
 
     return tests;
 }
 
-function decorateTest(testMethod: Function, timeout: number, args: any[] = []) {
+function decorateTest(testMethod: Function, args: any[] = []) {
     return async (context: any) => {
-        await new Promise(async (resolve, reject) => {
-            setTimeout(() => reject('Test has timed out.'), timeout);
-            try {
-                await testMethod.bind(context)(...args);
-            }
-            catch (err) {
-                reject(err);
-            }
-
-            resolve();
-        });
+        await testMethod.bind(context)(...args);
     };
 }
 
 function getTimeout(target, key) {
-    return target.__timeouts ? target.__timeouts[key] : 2000;
+    return target.__timeouts ? target.__timeouts[key] : undefined;
 }
 
 function getTestCases(target, key) {

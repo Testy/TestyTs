@@ -1,4 +1,4 @@
-import { CliCommand } from './cliCommand';
+import { CliCommand } from './cli.command';
 import { writeFile } from 'fs';
 import { resolve } from 'path';
 import { TestyConfig } from '../interfaces/config';
@@ -12,7 +12,7 @@ export class InitCommand implements CliCommand {
 
     constructor(private logger: Logger) { }
 
-    public execute(): void {
+    public async execute(): Promise<void> {
         const path = resolve(process.cwd(), 'testy.json');
         writeFile(path, JSON.stringify(this.defaultConfig), (err) => {
             if (!err)

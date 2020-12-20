@@ -11,11 +11,12 @@ import { LeafReport } from '../../reporting/report/leafReport';
 import { TestVisitor } from './testVisitor';
 import { RootTestSuite } from '../rootTestSuite';
 import { performance } from 'perf_hooks';
+import { TestyConfig } from '../../interfaces/config';
 
 export class TestRunnerVisitor implements TestVisitor<Report> {
     private testSuites: TestSuiteInstance[] = [];
 
-    constructor(private process: NodeJS.Process) { }
+    constructor(private process: NodeJS.Process, private config: TestyConfig) { }
 
     public async visitTestSuite(tests: TestSuiteInstance): Promise<Report> {
         this.testSuites.push(tests);
@@ -50,7 +51,7 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
                 await this.runBeforeEachMethods();
 
                 const start = performance.now();
-                await test.run(context);
+                await test.run(context, this.config);
                 const time = performance.now() - start;
 
                 await this.runAfterEachMethods();
