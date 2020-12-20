@@ -253,12 +253,12 @@ Here's an online [REPL](https://repl.it/@Aboisier/TestyTs-Playground) for you to
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update unit tests and [integration tests](./tests/README.md) as appropriate.
+Please make sure to update unit tests and [e2e tests](./e2e/README.md) as appropriate.
 
 If you have any questions, do not hesitate to email me at <aboisiermichaud@gmail.com>.
 
 ## More documentation
-- [Integration tests](./tests/README.md)
+- [E2E tests](./e2e/README.md)
 
 ## License
 [ISC](./LICENSE)

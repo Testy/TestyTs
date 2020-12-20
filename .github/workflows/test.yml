@@ -21,18 +21,27 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
     
-    - name: npm install, build, and test
+    - name: Install dependencies
       run: |
         npm ci
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+    - name: Build
+      run: |
         npm run build --if-present
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+    - name: Run unit tests
+      run: |
         npm test
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-        CI: true
 
-  integration-tests:
+  e2e-tests:
 
-    name: Integration tests
+    name: E2E tests
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -53,7 +62,7 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
     
-    - name: Build and link
+    - name: Build
       run: |
         npm ci
 
@@ -61,9 +70,9 @@ jobs:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         CI: true
  
-    - name: Tests
+    - name: Run e2e tests
       run: |
-        node ./tests/runner.js
+        node ./e2e/runner.js
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         CI: true

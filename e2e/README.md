@@ -1,6 +1,6 @@
-# Integration tests
+# E2E tests
 
-An integration test is simply a TypeScript project that uses Testy.Ts. The runner goes through each sub-folder and runs "npm test -- -r TAP". 
+An e2e test is simply a TypeScript project that uses Testy.Ts. The runner goes through each sub-folder and runs "npm test -- -r TAP". 
 
 Some tests are expected to end with success, some with failure.
 

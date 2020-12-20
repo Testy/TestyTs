@@ -6,7 +6,7 @@ const { existsSync, readFileSync } = require('fs');
 
 const isDirectory = source => lstatSync(source).isDirectory();
 const getDirectories = source => readdirSync(source).map(name => join(source, name)).filter(isDirectory);
-const integrationTests = getDirectories(__dirname);
+const e2eTests = getDirectories(__dirname);
 
 const installTesty = (test) => execSync('npm link testyts', { cwd: test });
 const run = (command, test) => execSync(command, { cwd: join(test) });
@@ -37,7 +37,7 @@ const results = [];
 try {
   linkTesty();
 
-  for (const test of integrationTests) {
+  for (const test of e2eTests) {
     let testName = test.replace(__dirname, '');
     if(testName.startsWith('\\')) testName = testName.slice(1, testName.length);
 
@@ -48,7 +48,7 @@ try {
 
     const runnerCommandPath = join(test, '.runner_command');
     if (!existsSync(runnerCommandPath)) {
-      console.error('Integration tests must have a .runner_command file.');
+      console.error('E2E tests must have a .runner_command file.');
       results.push({ name: test, success: false });
       continue;
     }
@@ -59,7 +59,7 @@ try {
     const expectedStderrPath = join(test, '.expected_stderr');
     const expectedStderr = existsSync(expectedStderrPath) ? readFileSync(expectedStderrPath).toString() : null;
 
-    if (expectedStdout == null && expectedStderr == null) throw new Error('Integration tests must have at least a .expected_stdout file or a .expected_stderr file.')
+    if (expectedStdout == null && expectedStderr == null) throw new Error('E2E tests must have at least a .expected_stdout file or a .expected_stderr file.')
 
     try {
       const output = run(command, test).toString();
@@ -103,7 +103,7 @@ try {
 }
 
 log.info('\n--------------------------------\n')
-log.info('Integration test run done.')
+log.info('E2E test run done.')
 log.line();
 
 const numberOfSuccess = results.reduce((prev, curr) => prev + (curr.success ? 1 : 0), 0);
@@ -119,5 +119,5 @@ for (const test of results) {
 
 log.line();
 
-log.info(`${numberOfSuccess}/${integrationTests.length} Passed`);
+log.info(`${numberOfSuccess}/${e2eTests.length} Passed`);
 exit(numberOfSuccess === numberOfTests ? 0 : 1);
