@@ -24,20 +24,17 @@ jobs:
         node-version: ${{ matrix.node }}
     
     - name: Install dependencies
-      run: |
-        npm ci
+      run: npm ci
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
     - name: Build
-      run: |
-        npm run build --if-present
+      run: npm run build --if-present
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
     - name: Run unit tests
-      run: |
-        npm test
+      run: npm test
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
@@ -65,19 +62,15 @@ jobs:
         node-version: ${{ matrix.node }}
     
     - name: Build
-      run: |
-        npm ci
+      run: npm ci
 
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-        CI: true
  
     - name: Run e2e tests
-      run: |
-        node ./e2e/runner.js
+      run: node ./e2e/runner.js
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-        CI: true
 
   publish:
 
@@ -93,12 +86,18 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    
-    - name: npm install, build, and test
-      run: |
-        npm ci
-        npm run build:prod --if-present
-        npm publish --access public
+
+    - name: Install dependencies
+      run: npm ci
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-        CI: true
+
+    - name: Build
+      run: npm run build:prod --if-present
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+    - name: npm install, build, and test
+      run: npm publish --access public
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
