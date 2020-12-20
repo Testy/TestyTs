@@ -1,6 +1,6 @@
 {
     "name": "testyts",
-    "version": "1.0.3",
+    "version": "2.0.0-beta",
     "icon": "img/test-icon-128x128.png",
     "description": "Modern test framework for TypeScript.",
     "main": "build/testyCore.js",
