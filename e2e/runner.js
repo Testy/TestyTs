@@ -1,37 +1,16 @@
-const { lstatSync, readdirSync } = require('fs')
 const { join } = require('path')
-const { execSync } = require("child_process");
 const { exit } = require('process');
 const { existsSync, readFileSync } = require('fs');
+const { getDirectories, installTesty, run, linkTesty, unlinkTesty } = require('./utils');
+const log = require('./log');
+const expect = require('./expect');
 
-const isDirectory = source => lstatSync(source).isDirectory();
-const getDirectories = source => readdirSync(source).map(name => join(source, name)).filter(isDirectory);
-const e2eTests = getDirectories(__dirname);
+const dirsFromArgv = process.argv
+  .filter(x => x.startsWith('test='))
+  .map(x => x.split('test=')[1])
+  .map(x => x[0] == '"' ? x.slice(1, x.length - 1) : x);
 
-const installTesty = (test) => execSync('npm link testyts', { cwd: test });
-const run = (command, test) => execSync(command, { cwd: join(test) });
-const sanitize = (output) => output.toString().replace(/^> .*/gm, '').replace(/\s/g, '');
-
-const unlinkTesty = () => {
-  log.debug('Unlinking TestyTs')
-  execSync('npm unlink', { cwd: join(__dirname, '/../') });
-}
-
-const linkTesty = () => {
-  unlinkTesty();
-
-  log.debug('Linking TestyTs.')
-  execSync('npm link', { cwd: join(__dirname, '/../') });
-}
-
-const log = {
-  debug: (msg) => { },
-  info: (msg) => console.log(msg),
-  success: (msg) => console.log('\x1b[32m%s\x1b[0m', msg),
-  error: (msg) => console.log('\x1b[31m%s\x1b[0m', msg),
-  line: () => console.log()
-}
-
+const e2eTests = dirsFromArgv.length > 0 ? dirsFromArgv : getDirectories(__dirname);
 const results = [];
 
 try {
@@ -39,7 +18,7 @@ try {
 
   for (const test of e2eTests) {
     let testName = test.replace(__dirname, '');
-    if(testName.startsWith('\\')) testName = testName.slice(1, testName.length);
+    if (testName.startsWith('\\')) testName = testName.slice(1, testName.length);
 
     log.line();
     log.info(`------- Running ${testName} -------`);
@@ -65,7 +44,7 @@ try {
       const output = run(command, test).toString();
       log.info(output);
 
-      if (sanitize(expectedStdout) === sanitize(output)) {
+      if (expect(output).toEqual(expectedStdout)) {
         log.success(`\n✓ Test "${testName}" passed`)
         results.push({ name: testName, success: true });
       } else {
@@ -80,8 +59,8 @@ try {
         if (err.stdout) log.info(err.stdout.toString());
         if (err.stderr) log.error(err.stderr.toString());
 
-        if ((expectedStdout == null || sanitize(expectedStdout) === sanitize(err.stdout))
-          && (expectedStderr == null || sanitize(expectedStderr) === sanitize(err.stderr))) {
+        if ((expectedStdout == null || expect(err.stdout).toEqual(expectedStdout))
+          && (expectedStderr == null || expect(err.stderr).toEqual(expectedStderr))) {
           log.success(`\n✓ Test "${testName}" passed`)
           results.push({ name: testName, success: true });
         } else {
