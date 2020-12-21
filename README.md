@@ -20,7 +20,7 @@ $ npm install -g testyts
 
 ## Setup
 
-To generate a testy.json configuration file, use the following cmmand:
+To generate a basic testy.json configuration file, use the following command. To see all available configurations, see  [this section](#configuration-file).
 
 ```
 $ testyts init
@@ -214,12 +214,21 @@ export class MyTestSuite {
 
 ## Configuration file
 
+| Key        | Description | Type | Note |
+|------------|-------------|------|------|
+| `include`  | The [test loader](src\lib\utils\testsLoader.ts) will look for tests in files that match any of those [glob patterns](https://www.npmjs.com/package/glob#glob-primer) |  `string[]`  | *Required* |
+| `tsconfig` | Alternate tsconfig for the test loader to use. If not specified, the loader will use the `tsconfig.json` in the current directory | `string` | *Optional* |
+| `timeout`  | Global test timeout. By default, the global timeout is 2000 ms. The global timeout will be overriden by test-level timeouts. | `number`| *Optional* |
+| `reporter` | Output format. | `'standard' | 'TAP'` | *Optional* |
+
+Example configuration file:
+
 ```json
 {
-    "tsconfig": "path/to/your/tsconfig.json",
-    "include": [
-        "src/**/*.spec.ts"
-    ]
+    "include": ["**/*.spec.ts"],
+    "tsconfig": "./tsconfig.spec.json",
+    "reporter": "standard",
+    "timeout": 10000,
 }
 ```
 
