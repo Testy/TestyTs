@@ -4,9 +4,11 @@
 [![npm version](https://badge.fury.io/js/testyts.svg)](https://badge.fury.io/js/testyts)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://clicktotweet.co/daN8y)
 
-![Testy.Ts logo](./img/testy_colour_rgb_transparent.png)
 
-Testy.Ts is a modern TypeScript testing framework.
+<img src="./img/testy_colour_rgb_transparent.png" alt="Shoutout to Kateryna Jones for that sweet logo!" />
+
+
+### Testy.Ts is a modern TypeScript testing framework.
 
 ## Why?
 Writing tests should be fun. The other testing framework solutions do not make use of the full power of TypeScript. This one uses decorators and OOP and stuff. Therefore, it makes writing tests fun.
@@ -270,4 +272,7 @@ If you have any questions, do not hesitate to email me at <aboisiermichaud@gmail
 - [E2E tests](./e2e/README.md)
 
 ## License
-[ISC](./LICENSE)
+* [ISC](./LICENSE)
+
+
+<img src="./img/testy_colour_rgb_transparent.png" alt="Shoutout to Kateryna Jones for that sweet logo!" width="150"> <br> <sub>*Shoutout to [Kateryna Jones](https://www.katerynajones.com/) for that sweet logo!*</sub>
