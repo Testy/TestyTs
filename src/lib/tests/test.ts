@@ -23,8 +23,8 @@ export class TestInstance {
         // 2. Otherwise, if there is a global timeout defined in the config, we use it
         // 3. Othersiwe, we default to 2000 ms 
         let timeout = 2000;
-        if(config?.timeout != null) timeout = config.timeout;
-        if(this.timeout != null) timeout = this.timeout;
+        if (config?.timeout != null) timeout = config.timeout;
+        if (this.timeout != null) timeout = this.timeout;
 
         setTimeout(() => reject('Test has timed out.'), timeout);
         await this.func(context);

@@ -6,7 +6,7 @@ export class JsonLoader {
 
   /** Loads a JSON file. */
   public async load<T>(file: string): Promise<T> {
-    
+
     const path = resolve(process.cwd(), file);
     if (!existsSync(path))
       throw new Error(`The specified configuration file could not be found: ${path}`);

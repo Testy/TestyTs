@@ -35,8 +35,8 @@ export class RunCommand implements CliCommand {
         const tsConfig = await this.jsonLoader.load<tsnode.Options>(tsConfigPath);
         const testSuites = await this.testLoader.loadTests(process.cwd(), this.testyConfig.include, tsConfig);
 
-        if(testSuites == null) {
-            this.logger.warn('Test suites instance is null.')
+        if (testSuites == null) {
+            this.logger.warn('Test suites instance is null.');
         } else {
             await testSuites.accept(this.testRunnerVisitor);
         }
