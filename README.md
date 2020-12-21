@@ -219,7 +219,7 @@ export class MyTestSuite {
 | `include`  | The [test loader](src\lib\utils\testsLoader.ts) will look for tests in files that match any of those [glob patterns](https://www.npmjs.com/package/glob#glob-primer) |  `string[]`  | *Required* |
 | `tsconfig` | Alternate tsconfig for the test loader to use. If not specified, the loader will use the `tsconfig.json` in the current directory | `string` | *Optional* |
 | `timeout`  | Global test timeout. By default, the global timeout is 2000 ms. The global timeout will be overriden by test-level timeouts. | `number`| *Optional* |
-| `reporter` | Output format. | `'standard' &#124; 'TAP'` | *Optional* |
+| `reporter` | Output format. | `'standard'`  &#124; `'TAP'` | *Optional* |
 
 Example configuration file:
 
