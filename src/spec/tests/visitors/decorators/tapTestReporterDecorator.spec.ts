@@ -21,7 +21,7 @@ export class TapTestReporterDecoratorTests {
     beforeEach() {
         this.logger = new StringLogger();
         this.processMock = getProcessMock();
-        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock);
+        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock, null);
         this.testRunnerVisitor = new TapTestReporterDecorator(this.testRunnerVisitor, this.logger);
     }
 

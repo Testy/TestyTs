@@ -1,28 +1,45 @@
-import { TestSuite, BeforeEach, Test, TestCaseInstance, FTest } from '../../testyCore';
-import { Logger } from '../../lib/logger/logger';
-import { TestyCli } from '../../lib/cli/testyCli';
-import { NullLogger } from '../utils/nullLogger';
-import { RunCommand } from '../../lib/cli/run.command';
-import { InitCommand } from '../../lib/cli/init.command';
 import { expect } from '@testy/assertion';
-import { TestCase } from '../../lib/decorators/testCase.decorator';
-import { TestVisitorFactory } from '../../lib/tests/visitors/testVisitor.factory';
 import * as program from 'commander';
+import { IMock, It, Mock, Times } from 'typemoq';
+import { InitCommand } from '../../lib/cli/init.command';
+import { RunCommand } from '../../lib/cli/run.command';
+import { TestyCli } from '../../lib/cli/testyCli';
 import { AfterEach } from '../../lib/decorators/afterAndBefore.decorator';
+import { TestCase } from '../../lib/decorators/testCase.decorator';
+import { Logger } from '../../lib/logger/logger';
+import { Report } from '../../lib/reporting/report/report';
+import { TestSuiteInstance } from '../../lib/tests/testSuite';
+import { TestVisitor } from '../../lib/tests/visitors/testVisitor';
+import { TestVisitorFactory } from '../../lib/tests/visitors/testVisitor.factory';
+import { JsonLoader } from '../../lib/utils/jsonLoader.service';
+import { TestsLoader } from '../../lib/utils/testsLoader';
+import { BeforeEach, FTest, Test, TestSuite } from '../../testyCore';
+import { NullLogger } from '../utils/nullLogger';
 
 @TestSuite('Cli Tests')
 export class CliTests {
 
     private logger: Logger;
-    private testVisitorFactory: TestVisitorFactory;
+    private testVisitorFactoryMock: IMock<TestVisitorFactory>;
+    private testVisitorMock: IMock<TestVisitor<Report>>;
+    private testLoaderMock: IMock<TestsLoader>;
     private cli: TestyCli;
+    private jsonLoaderMock: IMock<JsonLoader>;
 
     @BeforeEach()
     private beforeEach() {
         this.logger = new NullLogger();
-        this.testVisitorFactory = new TestVisitorFactory(this.logger);
 
-        this.cli = new TestyCli(this.logger, this.testVisitorFactory);
+        this.testVisitorMock = Mock.ofType<TestVisitor<Report>>();
+        this.testVisitorFactoryMock = Mock.ofType<TestVisitorFactory>();
+        this.testVisitorFactoryMock.setup(x => x.getRunner(It.isAny())).returns(() => this.testVisitorMock.object);
+
+        this.testLoaderMock = Mock.ofType<TestsLoader>();
+        this.testLoaderMock.setup(x => x.loadTests(It.isAny(), It.isAny(), It.isAny())).returns(() => Promise.resolve(null));
+
+        this.jsonLoaderMock = Mock.ofType<JsonLoader>();
+        this.jsonLoaderMock.setup(x => x.load(It.isAny())).returns(() => Promise.resolve({}));
+        this.cli = new TestyCli(this.logger, this.testVisitorFactoryMock.object, this.jsonLoaderMock.object, this.testLoaderMock.object);
     }
 
     @AfterEach()
@@ -52,12 +69,13 @@ export class CliTests {
     private async runCommandTests(args: any[], expectedConfig: string, expectedTsConfig?: string) {
         // Act
         const command = await this.cli.getCommand(args);
+        await command.execute();
 
         // Assert
         expect.toBeTrue(command instanceof RunCommand);
-        const runCommand = command as RunCommand;
-        expect.toBeEqual(runCommand.testyConfigFile, expectedConfig);
-        expect.toBeEqual(runCommand.tsConfigFile, expectedTsConfig);
+
+        this.jsonLoaderMock.verify(x => x.load(It.isValue(expectedConfig)), Times.once());
+        this.jsonLoaderMock.verify(x => x.load(It.isValue(expectedTsConfig || 'tsconfig.json')), Times.once());
     }
 
     @Test('testy init')
@@ -70,17 +88,5 @@ export class CliTests {
 
         // Assert
         expect.toBeTrue(command instanceof InitCommand);
-    }
-
-    @Test('invalid reporter, should default to standard')
-    private async invalidReporter() {
-        // Act
-        const args = ['node', '/some/path', '-r', 'invalidReporter'];
-        const command = await this.cli.getCommand(args);
-
-        // Assert
-        expect.toBeTrue(command instanceof RunCommand);
-        const runCommand = command as RunCommand;
-        expect.toBeEqual(runCommand.testyConfigFile, './testy.json');
     }
 }

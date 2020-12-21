@@ -1,3 +1,3 @@
 export interface CliCommand {
-    execute(): void;
+    execute(): Promise<void>;
 }

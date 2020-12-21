@@ -22,7 +22,7 @@ export class BeforeAfterDecoratorsTestSuite {
     @BeforeEach()
     private beforeEach() {
         this.processMock = getProcessMock();
-        this.visitor = new TestRunnerVisitor(this.processMock);
+        this.visitor = new TestRunnerVisitor(this.processMock, null);
     }
 
     @Test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')

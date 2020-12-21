@@ -16,7 +16,7 @@ export class TestDecoratorTestSuite {
     @BeforeEach()
     beforeEach() {
         this.processMock = getProcessMock();
-        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock);
+        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock, null);
     }
 
     @Test('One successful test, one timeout')

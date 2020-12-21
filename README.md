@@ -4,9 +4,11 @@
 [![npm version](https://badge.fury.io/js/testyts.svg)](https://badge.fury.io/js/testyts)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://clicktotweet.co/daN8y)
 
-![Testy.Ts logo](./img/testy_colour_rgb_transparent.png)
 
-Testy.Ts is a modern TypeScript testing framework.
+<img src="./img/testy_colour_rgb_transparent.png" alt="Shoutout to Kateryna Jones for that sweet logo!" />
+
+
+### Testy.Ts is a modern TypeScript testing framework.
 
 ## Why?
 Writing tests should be fun. The other testing framework solutions do not make use of the full power of TypeScript. This one uses decorators and OOP and stuff. Therefore, it makes writing tests fun.
@@ -20,7 +22,7 @@ $ npm install -g testyts
 
 ## Setup
 
-To generate a testy.json configuration file, use the following cmmand:
+To generate a basic testy.json configuration file, use the following command. To see all available configurations, see  [this section](#configuration-file).
 
 ```
 $ testyts init
@@ -214,12 +216,21 @@ export class MyTestSuite {
 
 ## Configuration file
 
+| Key        | Description | Type | Note |
+|------------|-------------|------|------|
+| `include`  | The [test loader](src\lib\utils\testsLoader.ts) will look for tests in files that match any of those [glob patterns](https://www.npmjs.com/package/glob#glob-primer) |  `string[]`  | *Required* |
+| `tsconfig` | Alternate tsconfig for the test loader to use. If not specified, the loader will use the `tsconfig.json` in the current directory | `string` | *Optional* |
+| `timeout`  | Global test timeout. By default, the global timeout is 2000 ms. The global timeout will be overriden by test-level timeouts. | `number`| *Optional* |
+| `reporter` | Output format. | `'standard'`  &#124; `'TAP'` | *Optional* |
+
+Example configuration file:
+
 ```json
 {
-    "tsconfig": "path/to/your/tsconfig.json",
-    "include": [
-        "src/**/*.spec.ts"
-    ]
+    "include": ["**/*.spec.ts"],
+    "tsconfig": "./tsconfig.spec.json",
+    "reporter": "standard",
+    "timeout": 10000,
 }
 ```
 
@@ -253,12 +264,15 @@ Here's an online [REPL](https://repl.it/@Aboisier/TestyTs-Playground) for you to
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update unit tests and [integration tests](./tests/README.md) as appropriate.
+Please make sure to update unit tests and [e2e tests](./e2e/README.md) as appropriate.
 
 If you have any questions, do not hesitate to email me at <aboisiermichaud@gmail.com>.
 
 ## More documentation
-- [Integration tests](./tests/README.md)
+- [E2E tests](./e2e/README.md)
 
 ## License
-[ISC](./LICENSE)
+* [ISC](./LICENSE)
+
+
+<img src="./img/testy_colour_rgb_transparent.png" alt="Shoutout to Kateryna Jones for that sweet logo!" width="150"> <br> <sub>*Shoutout to [Kateryna Jones](https://www.katerynajones.com/) for that sweet logo!*</sub>

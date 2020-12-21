@@ -17,7 +17,7 @@ export class TestRunnerVisitorErrorMessagesTests {
     @BeforeEach()
     beforeEach() {
         this.processMock = getProcessMock();
-        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock);
+        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock, null);
     }
 
     @Test('Asynchronous tests failures')

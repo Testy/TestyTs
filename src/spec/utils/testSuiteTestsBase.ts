@@ -11,6 +11,6 @@ export class TestSuiteTestsBase {
     @BeforeEach()
     private beforeEach() {
         this.processMock = getProcessMock();
-        this.visitor = new TestRunnerVisitor(this.processMock);
+        this.visitor = new TestRunnerVisitor(this.processMock, null);
     }
 }

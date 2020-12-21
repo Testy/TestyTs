@@ -1,12 +1,15 @@
 import * as Commander from 'commander';
 import { Logger } from '../logger/logger';
 import { TestVisitorFactory } from '../tests/visitors/testVisitor.factory';
-import { CliCommand } from './cliCommand';
+import { CliCommand } from './cli.command';
 import { InitCommand } from './init.command';
 import { RunCommand } from './run.command';
+import { JsonLoader } from '../utils/jsonLoader.service';
+import { TestyConfig } from '../interfaces/config';
+import { TestsLoader } from '../utils/testsLoader';
 
 export class TestyCli {
-    constructor(private logger: Logger, private testVisitorFactory: TestVisitorFactory) { }
+    constructor(private logger: Logger, private testVisitorFactory: TestVisitorFactory, private jsonLoader: JsonLoader, private testLoader: TestsLoader) { }
 
     public async handle(args: any[]) {
         const command = await this.getCommand(args);
@@ -22,7 +25,7 @@ export class TestyCli {
 
     public getCommand(args: any[]) {
 
-        return new Promise<CliCommand>(resolve => {
+        return new Promise<CliCommand>(async resolve => {
             const program = new Commander.Command();
 
             program
@@ -33,15 +36,23 @@ export class TestyCli {
             program
                 .option('-c --config <config>', 'Specify a config file.', './testy.json')
                 .option('-t --tsconfig <tsconfig>', 'Specify a tsconfig config file.', undefined)
-                .option('-r --reporter <reporter>', 'Specifies the reporter type', /(standard|TAP)/, 'standard');
+                .option('-r --reporter <reporter>', 'Specifies the reporter type', /(standard|TAP)/, undefined);
 
             program.parse(args);
+
 
             if (program._name === '-c' || program._name === '--config' && program.args.length > 0) {
                 program.config = program.args[0];
             }
-            const testRunner = this.testVisitorFactory.getRunner(program.reporter);
-            resolve(new RunCommand(this.logger, testRunner, program.config, program.tsconfig));
+
+            const testyConfig = await this.jsonLoader.load<TestyConfig>(program.config || 'testy.json');
+
+            if (program.reporter != null) {
+                testyConfig.reporter = program.reporter;
+            }
+
+            const testRunner = this.testVisitorFactory.getRunner(testyConfig);
+            resolve(new RunCommand(this.logger, testRunner, this.jsonLoader, this.testLoader, testyConfig, program.tsconfig));
         });
     }
 }

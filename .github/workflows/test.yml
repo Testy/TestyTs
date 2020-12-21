@@ -21,18 +21,25 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
     
-    - name: npm install, build, and test
-      run: |
-        npm ci
-        npm run build --if-present
-        npm test
+    - name: Install dependencies
+      run: npm ci
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-        CI: true
 
-  integration-tests:
+    - name: Build
+      run: npm run build --if-present
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
-    name: Integration tests
+    - name: Run unit tests
+      run: npm test
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+
+  e2e-tests:
+
+    name: E2E tests
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -53,17 +60,40 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
     
-    - name: Build and link
-      run: |
-        npm ci
+    - name: Build
+      run: npm ci
 
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-        CI: true
  
-    - name: Tests
-      run: |
-        node ./tests/runner.js
+    - name: Run e2e tests
+      run: node ./e2e/runner.js
       env:
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-        CI: true
+
+
+  lint:
+
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    
+    - name: Build
+      run: npm ci
+
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+ 
+    - name: Lint
+      run: npm run lint
+
+      env:
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
