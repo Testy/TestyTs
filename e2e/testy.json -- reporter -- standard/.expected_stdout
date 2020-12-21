@@ -1,0 +1,10 @@
+Root
+  MyTestSuite
+    √ pass1
+    x fail1 - Expected 2  to equal 3.
+    x fail2 - Expected 2  to equal 3.
+    x fail3 - Expected 2  to equal 3.
+    ! skip1
+    ! skip2
+
+Summary: 1/6 passed, 3/6 failed, 2/6 skipped. (#####s)

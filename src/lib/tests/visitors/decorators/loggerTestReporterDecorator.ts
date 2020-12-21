@@ -64,7 +64,7 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
 
     private printSummary(tests: CompositeReport) {
         const success = tests.numberOfSuccessfulTests;
-        const failed = tests.numberOfTests - tests.numberOfSuccessfulTests;
+        const failed = tests.numberOfTests - tests.numberOfSuccessfulTests - tests.numberOfSkippedTests;
         const skipped = tests.numberOfSkippedTests;
         const total = tests.numberOfTests;
 
