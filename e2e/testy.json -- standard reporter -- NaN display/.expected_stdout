@@ -1,0 +1,5 @@
+Root
+  MyTestSuite
+    x test - Expected NaN to equal 0.
+
+Summary: 0/1 passed, 1/1 failed, 0/1 skipped. (#####s)
