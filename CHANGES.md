@@ -1,5 +1,10 @@
 # Changes
 
+## 1.1.1
+
+### Fixes
+  - Fixed `NaN` being displayed as `null` in test reports *(#62, thanks for reporting, @Deskbot)*
+
 ## 1.1.0
 
 ### Features
