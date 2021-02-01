@@ -26,8 +26,13 @@ export class TestInstance {
         if (config?.timeout != null) timeout = config.timeout;
         if (this.timeout != null) timeout = this.timeout;
 
-        setTimeout(() => reject('Test has timed out.'), timeout);
-        await this.func(context);
+        const nodeTimeout = setTimeout(() => reject('Test has timed out.'), timeout);
+
+        try {
+          await this.func(context);
+        } finally {
+          clearTimeout(nodeTimeout);
+        }
       }
       catch (err) {
         reject(err);
