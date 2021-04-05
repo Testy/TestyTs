@@ -42,13 +42,16 @@ export class TestsLoader {
 
     tsnode.register(tsconfig);
 
-    const baseUrl = tsconfig.compilerOptions['baseUrl'];
-    const paths = tsconfig.compilerOptions['paths'];
-    if (baseUrl != null && paths != null) {
-      tsConfigPaths.register({
-        baseUrl: tsconfig.compilerOptions['baseUrl'],
-        paths: tsconfig.compilerOptions['paths'],
-      });
+    const compilerOptions = tsconfig?.compilerOptions;
+    if (compilerOptions) {
+      const baseUrl = compilerOptions['baseUrl'];
+      const paths = compilerOptions['paths'];
+      if (baseUrl != null && paths != null) {
+        tsConfigPaths.register({
+          baseUrl: baseUrl,
+          paths: paths,
+        });
+      }
     }
 
     TestsLoader.isTsnodeRegistered = true;
