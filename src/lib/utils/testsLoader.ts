@@ -44,12 +44,15 @@ export class TestsLoader {
 
     const compilerOptions = tsconfig?.compilerOptions;
     if (compilerOptions) {
+      /* tslint:disable:no-string-literal */
       const baseUrl = compilerOptions['baseUrl'];
       const paths = compilerOptions['paths'];
+      /* tslint:enable:no-string-literal */
+
       if (baseUrl != null && paths != null) {
         tsConfigPaths.register({
-          baseUrl: baseUrl,
-          paths: paths,
+          baseUrl,
+          paths,
         });
       }
     }
