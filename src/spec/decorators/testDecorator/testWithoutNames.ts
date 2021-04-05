@@ -5,15 +5,15 @@ import { TestCase } from '../../../lib/decorators/testCase.decorator';
 
 @TestSuite()
 export class TestWithNoNamesTestSuite {
-    @Test()
-    private myTest1() { }
+  @Test()
+  private myTest1() {}
 
-    @Test()
-    private myTest2() { }
+  @Test()
+  private myTest2() {}
 
-    @Test()
-    @TestCase('myTestCase1')
-    @TestCase('myTestCase2')
-    @TestCase('myTestCase3')
-    private myTest3() { }
+  @Test()
+  @TestCase('myTestCase1')
+  @TestCase('myTestCase2')
+  @TestCase('myTestCase3')
+  private myTest3() {}
 }

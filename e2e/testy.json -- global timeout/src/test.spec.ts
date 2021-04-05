@@ -2,10 +2,8 @@ import { expect, Test, TestSuite } from 'testyts';
 
 @TestSuite()
 export class MyTestSuite {
-
   @Test()
   public async myTest() {
-
     // Act
     await this.wait(2500);
 
@@ -14,6 +12,6 @@ export class MyTestSuite {
   }
 
   private wait(timeout: number) {
-    return new Promise(resolve => setTimeout(() => resolve(), 3000));
+    return new Promise((resolve) => setTimeout(() => resolve(), 3000));
   }
 }

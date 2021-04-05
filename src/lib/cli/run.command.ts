@@ -8,37 +8,40 @@ import { TestsLoader } from '../utils/testsLoader';
 import { CliCommand } from './cli.command';
 
 export class RunCommand implements CliCommand {
-    public get tsConfigFile(): string { return this._tsConfigFile; }
+  public get tsConfigFile(): string {
+    return this._tsConfigFile;
+  }
 
-    constructor(private logger: Logger,
-        private testRunnerVisitor: TestVisitor<Report>,
-        private jsonLoader: JsonLoader,
-        private testLoader: TestsLoader,
-        private testyConfig: TestyConfig,
-        private _tsConfigFile) {
+  constructor(
+    private logger: Logger,
+    private testRunnerVisitor: TestVisitor<Report>,
+    private jsonLoader: JsonLoader,
+    private testLoader: TestsLoader,
+    private testyConfig: TestyConfig,
+    private _tsConfigFile
+  ) {}
+
+  public async execute() {
+    // We load the tsConfig file. In priority order, we use
+    // 1. The tsconfig file specified from the command line
+    // 2. The tsconfig file specified in the testy config file
+    // 3. The root folder's tsconfig.json file
+    let tsConfigPath = this.tsConfigFile;
+    if (tsConfigPath == null) {
+      tsConfigPath = this.testyConfig.tsconfig;
     }
 
-    public async execute() {
-        // We load the tsConfig file. In priority order, we use
-        // 1. The tsconfig file specified from the command line
-        // 2. The tsconfig file specified in the testy config file
-        // 3. The root folder's tsconfig.json file
-        let tsConfigPath = this.tsConfigFile;
-        if (tsConfigPath == null) {
-            tsConfigPath = this.testyConfig.tsconfig;
-        }
-
-        if (tsConfigPath == null) {
-            tsConfigPath = 'tsconfig.json';
-        }
-
-        const tsConfig = await this.jsonLoader.load<tsnode.Options>(tsConfigPath);
-        const testSuites = await this.testLoader.loadTests(process.cwd(), this.testyConfig.include, tsConfig);
-
-        if (testSuites == null) {
-            this.logger.warn('Test suites instance is null.');
-        } else {
-            await testSuites.accept(this.testRunnerVisitor);
-        }
+    if (tsConfigPath == null) {
+      tsConfigPath = 'tsconfig.json';
     }
+
+    const tsConfig = await this.jsonLoader.load<tsnode.Options>(tsConfigPath);
+    const testSuites = await this.testLoader.loadTests(process.cwd(), this.testyConfig.include, tsConfig);
+
+    if (testSuites == null) {
+      this.logger.warn('Test suites instance is null.');
+    } else {
+      await testSuites.accept(this.testRunnerVisitor);
+    }
+  }
 }

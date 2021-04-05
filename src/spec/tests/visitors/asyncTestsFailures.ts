@@ -4,20 +4,21 @@ import { Timeout } from '../../../lib/decorators/timeout.decorator';
 
 @TestSuite()
 export class AsyncTestsFailures {
+  @Test()
+  @Timeout(0)
+  async testA() {
+    await new Promise(() => {});
+  }
 
-    @Test()
-    @Timeout(0)
-    async testA() {
-        await new Promise(() => { });
-    }
+  @Test()
+  async testC() {
+    await new Promise((res, rej) => rej('Some rejection message!'));
+  }
 
-    @Test()
-    async testC() {
-        await new Promise((res, rej) => rej('Some rejection message!'));
-    }
-
-    @Test()
-    async testD() {
-        await new Promise(() => { throw new Error('Some error!'); });
-    }
+  @Test()
+  async testD() {
+    await new Promise(() => {
+      throw new Error('Some error!');
+    });
+  }
 }

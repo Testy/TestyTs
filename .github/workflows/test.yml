@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   unit-tests:
-
     name: Unit tests
     runs-on: ubuntu-latest
 
@@ -13,32 +12,30 @@ jobs:
         node: [8.x, 10.x, 12.x]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-      
-    - name: Use Node.js ${{ matrix.node }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node }}
-    
-    - name: Install dependencies
-      run: npm ci
-      env:
-        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Checkout
+        uses: actions/checkout@v1
 
-    - name: Build
-      run: npm run build --if-present
-      env:
-        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
 
-    - name: Run unit tests
-      run: npm test
-      env:
-        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Install dependencies
+        run: npm ci
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
+      - name: Build
+        run: npm run build --if-present
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: Run unit tests
+        run: npm test
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   e2e-tests:
-
     name: E2E tests
     runs-on: ${{ matrix.os }}
 
@@ -47,53 +44,51 @@ jobs:
         node: [8.x, 10.x, 12.x]
         os: [macos-latest, ubuntu-latest, windows-latest]
         include:
-        - os: macos-latest
-        - os: windows-latest
-        - os: ubuntu-latest
+          - os: macos-latest
+          - os: windows-latest
+          - os: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-      
-    - name: Use Node.js ${{ matrix.node }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node }}
-    
-    - name: Build
-      run: npm ci
+      - name: Checkout
+        uses: actions/checkout@v1
 
-      env:
-        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
- 
-    - name: Run e2e tests
-      run: node ./e2e/runner.js
-      env:
-        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
 
+      - name: Build
+        run: npm ci
+
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: Run e2e tests
+        run: node ./e2e/runner.js
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   lint:
-
     name: Lint
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-      
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    
-    - name: Build
-      run: npm ci
+      - name: Checkout
+        uses: actions/checkout@v1
 
-      env:
-        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
- 
-    - name: Lint
-      run: npm run lint
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
 
-      env:
-        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Build
+        run: npm ci
+
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: Lint
+        run: npm run lint
+
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}

@@ -10,45 +10,43 @@ import { TestsVisitorDecorator } from './testsVisitorDecorator';
 import { RootTestSuite } from '../../rootTestSuite';
 
 export class TapTestReporterDecorator extends TestsVisitorDecorator<Report> {
-    private counter = 1;
+  private counter = 1;
 
-    constructor(baseVisitor: TestVisitor<Report>, private logger: Logger) {
-        super(baseVisitor);
+  constructor(baseVisitor: TestVisitor<Report>, private logger: Logger) {
+    super(baseVisitor);
+  }
+
+  public async visitTest(test: TestInstance): Promise<Report> {
+    const report = await this.baseVisitTest(test);
+
+    let msg;
+    const safeName = test.name.replace('#', '');
+    if (report.result === TestResult.Success) {
+      msg = `ok ${this.counter} ${safeName}`;
+    } else if (report instanceof FailedTestReport) {
+      msg = `not ok ${this.counter} ${safeName}`;
+    } else {
+      msg = `ok ${this.counter} ${safeName} # SKIP`;
     }
 
-    public async visitTest(test: TestInstance): Promise<Report> {
-        const report = await this.baseVisitTest(test);
+    this.logger.info(msg);
 
-        let msg;
-        const safeName = test.name.replace('#', '');
-        if (report.result === TestResult.Success) {
-            msg = `ok ${this.counter} ${safeName}`;
-        }
-        else if (report instanceof FailedTestReport) {
-            msg = `not ok ${this.counter} ${safeName}`;
-        }
-        else {
-            msg = `ok ${this.counter} ${safeName} # SKIP`;
-        }
+    this.counter += 1;
 
-        this.logger.info(msg);
+    return report;
+  }
 
-        this.counter += 1;
+  public async visitTestSuite(tests: TestSuiteInstance): Promise<Report> {
+    this.logger.info(`# ${tests.name}`);
+    const returnValue = await this.baseVisitTestSuite(tests);
+    return returnValue;
+  }
 
-        return report;
-    }
+  public async visitRootTestSuite(tests: RootTestSuite): Promise<CompositeReport> {
+    const report = (await this.visitTestSuite(tests)) as CompositeReport;
 
-    public async visitTestSuite(tests: TestSuiteInstance): Promise<Report> {
-        this.logger.info(`# ${tests.name}`);
-        const returnValue = await this.baseVisitTestSuite(tests);
-        return returnValue;
-    }
+    this.logger.info(`1..${report.numberOfTests - report.numberOfSkippedTests}`);
 
-    public async visitRootTestSuite(tests: RootTestSuite): Promise<CompositeReport> {
-        const report = await this.visitTestSuite(tests) as CompositeReport;
-
-        this.logger.info(`1..${report.numberOfTests - report.numberOfSkippedTests}`);
-
-        return report;
-    }
+    return report;
+  }
 }

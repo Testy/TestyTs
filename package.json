@@ -1,6 +1,6 @@
 {
   "name": "testyts",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "icon": "img/test-icon-128x128.png",
   "description": "Modern test framework for TypeScript.",
   "main": "build/testyCore.js",
@@ -39,6 +39,7 @@
     "glob": "^7.1.6",
     "reflect-metadata": "^0.1.12",
     "ts-node": "^7.0.1",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^3.8.3"
   },
   "devDependencies": {
@@ -46,6 +47,7 @@
     "@types/node": "^10.17.21",
     "codecov": "^3.6.0",
     "nyc": "^14.1.1",
+    "prettier": "2.2.1",
     "tslint": "^5.20.1",
     "typemoq": "^2.1.0"
   },

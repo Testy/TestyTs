@@ -1,7 +1,7 @@
 export class TestCaseInstance {
-    public args: any[];
+  public args: any[];
 
-    constructor(public name: string, ...args: any[]) {
-        this.args = args;
-    }
+  constructor(public name: string, ...args: any[]) {
+    this.args = args;
+  }
 }

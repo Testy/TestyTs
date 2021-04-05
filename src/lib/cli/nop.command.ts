@@ -1,8 +1,7 @@
 import { CliCommand } from './cli.command';
 
 export class NopCommand implements CliCommand {
+  constructor() {}
 
-    constructor() { }
-
-    public async execute(): Promise<void> { }
+  public async execute(): Promise<void> {}
 }

@@ -3,23 +3,23 @@ import { TestCase } from '../../../lib/decorators/testCase.decorator';
 
 @TestSuite('Throws During Before Each Test Suite')
 export class ThrowsDuringBeforeEachTestSuite {
-    @BeforeEach()
-    private beforeEach() {
-        throw new Error('This should be handled.');
-    }
+  @BeforeEach()
+  private beforeEach() {
+    throw new Error('This should be handled.');
+  }
 
-    @Test('a')
-    private a() { }
+  @Test('a')
+  private a() {}
 
-    @Test('b')
-    private b() { }
+  @Test('b')
+  private b() {}
 
-    @Test('c')
-    @TestCase('c.1')
-    @TestCase('c.2')
-    @TestCase('c.3')
-    private c() { }
+  @Test('c')
+  @TestCase('c.1')
+  @TestCase('c.2')
+  @TestCase('c.3')
+  private c() {}
 
-    @XTest('d')
-    private d() { }
+  @XTest('d')
+  private d() {}
 }

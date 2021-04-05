@@ -1,6 +1,6 @@
-const { lstatSync, readdirSync } = require('fs')
-const { join } = require('path')
-const { execSync } = require("child_process");
+const { lstatSync, readdirSync } = require('fs');
+const { join } = require('path');
+const { execSync } = require('child_process');
 const log = require('./log');
 
 function isDirectory(source) {
@@ -8,7 +8,9 @@ function isDirectory(source) {
 }
 
 function getDirectories(source) {
-  return readdirSync(source).map(name => join(source, name)).filter(isDirectory);
+  return readdirSync(source)
+    .map((name) => join(source, name))
+    .filter(isDirectory);
 }
 
 function installTesty(test) {
@@ -20,14 +22,14 @@ function run(command, test) {
 }
 
 function unlinkTesty() {
-  log.debug('Unlinking TestyTs')
+  log.debug('Unlinking TestyTs');
   execSync('npm unlink', { cwd: join(__dirname, '/../') });
 }
 
 function linkTesty() {
   unlinkTesty();
 
-  log.debug('Linking TestyTs.')
+  log.debug('Linking TestyTs.');
   execSync('npm link', { cwd: join(__dirname, '/../') });
 }
 
