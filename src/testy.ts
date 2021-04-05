@@ -13,4 +13,3 @@ const jsonLoader = new JsonLoader();
 const testsLoader = new TestsLoader(logger);
 const cli = new TestyCli(logger, testVisitorFactory, jsonLoader, testsLoader);
 cli.handle(process.argv);
-

@@ -1,9 +1,7 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "sourceMap": false
-    },
-    "exclude": [
-        "**/spec/*"
-    ]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": false
+  },
+  "exclude": ["**/spec/*"]
 }

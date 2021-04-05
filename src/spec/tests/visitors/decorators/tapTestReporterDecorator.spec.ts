@@ -13,32 +13,30 @@ import { getProcessMock } from '../../../utils/processMock';
 
 @TestSuite('Tap Reporter Tests')
 export class TapTestReporterDecoratorTests {
-    private testRunnerVisitor: TestVisitor<Report>;
-    private logger: StringLogger;
-    private processMock: NodeJS.Process;
+  private testRunnerVisitor: TestVisitor<Report>;
+  private logger: StringLogger;
+  private processMock: NodeJS.Process;
 
-    @BeforeEach()
-    beforeEach() {
-        this.logger = new StringLogger();
-        this.processMock = getProcessMock();
-        this.testRunnerVisitor = new TestRunnerVisitor(this.processMock, null);
-        this.testRunnerVisitor = new TapTestReporterDecorator(this.testRunnerVisitor, this.logger);
-    }
+  @BeforeEach()
+  beforeEach() {
+    this.logger = new StringLogger();
+    this.processMock = getProcessMock();
+    this.testRunnerVisitor = new TestRunnerVisitor(this.processMock, null);
+    this.testRunnerVisitor = new TapTestReporterDecorator(this.testRunnerVisitor, this.logger);
+  }
 
-    @Test('Test suite output respects the TAP spec')
-    async outputRespectsSpec() {
-        // Arrange
-        const testSuite = TestUtils.getInstance(DummyTapDecoratorTestSuite);
+  @Test('Test suite output respects the TAP spec')
+  async outputRespectsSpec() {
+    // Arrange
+    const testSuite = TestUtils.getInstance(DummyTapDecoratorTestSuite);
 
-        // Act
-        await testSuite.accept(this.testRunnerVisitor);
+    // Act
+    await testSuite.accept(this.testRunnerVisitor);
 
-        // Assert
-        // We split each line and remove the comments and empty lines
-        const output = this.logger.string
-            .split('\n')
-            .filter(x => !x.trim().startsWith('#') && x.length > 0);
+    // Assert
+    // We split each line and remove the comments and empty lines
+    const output = this.logger.string.split('\n').filter((x) => !x.trim().startsWith('#') && x.length > 0);
 
-        expect.arraysToBeEqual(output, dummyTapDecoratorTestSuiteExpectedOutput);
-    }
+    expect.arraysToBeEqual(output, dummyTapDecoratorTestSuiteExpectedOutput);
+  }
 }

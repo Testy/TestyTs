@@ -10,24 +10,26 @@ export type ReporterType = 'standard' | 'TAP';
 type VisitorConstructor = (baseVisitor: TestVisitor<Report>, logger: Logger) => TestVisitor<Report>;
 
 export class TestVisitorFactory {
-    private reportersConstructors: Map<ReporterType, VisitorConstructor>;
+  private reportersConstructors: Map<ReporterType, VisitorConstructor>;
 
-    constructor(private logger: Logger) {
-        this.reportersConstructors = new Map();
-        this.reportersConstructors.set('standard', (baseVisitor, logger) => new LoggerTestReporterDecorator(baseVisitor, logger));
-        this.reportersConstructors.set('TAP', (baseVisitor, logger) => new TapTestReporterDecorator(baseVisitor, logger));
-    }
+  constructor(private logger: Logger) {
+    this.reportersConstructors = new Map();
+    this.reportersConstructors.set(
+      'standard',
+      (baseVisitor, logger) => new LoggerTestReporterDecorator(baseVisitor, logger)
+    );
+    this.reportersConstructors.set('TAP', (baseVisitor, logger) => new TapTestReporterDecorator(baseVisitor, logger));
+  }
 
-    public getRunner(config: TestyConfig) {
-        let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor(process, config);
+  public getRunner(config: TestyConfig) {
+    let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor(process, config);
 
-        const reporterConstructor = this.reportersConstructors.get(config.reporter || 'standard');
+    const reporterConstructor = this.reportersConstructors.get(config.reporter || 'standard');
 
-        if (!reporterConstructor)
-            throw new Error(`The ${config.reporter} reporter is not supported.`);
+    if (!reporterConstructor) throw new Error(`The ${config.reporter} reporter is not supported.`);
 
-        testRunnerVisitor = reporterConstructor(testRunnerVisitor, this.logger);
+    testRunnerVisitor = reporterConstructor(testRunnerVisitor, this.logger);
 
-        return testRunnerVisitor;
-    }
+    return testRunnerVisitor;
+  }
 }

@@ -5,36 +5,43 @@ import { TestCase } from '../../../lib/decorators/testCase.decorator';
 
 @TestSuite('Normal Before After Test Suite')
 export class NormalBeforeAfterTestSuite {
-    public numberOfBeforeAllExecutions = 0;
-    public numberOfBeforeEachExecutions = 0;
-    public numberOfAfterEachExecutions = 0;
-    public numberOfAfterAllExecutions = 0;
+  public numberOfBeforeAllExecutions = 0;
+  public numberOfBeforeEachExecutions = 0;
+  public numberOfAfterEachExecutions = 0;
+  public numberOfAfterAllExecutions = 0;
 
-    @BeforeAll()
-    private beforeAll() { ++this.numberOfBeforeAllExecutions; }
+  @BeforeAll()
+  private beforeAll() {
+    ++this.numberOfBeforeAllExecutions;
+  }
 
-    @BeforeEach()
-    private beforeEach() { ++this.numberOfBeforeEachExecutions; }
+  @BeforeEach()
+  private beforeEach() {
+    ++this.numberOfBeforeEachExecutions;
+  }
 
-    @AfterEach()
-    private afterEach() { ++this.numberOfAfterEachExecutions; }
+  @AfterEach()
+  private afterEach() {
+    ++this.numberOfAfterEachExecutions;
+  }
 
-    @AfterAll()
-    private afterAll() { ++this.numberOfAfterAllExecutions; }
+  @AfterAll()
+  private afterAll() {
+    ++this.numberOfAfterAllExecutions;
+  }
 
-    @Test('a')
-    private a() { }
+  @Test('a')
+  private a() {}
 
-    @Test('b')
-    private b() { }
+  @Test('b')
+  private b() {}
 
+  @Test('c')
+  @TestCase('c.1')
+  @TestCase('c.2')
+  @TestCase('c.3')
+  private c() {}
 
-    @Test('c')
-    @TestCase('c.1')
-    @TestCase('c.2')
-    @TestCase('c.3')
-    private c() { }
-
-    @XTest('d')
-    private d() { }
+  @XTest('d')
+  private d() {}
 }

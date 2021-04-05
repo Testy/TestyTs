@@ -1,1 +1,5 @@
-export enum TestResult { Success, Failure, Skipped }
+export enum TestResult {
+  Success,
+  Failure,
+  Skipped,
+}

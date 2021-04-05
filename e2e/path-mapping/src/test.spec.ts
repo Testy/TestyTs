@@ -1,5 +1,5 @@
-import { expect, Test, TestSuite } from "testyts";
-import { someConstant } from "path-mapped-stuff/some-file";
+import { expect, Test, TestSuite } from 'testyts';
+import { someConstant } from 'path-mapped-stuff/some-file';
 
 @TestSuite()
 export class MyTestSuite {
