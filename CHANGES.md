@@ -1,5 +1,9 @@
 # Changes
 
+## 1.2.0
+
+- Added support for [path mapping](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping) module resolution using [tsconfig-paths](https://www.npmjs.com/package/tsconfig-paths) _(#61, thanks for reporting, #A-ZC-Lau!)_
+
 ## 1.1.2
 
 - Fixed issue that caused test runs to run until timeout is completed _(#63, thanks for reporting, #gbreeze!)_
