@@ -1,0 +1,4 @@
+{
+  "include": ["**/*.spec.ts"],
+  "setupFile": "test-setup.js"
+}

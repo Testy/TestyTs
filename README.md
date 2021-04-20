@@ -1,5 +1,4 @@
 ![Test](https://github.com/Testy/TestyTs/workflows/Test/badge.svg)
-[![Maintainability](https://api.codeclimate.com/v1/badges/66d7c2c5c60a4919d593/maintainability)](https://codeclimate.com/github/Testy/TestyTs/maintainability)
 [![codecov](https://codecov.io/gh/Testy/TestyTs/branch/master/graph/badge.svg)](https://codecov.io/gh/Testy/TestyTs)
 [![npm version](https://badge.fury.io/js/testyts.svg)](https://badge.fury.io/js/testyts)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://clicktotweet.co/daN8y)
@@ -74,6 +73,23 @@ export class MyTestSuite {
     // This is executed after all the tests
   }
 }
+```
+
+If you need to setup global stuff, you may do so by specifying a setup file in your `testy.json`.
+
+_testy.json_
+
+```json
+{
+  "setupFile": "test-setup.ts" // You could also use a .js file
+}
+```
+
+_test-setup.ts_
+
+```ts
+// Import modules here, setup global variables, the whole nine yards
+global['foo'] = 'I can be used in test 😎';
 ```
 
 ### Asynchronous stuff

@@ -3,4 +3,5 @@ export interface TestyConfig {
   include: string[];
   reporter?: 'standard' | 'TAP';
   timeout?: number;
+  setupFile?: string;
 }

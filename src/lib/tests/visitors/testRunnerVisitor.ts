@@ -1,20 +1,23 @@
-import { TestSuiteInstance } from '../testSuite';
-import { TestInstance } from '../test';
-import { SuccessfulTestReport } from '../../reporting/report/successfulTestReport';
-import { FailedTestReport } from '../../reporting/report/failedTestReport';
-import { TestStatus } from '../../testStatus';
-import { SkippedTestReport } from '../../reporting/report/skippedTestReport';
-import { Report } from '../../reporting/report/report';
-import { CompositeReport } from '../../reporting/report/compositeReport';
-import { FailedTestsReportVisitor } from './failedTestsReportVisitor';
-import { LeafReport } from '../../reporting/report/leafReport';
-import { TestVisitor } from './testVisitor';
-import { RootTestSuite } from '../rootTestSuite';
+import * as path from 'path';
 import { performance } from 'perf_hooks';
 import { TestyConfig } from '../../interfaces/config';
+import { CompositeReport } from '../../reporting/report/compositeReport';
+import { FailedTestReport } from '../../reporting/report/failedTestReport';
+import { LeafReport } from '../../reporting/report/leafReport';
+import { Report } from '../../reporting/report/report';
+import { SkippedTestReport } from '../../reporting/report/skippedTestReport';
+import { SuccessfulTestReport } from '../../reporting/report/successfulTestReport';
+import { TestStatus } from '../../testStatus';
+import { RootTestSuite } from '../rootTestSuite';
+import { TestInstance } from '../test';
+import { TestSuiteInstance } from '../testSuite';
+import { FailedTestsReportVisitor } from './failedTestsReportVisitor';
+import { TestVisitor } from './testVisitor';
+import * as fs from 'fs';
 
 export class TestRunnerVisitor implements TestVisitor<Report> {
   private testSuites: TestSuiteInstance[] = [];
+  private setupRan = false;
 
   constructor(private process: NodeJS.Process, private config: TestyConfig) {}
 
@@ -23,6 +26,7 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
 
     const report = new CompositeReport(tests.name);
     try {
+      await this.runSetupFile();
       await this.runAll(tests.beforeAllMethods, tests.context);
       await this.runTests(tests, report);
       await this.runAll(tests.afterAllMethods, tests.context);
@@ -60,6 +64,19 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
     }
 
     return report;
+  }
+
+  private async runSetupFile() {
+    if (this.setupRan) return;
+
+    if (this.config?.setupFile?.length) {
+      const setupFilePath = path.resolve(process.cwd(), this.config.setupFile);
+      if (fs.existsSync(setupFilePath)) {
+        await import(setupFilePath);
+      }
+    }
+
+    this.setupRan = true;
   }
 
   private async runTests(tests: TestSuiteInstance, report: CompositeReport): Promise<void> {
