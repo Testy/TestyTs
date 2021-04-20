@@ -1,12 +1,20 @@
 # Changes
 
+## 1.3.0
+
+### Features
+
+- Added support for specifying  [a setup file](https://github.com/Testy/TestyTs#setup-and-teardown) that is executed before all the tests run. _(tentatively fixes #49, thanks for reportiny, @BorderCloud!)_
+
 ## 1.2.0
 
-- Added support for [path mapping](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping) module resolution using [tsconfig-paths](https://www.npmjs.com/package/tsconfig-paths) _(#61, thanks for reporting, #A-ZC-Lau!)_
+### Fixes
+
+- Added support for [path mapping](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping) module resolution using [tsconfig-paths](https://www.npmjs.com/package/tsconfig-paths) _(#61, thanks for reporting, @A-ZC-Lau!)_
 
 ## 1.1.2
 
-- Fixed issue that caused test runs to run until timeout is completed _(#63, thanks for reporting, #gbreeze!)_
+- Fixed issue that caused test runs to run until timeout is completed _(#63, thanks for reporting, @gbreeze!)_
 
 ## 1.1.1
 
