@@ -69,7 +69,7 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
   private async runSetupFile() {
     if (this.setupRan) return;
 
-    if (this.config.setupFile?.length) {
+    if (this.config?.setupFile?.length) {
       const setupFilePath = path.resolve(process.cwd(), this.config.setupFile);
       if (fs.existsSync(setupFilePath)) {
         await import(setupFilePath);
