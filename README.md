@@ -81,7 +81,7 @@ _testy.json_
 
 ```json
 {
-  "setupFile": "test-setup.ts" // You could also use a .js file
+  "setupFile": "test-setup.ts"
 }
 ```
 
@@ -224,11 +224,12 @@ export class MyTestSuite {
 ## Configuration file
 
 | Key        | Description                                                                                                                                                          | Type                        | Note       |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ---------- |
+| ---------- | -------------------------------ran------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ---------- |
 | `include`  | The [test loader](src\lib\utils\testsLoader.ts) will look for tests in files that match any of those [glob patterns](https://www.npmjs.com/package/glob#glob-primer) | `string[]`                  | _Required_ |
 | `tsconfig` | Alternate tsconfig for the test loader to use. If not specified, the loader will use the `tsconfig.json` in the current directory                                    | `string`                    | _Optional_ |
 | `timeout`  | Global test timeout. By default, the global timeout is 2000 ms. The global timeout will be overriden by test-level timeouts.                                         | `number`                    | _Optional_ |
 | `reporter` | Output format.                                                                                                                                                       | `'standard'` &#124; `'TAP'` | _Optional_ |
+| `setupFile` | A .ts or .js file that will be run before the tests run starts.                                                                                                                                                       | `string` | _Optional_ |
 
 Example configuration file:
 
