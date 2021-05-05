@@ -1,0 +1,24 @@
+{
+  "name": "testyts-nyc-example",
+  "version": "1.2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "testyts",
+    "test:coverage": "nyc testyts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@types/node": "^12.7.2",
+    "@typescript-eslint/eslint-plugin": "^2.21.0",
+    "@typescript-eslint/parser": "^2.21.0",
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.19",
+    "testyts": "^1.3.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {}
+}
