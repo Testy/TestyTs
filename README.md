@@ -266,7 +266,7 @@ $ testyts --tsconfig custom/tsconfig.json // To specify a custom typescript conf
 
 The [examples](./examples) folder contains example projects with various use-cases.
 
-- [Code coverage with NYC](./examples/code-coverage-nyc/README.md)
+- [Code coverage with NYC](./examples/code-coverage-nyc)
 
 ## Try it out online!
 

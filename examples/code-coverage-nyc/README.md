@@ -18,7 +18,7 @@ npm i -D nyc source-map-support ts-node @istanbuljs/nyc-config-typescript
 
 Then, create a `.nycrc` file that looks like this:
 
-```json
+```js
 {
   "extends": "@istanbuljs/nyc-config-typescript",
   "all": true, // OPTIONAL if you want coverage reported on every file, including those that aren't tested:
@@ -29,6 +29,6 @@ Then, create a `.nycrc` file that looks like this:
 
 Finally, add a script for running nyc against TestyTs.
 
-```json
+```js
     "test:coverage": "nyc npm run test"
 ```
