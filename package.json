@@ -34,7 +34,6 @@
   },
   "homepage": "https://github.com/Aboisier/testyts#readme",
   "dependencies": {
-    "@testy/assertion": "^0.1.2",
     "commander": "^4.1.1",
     "glob": "^7.1.6",
     "reflect-metadata": "^0.1.12",

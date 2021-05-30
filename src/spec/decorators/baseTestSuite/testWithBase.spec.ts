@@ -1,7 +1,7 @@
-import { expect } from '@testy/assertion';
+import { expect } from '../../../lib/assertion/expect';
 import { Test, TestSuite } from '../../../testyCore';
-import { TestUtils } from '../../utils/testUtils';
 import { TestSuiteTestsBase } from '../../utils/testSuiteTestsBase';
+import { TestUtils } from '../../utils/testUtils';
 import { TestSuiteA, TestSuiteB } from './baseWithChildren';
 import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBase';
 

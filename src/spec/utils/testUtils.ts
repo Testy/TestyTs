@@ -1,4 +1,4 @@
-import { expect } from '@testy/assertion';
+import { expect } from '../../lib/assertion/expect';
 import { CompositeReport } from '../../lib/reporting/report/compositeReport';
 import { FailedTestReport } from '../../lib/reporting/report/failedTestReport';
 import { LeafReport } from '../../lib/reporting/report/leafReport';

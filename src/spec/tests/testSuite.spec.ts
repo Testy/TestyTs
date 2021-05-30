@@ -1,8 +1,8 @@
-import { TestSuite, Test } from '../../testyCore';
+import { expect } from '../../lib/assertion/expect';
+import { TestInstance } from '../../lib/tests/test';
 import { TestSuiteInstance } from '../../lib/tests/testSuite';
 import { TestStatus } from '../../lib/testStatus';
-import { TestInstance } from '../../lib/tests/test';
-import { expect } from '@testy/assertion';
+import { Test, TestSuite } from '../../testyCore';
 
 @TestSuite('Tests Suite Tests')
 export class TestSuiteTests {

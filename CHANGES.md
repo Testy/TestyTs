@@ -1,10 +1,20 @@
 # Changes
 
+## Unreleased
+
+### Fixes
+
+- Fixed issue stack overflow issue with comparing objects _(#77, thanks for reporting, @Pointotech!)_
+
+### Miscellaneous
+
+- Moved [https://github.com/Testy/testyts-assertion](testyts-assertion) lib into this repository.
+
 ## 1.3.0
 
 ### Features
 
-- Added support for specifying  [a setup file](https://github.com/Testy/TestyTs#setup-and-teardown) that is executed before all the tests run. _(tentatively fixes #49, thanks for reportiny, @BorderCloud!)_
+- Added support for specifying [a setup file](https://github.com/Testy/TestyTs#setup-and-teardown) that is executed before all the tests run. _(tentatively fixes #49, thanks for reporting, @BorderCloud!)_
 
 ## 1.2.0
 

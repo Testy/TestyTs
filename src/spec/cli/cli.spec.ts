@@ -1,6 +1,6 @@
-import { expect } from '@testy/assertion';
 import * as program from 'commander';
 import { IMock, It, Mock, Times } from 'typemoq';
+import { expect } from '../../lib/assertion/expect';
 import { InitCommand } from '../../lib/cli/init.command';
 import { RunCommand } from '../../lib/cli/run.command';
 import { TestyCli } from '../../lib/cli/testyCli';
@@ -8,12 +8,11 @@ import { AfterEach } from '../../lib/decorators/afterAndBefore.decorator';
 import { TestCase } from '../../lib/decorators/testCase.decorator';
 import { Logger } from '../../lib/logger/logger';
 import { Report } from '../../lib/reporting/report/report';
-import { TestSuiteInstance } from '../../lib/tests/testSuite';
 import { TestVisitor } from '../../lib/tests/visitors/testVisitor';
 import { TestVisitorFactory } from '../../lib/tests/visitors/testVisitor.factory';
 import { JsonLoader } from '../../lib/utils/jsonLoader.service';
 import { TestsLoader } from '../../lib/utils/testsLoader';
-import { BeforeEach, FTest, Test, TestSuite } from '../../testyCore';
+import { BeforeEach, Test, TestSuite } from '../../testyCore';
 import { NullLogger } from '../utils/nullLogger';
 
 @TestSuite('Cli Tests')

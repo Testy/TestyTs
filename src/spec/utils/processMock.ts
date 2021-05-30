@@ -1,5 +1,4 @@
-import { expect } from '@testy/assertion';
-import { Node } from 'typescript';
+import { expect } from '../../lib/assertion/expect';
 
 export function getProcessMock(): ProcessMock {
   const process = {

@@ -10,4 +10,4 @@ export { afterAll, afterEach, beforeEach, beforeAll } from './lib/decorators/aft
 export { test, ftest, xtest } from './lib/decorators/test.decorator';
 export { testSuite, ftestSuite, xtestSuite } from './lib/decorators/testSuite.decorator';
 
-export { expect } from '@testy/assertion';
+export { expect } from './lib/assertion/expect';

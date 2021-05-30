@@ -1,15 +1,15 @@
-import { TestSuite } from '../../../../lib/decorators/testSuite.decorator';
+import { expect } from '../../../../lib/assertion/expect';
 import { BeforeEach } from '../../../../lib/decorators/afterAndBefore.decorator';
+import { Test } from '../../../../lib/decorators/test.decorator';
+import { TestSuite } from '../../../../lib/decorators/testSuite.decorator';
+import { Report } from '../../../../lib/reporting/report/report';
+import { TapTestReporterDecorator } from '../../../../lib/tests/visitors/decorators/tapTestReporterDecorator';
 import { TestRunnerVisitor } from '../../../../lib/tests/visitors/testRunnerVisitor';
 import { TestVisitor } from '../../../../lib/tests/visitors/testVisitor';
-import { Report } from '../../../../lib/reporting/report/report';
+import { getProcessMock } from '../../../utils/processMock';
 import { StringLogger } from '../../../utils/stringLogger';
-import { TapTestReporterDecorator } from '../../../../lib/tests/visitors/decorators/tapTestReporterDecorator';
-import { Test } from '../../../../lib/decorators/test.decorator';
 import { TestUtils } from '../../../utils/testUtils';
 import { DummyTapDecoratorTestSuite, dummyTapDecoratorTestSuiteExpectedOutput } from './dummyTapDecoratorTestSuite';
-import { expect } from '@testy/assertion';
-import { getProcessMock } from '../../../utils/processMock';
 
 @TestSuite('Tap Reporter Tests')
 export class TapTestReporterDecoratorTests {
