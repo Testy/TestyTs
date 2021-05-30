@@ -1,6 +1,6 @@
 # Changes
 
-## Unreleased
+## 1.4.0
 
 ### Fixes
 
