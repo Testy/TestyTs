@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Aboisier/testyts.git"
+    "url": "git+https://github.com/Testy/TestyTs.git"
   },
   "keywords": [
     "test",
@@ -30,9 +30,9 @@
   "author": "Antoine Boisier-Michaud",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Aboisier/testyts/issues"
+    "url": "https://github.com/Testy/TestyTs/issues"
   },
-  "homepage": "https://github.com/Aboisier/testyts#readme",
+  "homepage": "https://github.com/Testy/TestyTs#readme",
   "dependencies": {
     "commander": "^4.1.1",
     "glob": "^7.1.6",
