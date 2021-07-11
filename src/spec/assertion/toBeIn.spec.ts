@@ -7,6 +7,12 @@ export class ExpectToMatch {
   private aToBeInSuccess() {
     expect.toBeIn('a', ['a', 'b', 'c']);
   }
+  
+  @Test(`'a' to be in ReadonlyArray, should succeed`)
+  private aToBeInReadonlySuccess() {
+    const readonlyArray: ReaonlyArray<string> = ['a', 'b', 'c'];
+    expect.toBeIn('a', readonlyArray);
+  }  
 
   @Test(`'a' to be in, should fail`)
   private aToBeInFail() {

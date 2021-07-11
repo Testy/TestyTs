@@ -43,7 +43,7 @@ class Expect {
    * @param expected Expected array.
    * @param message Custom assertion failure message.
    */
-  public arraysToBeEqual<T extends unknown[]>(actual: T, expected: T, message?: string) {
+  public arraysToBeEqual<T extends readonly unknown[]>(actual: T, expected: T, message?: string) {
     if (actual.length !== expected.length)
       throw new ExpectationError(message || `Expected sequences to be equal, but their lenghts were different.`);
 
@@ -219,7 +219,7 @@ class Expect {
    * @param array Array in which the given item is expected to be.
    * @param message Custom assertion failure message.
    */
-  public toBeIn<T>(item: T, array: T[], message?: string) {
+  public toBeIn<T>(item: T, array: readonly T[], message?: string) {
     const isIn = array.find((x) => x === item);
     if (this.notFlag ? isIn : !isIn) {
       throw new ExpectationError(
