@@ -10,6 +10,13 @@ export class ExpectArraysToBeEqualTestSuite {
   private equal(actual, expected) {
     expect.arraysToBeEqual(actual, expected);
   }
+  
+  @Test('ReadonlyArrays to be equal')
+  private equal() {
+    const actual: ReaonlyArray<string> = ['a', 'b', 'c'];
+    const expected: ReaonlyArray<string> = ['a', 'b', 'c'];
+    expect.arraysToBeEqual(actual, expected);
+  }  
 
   @Test('Arrays to be equal, should fail')
   @TestCase(`'a, b, c' to equal 'b, c, a'`, ['a', 'b', 'c'], ['b', 'c', 'a'])
