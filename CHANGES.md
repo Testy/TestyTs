@@ -1,5 +1,11 @@
 # Changes
 
+## 1.5.0
+
+### Improvements
+
+- Made array assertion methods accept readonly arrays _(#78, thanks for the contribution, #geon!)_
+
 ## 1.4.0
 
 ### Fixes
