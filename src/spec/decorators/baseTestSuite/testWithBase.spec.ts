@@ -8,7 +8,7 @@ import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBase';
 @TestSuite('Test Suite With Base Test Suite Tests')
 export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
   @Test('the base and the actual test suite before and after methods are called.')
-  private async trivialCase() {
+  public async trivialCase() {
     // Arrange
     const testSuite = TestUtils.getInstance(TestSuiteWithBase);
 
@@ -27,7 +27,7 @@ export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
   }
 
   @Test('base with multiple children')
-  private async baseWithMultipleChildren() {
+  public async baseWithMultipleChildren() {
     // Arrange
     const a = TestUtils.getInstance(TestSuiteA);
     const b = TestUtils.getInstance(TestSuiteB);

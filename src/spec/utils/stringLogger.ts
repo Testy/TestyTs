@@ -19,7 +19,7 @@ export class StringLogger extends Logger {
     this.string += message + '\n';
   }
 
-  color(message: string, color: Color): void {
-    this.string += message + '\n';
+  format(message: string, color: Color): string {
+    return message;
   }
 }

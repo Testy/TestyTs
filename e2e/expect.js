@@ -25,21 +25,38 @@ function slice(str, center, width = 20) {
   return str.slice(Math.max(min, 0), Math.min(max, len - 1));
 }
 
-function expect(actual) {
+function expect(actualOutput) {
   return {
-    toEqual: (expected) => {
-      actual = sanitize(actual);
-      expected = sanitize(expected);
+    toEqual: (expectedOutput) => {
+      const expectedLines = expectedOutput
+        .toString()
+        .split(/\r?\n/)
+        .map((x) => sanitize(x))
+        .filter((x) => x.match(/^ *$/) === null);
 
+      const actualLines = actualOutput
+        .toString()
+        .split(/\r?\n/)
+        .map((x) => sanitize(x))
+        .filter((x) => x.match(/^ *$/) === null);
       let isValid = true;
-      for (let i = 0; i < actual.length; ++i) {
-        if (expected[i] !== '#' && actual[i] !== expected[i]) {
-          log.error(`Expected string did not match: ${slice(actual, i)} != ${slice(expected, i)}`);
-          isValid = false;
-          break;
+
+      for (let i = 0; i < actualLines.length; ++i) {
+        let actual = actualLines[i];
+        let expected = expectedLines[i];
+
+        if (expected.split('').every((c) => c === '#' || c === ' ')) {
+          continue;
+        }
+
+        for (let i = 0; i < actual.length; ++i) {
+          if (expected[i] !== '#' && actual[i] !== expected[i]) {
+            log.error(`Expected string did not match: ${slice(actual, i)} != ${slice(expected, i)}`);
+            isValid = false;
+            break;
+          }
         }
       }
-
       return isValid;
     },
   };

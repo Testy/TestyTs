@@ -6,7 +6,11 @@ export class FailedTestReport extends LeafReport {
     return this._message;
   }
 
-  constructor(name: string, private _message: string, duration: number) {
+  public get stack() {
+    return this._stack;
+  }
+
+  constructor(name: string, private _message: string, private _stack: string, duration: number) {
     super(name, TestResult.Failure, duration);
   }
 }
