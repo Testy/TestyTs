@@ -24,9 +24,9 @@ export class TestRunnerVisitorErrorMessagesTests {
     const testSuite = TestUtils.getInstance(AsyncTestsFailures);
 
     const expectedReport = new CompositeReport('AsyncTestsFailures');
-    expectedReport.addReport(new FailedTestReport('testA', 'Test has timed out.', 0));
-    expectedReport.addReport(new FailedTestReport('testC', 'Some rejection message!', 0));
-    expectedReport.addReport(new FailedTestReport('testD', 'Some error!', 0));
+    expectedReport.addReport(new FailedTestReport('testA', 'Test has timed out.', null, 0));
+    expectedReport.addReport(new FailedTestReport('testC', 'Some rejection message!', null, 0));
+    expectedReport.addReport(new FailedTestReport('testD', 'Some error!', null, 0));
 
     // Act
     const actualReport = await testSuite.accept(this.testRunnerVisitor);
@@ -42,7 +42,7 @@ export class TestRunnerVisitorErrorMessagesTests {
     const testSuite = TestUtils.getInstance(SyncTestsFailures);
 
     const expectedReport = new CompositeReport('SyncTestsFailures');
-    expectedReport.addReport(new FailedTestReport('error', 'Some error!', 0));
+    expectedReport.addReport(new FailedTestReport('error', 'Some error!', null, 0));
 
     // Act
     const actualReport = await testSuite.accept(this.testRunnerVisitor);

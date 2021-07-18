@@ -1,4 +1,5 @@
-import { Logger, Color } from './logger';
+import { TextDecoder } from 'util';
+import { Logger, Color, TextDecoration } from './logger';
 
 export class ConsoleLogger extends Logger {
   private readonly reset = '\x1b[0m';
@@ -12,36 +13,68 @@ export class ConsoleLogger extends Logger {
   }
 
   public warn(message: string = ''): void {
-    console.log(this.color(this.indentation + message, Color.Yellow));
+    console.log(this.format(this.indentation + message, Color.Yellow));
   }
 
   public error(message: string = ''): void {
-    console.log(this.color(this.indentation + message, Color.Red));
+    console.log(this.format(this.indentation + message, Color.Red));
   }
 
-  public color(message: string, color: Color) {
+  public format(message: string, color: Color, textDecorations: TextDecoration[] = []): string {
+    const colorCode = this.getColorCode(color);
+    const textDecorationsCodes = textDecorations.map((x) => this.getTextDecorationCode(x));
+
+    return message
+      .split(' ')
+      .map((x) => colorCode + textDecorationsCodes.join() + x + this.reset)
+      .join(' ');
+  }
+
+  private getColorCode(color: Color) {
     switch (color) {
+      case Color.Black:
+        return ForegroundColorCodes.Black;
+
       case Color.Green:
-        return ForegroundColors.Green + message + this.reset;
+        return ForegroundColorCodes.Green;
 
       case Color.Yellow:
-        return ForegroundColors.Yellow + message + this.reset;
+        return ForegroundColorCodes.Yellow;
 
       case Color.Red:
-        return ForegroundColors.Red + message + this.reset;
+        return ForegroundColorCodes.Red;
 
       case Color.Grey:
-        return ForegroundColors.Grey + message + this.reset;
+        return ForegroundColorCodes.Grey;
+
+      case Color.LightGrey:
+        return ForegroundColorCodes.LightGrey;
 
       default:
-        return message + this.reset;
+        return '';
+    }
+  }
+
+  private getTextDecorationCode(textDecoration: TextDecoration) {
+    switch (textDecoration) {
+      case TextDecoration.Bold:
+        return TextDecorationsCodes.Bold;
+
+      default:
+        return '';
     }
   }
 }
 
-enum ForegroundColors {
+enum TextDecorationsCodes {
+  Bold = '\x1b[1m',
+}
+
+enum ForegroundColorCodes {
+  Black = '\x1b[30m',
   Red = '\x1b[31m',
   Green = '\x1b[32m',
   Yellow = '\x1b[93m',
   Grey = '\x1b[90m',
+  LightGrey = '\x1b[37m',
 }

@@ -25,7 +25,7 @@ export class TestInstance {
   ) {}
 
   public async run(context, config: TestyConfig) {
-    return await new Promise(async (resolve, reject) => {
+    return await new Promise<void>(async (resolve, reject) => {
       try {
         // The timeout is determined like so:
         // 1. If there is a test-level timeout, we use it

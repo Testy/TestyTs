@@ -16,7 +16,7 @@ export class FailedTestsReportVisitor implements TestVisitor<Report> {
     const report: LeafReport =
       test.status === TestStatus.Ignored
         ? new SkippedTestReport(test.name)
-        : new FailedTestReport(test.name, this.reason, 0);
+        : new FailedTestReport(test.name, this.reason, '', 0);
 
     return report;
   }

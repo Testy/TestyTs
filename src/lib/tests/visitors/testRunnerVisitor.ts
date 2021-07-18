@@ -59,7 +59,12 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
         report = new SuccessfulTestReport(test.name, Math.round(time));
       } catch (err) {
         this.process.exitCode = 1;
-        report = new FailedTestReport(test.name, typeof err === typeof '' ? err : err.message, 0);
+        report = new FailedTestReport(
+          test.name,
+          typeof err === typeof '' ? err : err.message,
+          typeof err === typeof '' ? null : err.stack,
+          0
+        );
       }
     }
 

@@ -60,7 +60,7 @@ export class TestRunnerVisitorTests {
 
     const expectedReport = new CompositeReport('myTestSuite');
     expectedReport.addReport(new SuccessfulTestReport('testA', 0));
-    expectedReport.addReport(new FailedTestReport('testB', 'oops', 0));
+    expectedReport.addReport(new FailedTestReport('testB', 'oops', null, 0));
 
     // Act
     const actualReport = await testSuite.accept(this.testRunnerVisitor);

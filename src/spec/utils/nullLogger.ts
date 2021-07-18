@@ -5,5 +5,7 @@ export class NullLogger extends Logger {
   info(message?: string): void {}
   warn(message?: string): void {}
   error(message?: string): void {}
-  color(message: string, color: Color): void {}
+  format(message: string, color: Color): string {
+    return message;
+  }
 }

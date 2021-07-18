@@ -1,8 +1,14 @@
 export enum Color {
+  Black,
   Red,
   Green,
   Yellow,
   Grey,
+  LightGrey,
+}
+
+export enum TextDecoration {
+  Bold,
 }
 
 export abstract class Logger {
@@ -25,5 +31,5 @@ export abstract class Logger {
   abstract info(message?: string): void;
   abstract warn(message?: string): void;
   abstract error(message?: string): void;
-  abstract color(message: string, color: Color): void;
+  abstract format(message: string, color: Color, textDecorations?: TextDecoration[]): string;
 }
