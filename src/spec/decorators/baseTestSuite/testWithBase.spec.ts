@@ -28,7 +28,7 @@ export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
     expect.toBeEqual(testSuite.context.afterAllExecuted[1], TestSuiteWithBase);
   }
 
-  @XTest('base with multiple children')
+  @Test('base with multiple children')
   public async baseWithMultipleChildren() {
     // Arrange
     const a = TestUtils.getInstance(TestSuiteA);
