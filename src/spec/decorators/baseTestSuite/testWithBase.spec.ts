@@ -1,5 +1,5 @@
 import { expect } from '../../../lib/assertion/expect';
-import { Test, TestSuite, XTest } from '../../../testyCore';
+import { Test, TestSuite } from '../../../testyCore';
 import { TestSuiteTestsBase } from '../../utils/testSuiteTestsBase';
 import { TestUtils } from '../../utils/testUtils';
 import { TestSuiteA, TestSuiteB } from './baseWithChildren';
@@ -7,8 +7,6 @@ import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBase';
 
 @TestSuite('Test Suite With Base Test Suite Tests')
 export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
-  private foo = null;
-
   @Test('the base and the actual test suite before and after methods are called.')
   public async trivialCase() {
     // Arrange
