@@ -1,5 +1,13 @@
 # Changes
 
+## 2.0.0-beta.2
+
+- Improved logging (failed test suites now display the stacktrace, more color and bold were added) _(#79, thanks for the suggestion, #geon!)_
+
+## 2.0.0-beta.1
+
+_Deployed by mistake_ 👀
+
 ## 1.5.0
 
 ### Improvements
