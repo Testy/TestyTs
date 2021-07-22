@@ -5,4 +5,4 @@ ok 2 test2 # SKIP
 # TestSuite2
 ok 3 test1 # SKIP
 ok 4 test2 # SKIP
-1..2
+1..1
