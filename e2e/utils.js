@@ -25,7 +25,7 @@ function unlinkTesty() {
   try {
     log.debug('Unlinking TestyTs');
     execSync('npm unlink -g', { cwd: join(__dirname, '/../') });
-  } catch {
+  } catch (e) {
     log.debug('Unlinking failed. Hoping for the best!');
   }
 }
