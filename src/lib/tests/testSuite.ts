@@ -26,20 +26,27 @@ export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInsta
    * @param key The test's id
    */
   public get(key: string): TestInstance | TestSuiteInstance {
-    const test = super.get(key);
-    if (test instanceof Map) {
+    const testOrTestSuite = super.get(key);
+
+    if (testOrTestSuite instanceof Map) {
+      const testSuite = testOrTestSuite;
+
       if (this.status !== TestStatus.Focused && this.hasFocusedTests()) {
-        return test.getNormalizedCopy();
+        return testSuite.propagateFocus();
+      } else if (testSuite.status === TestStatus.Ignored) {
+        return testSuite.propagateIgnored();
       }
 
-      return test;
-    }
+      return testOrTestSuite;
+    } else {
+      const test = testOrTestSuite;
 
-    if (this.status !== TestStatus.Focused && test.status !== TestStatus.Focused && this.hasFocusedTests()) {
-      return new TestInstance(test.name, test.func, TestStatus.Ignored);
-    }
+      if (this.status !== TestStatus.Focused && test.status !== TestStatus.Focused && this.hasFocusedTests()) {
+        return new TestInstance(test.name, test.func, TestStatus.Ignored);
+      }
 
-    return test;
+      return testOrTestSuite;
+    }
   }
 
   public async accept<T>(visitor: TestVisitor<T>): Promise<T> {
@@ -66,9 +73,17 @@ export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInsta
   }
 
   /**
-   * Normalizes the test statuses. This means all tests which are not focused or under a focused test suite will be skipped.
+   * @deprecated This method is deprecated in favor of "propagateFocus", which has a better name.
+   * This was kept to prevent breaking changes with the TestExplorer.
    */
   private getNormalizedCopy(): TestInstance | TestSuiteInstance {
+    return this.propagateFocus();
+  }
+
+  /**
+   * Propagates the focused status. This means all tests which are not focused or under a focused test suite will be skipped.
+   */
+  private propagateFocus(): TestInstance | TestSuiteInstance {
     if (this.status === TestStatus.Focused) {
       return this;
     }
@@ -77,7 +92,7 @@ export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInsta
     for (const id of this.testIds) {
       const testOrTestSuite = super.get(id);
       if (testOrTestSuite instanceof Map) {
-        copy.set(id, testOrTestSuite.getNormalizedCopy());
+        copy.set(id, testOrTestSuite.propagateFocus());
       } else {
         copy.set(
           id,
@@ -87,6 +102,23 @@ export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInsta
             testOrTestSuite.status === TestStatus.Focused ? TestStatus.Focused : TestStatus.Ignored
           )
         );
+      }
+    }
+
+    return copy;
+  }
+
+  /**
+   * Propagates the ignored status.
+   */
+  private propagateIgnored(): TestInstance | TestSuiteInstance {
+    const copy = this.clone();
+    for (const id of this.testIds) {
+      const testOrTestSuite = super.get(id);
+      if (testOrTestSuite instanceof Map) {
+        copy.set(id, testOrTestSuite.propagateIgnored());
+      } else {
+        copy.set(id, new TestInstance(testOrTestSuite.name, testOrTestSuite.func, TestStatus.Ignored));
       }
     }
 

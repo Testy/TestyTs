@@ -1,5 +1,6 @@
 import { CompositeReport } from '../../lib/reporting/report/compositeReport';
 import { FailedTestReport } from '../../lib/reporting/report/failedTestReport';
+import { Report } from '../../lib/reporting/report/report';
 import { SkippedTestReport } from '../../lib/reporting/report/skippedTestReport';
 import { SuccessfulTestReport } from '../../lib/reporting/report/successfulTestReport';
 import { TestInstance } from '../../lib/tests/test';
@@ -24,33 +25,36 @@ export class TestRunnerVisitorTests {
   @Test('Simple test suite')
   async simpleTestSuite() {
     // Arrange
-    const testSuite = new TestSuiteInstance();
-    testSuite.name = 'myTestSuite';
-    testSuite.set('testA', new TestInstance('testA', () => {}, TestStatus.Normal));
-    testSuite.set('testB', new TestInstance('testB', () => {}, TestStatus.Normal));
+    const root = new TestSuiteInstance();
+    root.name = 'Root';
+    root.set('A', new TestInstance('A', () => {}, TestStatus.Normal));
+    root.set('B', new TestInstance('B', () => {}, TestStatus.Normal));
 
-    const expectedReport = new CompositeReport('myTestSuite');
-    expectedReport.addReport(new SuccessfulTestReport('testA', 0));
-    expectedReport.addReport(new SuccessfulTestReport('testB', 0));
+    // prettier-ignore
+    const expected = 
+    report('Root', r => r
+      .success('A')
+      .success('B')
+    );
 
     // Act
-    const actualReport = await testSuite.accept(this.testRunnerVisitor);
+    const actual = await root.accept(this.testRunnerVisitor);
 
     // Assert
-    TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+    TestUtils.expectReportsToBeEqual(actual, expected);
     this.processMock.expectSuccess();
   }
 
   @Test('Test suite with failure')
   async testSuiteWithFailure() {
     // Arrange
-    const testSuite = new TestSuiteInstance();
-    testSuite.name = 'myTestSuite';
-    testSuite.set('testA', new TestInstance('testA', () => {}, TestStatus.Normal));
-    testSuite.set(
-      'testB',
+    const root = new TestSuiteInstance();
+    root.name = 'Root';
+    root.set('A', new TestInstance('A', () => {}, TestStatus.Normal));
+    root.set(
+      'B',
       new TestInstance(
-        'testB',
+        'B',
         () => {
           throw new Error('oops');
         },
@@ -58,64 +62,114 @@ export class TestRunnerVisitorTests {
       )
     );
 
-    const expectedReport = new CompositeReport('myTestSuite');
-    expectedReport.addReport(new SuccessfulTestReport('testA', 0));
-    expectedReport.addReport(new FailedTestReport('testB', 'oops', null, 0));
+    // prettier-ignore
+    const expected = 
+    report('Root', r => r
+      .success('A')
+      .failed('B', 'oops')
+    );
 
     // Act
-    const actualReport = await testSuite.accept(this.testRunnerVisitor);
+    const actual = await root.accept(this.testRunnerVisitor);
 
     // Assert
-    TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+    TestUtils.expectReportsToBeEqual(actual, expected);
     this.processMock.expectFailure();
   }
 
   @Test('Test suite with skipped tests')
   async testSuiteWithSkippedTests() {
     // Arrange
-    const testSuite = new TestSuiteInstance();
-    testSuite.name = 'myTestSuite';
-    testSuite.set('testA', new TestInstance('testA', () => {}, TestStatus.Ignored));
-    testSuite.set('testB', new TestInstance('testB', () => {}, TestStatus.Normal));
+    const root = new TestSuiteInstance();
+    root.name = 'Root';
+    root.set('A', new TestInstance('A', () => {}, TestStatus.Ignored));
+    root.set('B', new TestInstance('B', () => {}, TestStatus.Normal));
 
-    const expectedReport = new CompositeReport('myTestSuite');
-    expectedReport.addReport(new SkippedTestReport('testA'));
-    expectedReport.addReport(new SuccessfulTestReport('testB', 0));
+    // prettier-ignore
+    const expected = 
+      report('Root', r => r
+        .skipped('A')
+        .success('B')
+      );
 
     // Act
-    const actualReport = await testSuite.accept(this.testRunnerVisitor);
+    const actual = await root.accept(this.testRunnerVisitor);
 
     // Assert
-    TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+    TestUtils.expectReportsToBeEqual(actual, expected);
     this.processMock.expectSuccess();
   }
 
-  @Test('Test suite with focused tests')
-  async testSuiteWithFocusedTests() {
+  @Test('Skipped and focused')
+  async skippedAndFocusedTests() {
     // Arrange
-    const testSuite = new TestSuiteInstance();
-    testSuite.name = 'myTestSuite';
-    testSuite.set('testA', new TestInstance('testA', () => {}, TestStatus.Focused));
-    testSuite.set('testB', new TestInstance('testB', () => {}, TestStatus.Normal));
+    const root = new TestSuiteInstance();
+    root.name = 'Root';
+    root.set('A', new TestInstance('A', () => {}, TestStatus.Normal));
+    root.set('B', new TestInstance('B', () => {}, TestStatus.Normal));
 
-    const subTestSuite = new TestSuiteInstance();
-    subTestSuite.name = 'subTestSuite';
-    subTestSuite.set('testC1', new TestInstance('testC1', () => {}, TestStatus.Normal));
-    subTestSuite.set('testC2', new TestInstance('testC2', () => {}, TestStatus.Normal));
+    const sub1 = new TestSuiteInstance();
+    sub1.name = 'Sub 1';
+    sub1.status = TestStatus.Ignored;
+    sub1.set('C', new TestInstance('C', () => {}, TestStatus.Normal));
+    sub1.set('D', new TestInstance('D', () => {}, TestStatus.Normal));
+    root.set('Sub 1', sub1);
 
-    const expectedReport = new CompositeReport('myTestSuite');
-    expectedReport.addReport(new SuccessfulTestReport('testA', 0));
-    expectedReport.addReport(new SkippedTestReport('testB'));
-
-    const expectedSubReport = new CompositeReport('subTestSui te');
-    expectedSubReport.addReport(new SkippedTestReport('testC1'));
-    expectedSubReport.addReport(new SkippedTestReport('testC2'));
+    // prettier-ignore
+    const expected = 
+      report('Root', r => r
+        .success('A')
+        .success('B')
+        .subReport('Sub 1', sr => sr
+          .skipped('C')
+          .skipped('D')
+        )
+      );
 
     // Act
-    const actualReport = await testSuite.accept(this.testRunnerVisitor);
+    const actual = await root.accept(this.testRunnerVisitor);
 
     // Assert
-    TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
+    TestUtils.expectReportsToBeEqual(actual, expected);
     this.processMock.expectSuccess();
   }
 }
+
+//#region Helpers
+
+function report(name: string, instructions: (report: ReportBuilder) => ReportBuilder): Report {
+  return instructions(_reportBuilder(new CompositeReport(name))).report;
+}
+
+function _reportBuilder(r: CompositeReport): ReportBuilder {
+  return {
+    report: r,
+    success: (name: string, duration?: number) => {
+      r.addReport(new SuccessfulTestReport(name, duration ?? 0));
+      return _reportBuilder(r);
+    },
+    skipped: (name: string) => {
+      r.addReport(new SkippedTestReport(name));
+      return _reportBuilder(r);
+    },
+    failed: (name: string, reason?: string, stack?: string, duration?: number) => {
+      r.addReport(new FailedTestReport(name, reason, stack, duration ?? 0));
+      return _reportBuilder(r);
+    },
+    subReport: (name: string, descriptor: (subReport: ReportBuilder) => ReportBuilder) => {
+      const subReport = report(name, descriptor);
+      r.addReport(subReport);
+      return _reportBuilder(r);
+    },
+  };
+}
+
+interface ReportBuilder {
+  report: CompositeReport;
+  success(name: string, duration?: number): ReportBuilder;
+  skipped(name: string): ReportBuilder;
+  failed(name: string, reason?: string, stack?: string, duration?: number): ReportBuilder;
+  subReport(name: string, builder: (subReport: ReportBuilder) => ReportBuilder): ReportBuilder;
+}
+
+//#endregion
