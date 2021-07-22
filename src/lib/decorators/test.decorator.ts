@@ -5,15 +5,6 @@ import { TestStatus } from '../testStatus';
 import { getTestSuiteInstance } from './utils';
 
 /**
- * Marks a method inside a @TestSuite decorated class as a test.
- *
- * @param name Name of the test, displayed in the test report.
- */
-export function Test(name?: string) {
-  return generateDecoratorFunction(name, TestStatus.Normal);
-}
-
-/**
  * Marks a method inside a @TestSuite decorated class as a focused test.
  * If one or more tests are marked as focused, only those will be ran.
  *
@@ -33,6 +24,40 @@ export function XTest(name?: string) {
   return generateDecoratorFunction(name, TestStatus.Ignored);
 }
 
+interface TestDecorator {
+  (name?: string): any;
+  focus: (name?: string) => any;
+  ignore: (name?: string) => any;
+}
+
+/**
+ * Marks a method inside a @TestSuite decorated class as a test.
+ *
+ * @param name Name of the test, displayed in the test report.
+ */
+function testDecorator(name?: string) {
+  return generateDecoratorFunction(name, TestStatus.Normal);
+}
+
+/**
+ * Marks a method inside a @TestSuite decorated class as a focused test.
+ * If one or more tests are marked as focused, only those will be ran.
+ *
+ * @param name Name of the test, displayed in the test report.
+ */
+testDecorator.focus = FTest;
+
+/**
+ * Marks a method inside a @TestSuite decorated class as an ignored test.
+ * Ignored tests will not be ran, but they will still appear in test reports.
+ *
+ * @param name Name of the test, displayed in the test report.
+ */
+testDecorator.ignore = XTest;
+
+/* tslint:disable:variable-name */
+export const Test: TestDecorator = testDecorator;
+
 /**
  * @deprecated since 0.7.0. Prefer using the capitalized version.
  * Marks a method inside a @TestSuite decorated class as a test.
@@ -40,7 +65,7 @@ export function XTest(name?: string) {
  * @param name Name of the test, displayed in the test report.
  */
 export function test(name?: string) {
-  return Test(name);
+  return testDecorator(name);
 }
 
 /**

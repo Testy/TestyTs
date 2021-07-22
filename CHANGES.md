@@ -1,6 +1,18 @@
 # Changes
 
+## 2.0.0-beta.3
+
+### Fixes
+
+- Fixed issue with the `XTestSuite`. It did not ignore tests, now it does.
+
+### Improvements
+
+- Added a new way of focusing/ignoring tests. Instead of focusing tests using the `@FTest()` decorator, it is now possible to simply use the `@Test.focus()` method. Symetrically, it is possible to ignore tests by doing `@Test.ignore()`. This also works for test suites.
+
 ## 2.0.0-beta.2
+
+### Improvements
 
 - Improved logging (failed test suites now display the stacktrace, more color and bold were added) _(#79, thanks for the suggestion, #geon!)_
 

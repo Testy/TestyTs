@@ -171,14 +171,14 @@ expect.toBeSorted.inAscendingOrder([0, 1, 1, 2, 3, 5, 8]);
 You can ignore tests by adding an `X` before a test suite or a specific test decorator. Ignored tests will still show up in the test report, but they will be marked as ignored.
 
 ```ts
-@XTestSuite() // This test suite will be ignored
+@TestSuite.ignore() // This test suite will be ignored
 export class MyTestSuite {
   // Your tests
 }
 
 @TestSuite()
 export class MyTestSuite {
-  @XTest() // This test will be ignored
+  @Test.ignore() // This test will be ignored
   onePlusOne() {
     // Some test
   }
@@ -188,7 +188,7 @@ export class MyTestSuite {
 You can also focus tests by adding an `F` before a test suite or a specific test decorator. If one test or test suites are focused, only those will be runned. The others will be reported as ignored.
 
 ```ts
-@FTestSuite() // This test suite will be focused.
+@TestSuite.focus() // This test suite will be focused.
 export class MyTestSuite {
 ...
 }
@@ -196,7 +196,7 @@ export class MyTestSuite {
 @TestSuite()
 export class MyTestSuite {
 
-    @FTest() // This test will be focused
+    @Test.focus() // This test will be focused
     onePlusOne() {
        // Your test
     }

@@ -1,5 +1,5 @@
 export enum TestStatus {
-  Normal,
-  Focused,
-  Ignored,
+  Normal = 'Normal',
+  Focused = 'Focused',
+  Ignored = 'Ignored',
 }

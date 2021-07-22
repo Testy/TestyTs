@@ -1,15 +1,6 @@
-import { TestStatus } from '../testStatus';
 import { TestSuiteInstance } from '../tests/testSuite';
+import { TestStatus } from '../testStatus';
 import { getTestSuiteInstance } from './utils';
-
-/**
- * Marks a class as a test suite.
- *
- * @param name Name of the test suite, displayed in the test report.
- */
-export function TestSuite<T extends new (...args: any[]) => {}>(name?: string): any {
-  return createTestSuiteDecoratorFactory<T>(TestStatus.Normal, name);
-}
 
 /**
  * Marks a class as a focused test suite. If one or more test suites are marked as focused, only the those will be ran.
@@ -29,6 +20,38 @@ export function XTestSuite<T extends new (...args: any[]) => {}>(name?: string):
   return createTestSuiteDecoratorFactory<T>(TestStatus.Ignored, name);
 }
 
+interface TestSuiteDecorator {
+  (name?: string): any;
+  focus: (name?: string) => any;
+  ignore: (name?: string) => any;
+}
+
+/**
+ * Marks a class as a test suite.
+ *
+ * @param name Name of the test suite, displayed in the test report.
+ */
+function testSuiteDecorator<T extends new (...args: any[]) => {}>(name?: string): any {
+  return createTestSuiteDecoratorFactory<T>(TestStatus.Normal, name);
+}
+
+/**
+ * Marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
+ *
+ * @param name Name of the test suite, displayed in the test report.
+ */
+testSuiteDecorator.focus = FTestSuite;
+
+/**
+ * Marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
+ *
+ * @param name Name of the test suite, displayed in the test report.
+ */
+testSuiteDecorator.ignore = XTestSuite;
+
+/* tslint:disable:variable-name */
+export const TestSuite: TestSuiteDecorator = testSuiteDecorator;
+
 /**
  * @deprecated since 0.7.0. Prefer using the capitalized version.
  * Marks a class as a test suite.
@@ -36,7 +59,7 @@ export function XTestSuite<T extends new (...args: any[]) => {}>(name?: string):
  * @param name Name of the test suite, displayed in the test report.
  */
 export function testSuite<T extends new (...args: any[]) => {}>(name?: string): any {
-  return TestSuite<T>(name);
+  return testSuiteDecorator<T>(name);
 }
 
 /**
