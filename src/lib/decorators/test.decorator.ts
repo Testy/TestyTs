@@ -45,7 +45,7 @@ function testDecorator(name?: string) {
  *
  * @param name Name of the test, displayed in the test report.
  */
-testDecorator['focus'] = FTest;
+testDecorator.focus = FTest;
 
 /**
  * Marks a method inside a @TestSuite decorated class as an ignored test.
@@ -53,8 +53,9 @@ testDecorator['focus'] = FTest;
  *
  * @param name Name of the test, displayed in the test report.
  */
-testDecorator['ignore'] = XTest;
+testDecorator.ignore = XTest;
 
+/* tslint:disable:variable-name */
 export const Test: TestDecorator = testDecorator;
 
 /**

@@ -31,7 +31,7 @@ export class TestRunnerVisitorTests {
     root.set('B', new TestInstance('B', () => {}, TestStatus.Normal));
 
     // prettier-ignore
-    const expected = 
+    const expected =
     report('Root', r => r
       .success('A')
       .success('B')
@@ -63,7 +63,7 @@ export class TestRunnerVisitorTests {
     );
 
     // prettier-ignore
-    const expected = 
+    const expected =
     report('Root', r => r
       .success('A')
       .failed('B', 'oops')
@@ -86,7 +86,7 @@ export class TestRunnerVisitorTests {
     root.set('B', new TestInstance('B', () => {}, TestStatus.Normal));
 
     // prettier-ignore
-    const expected = 
+    const expected =
       report('Root', r => r
         .skipped('A')
         .success('B')
@@ -116,7 +116,7 @@ export class TestRunnerVisitorTests {
     root.set('Sub 1', sub1);
 
     // prettier-ignore
-    const expected = 
+    const expected =
       report('Root', r => r
         .success('A')
         .success('B')

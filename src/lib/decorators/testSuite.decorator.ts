@@ -40,15 +40,16 @@ function testSuiteDecorator<T extends new (...args: any[]) => {}>(name?: string)
  *
  * @param name Name of the test suite, displayed in the test report.
  */
-testSuiteDecorator['focus'] = FTestSuite;
+testSuiteDecorator.focus = FTestSuite;
 
 /**
  * Marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
  *
  * @param name Name of the test suite, displayed in the test report.
  */
-testSuiteDecorator['ignore'] = XTestSuite;
+testSuiteDecorator.ignore = XTestSuite;
 
+/* tslint:disable:variable-name */
 export const TestSuite: TestSuiteDecorator = testSuiteDecorator;
 
 /**
