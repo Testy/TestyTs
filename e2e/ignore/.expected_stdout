@@ -1,7 +1,7 @@
 # Root
 # TestSuite1
-ok 1 test1 # SKIP
-ok 2 test2
+ok 1 test1
+ok 2 test2 # SKIP
 # TestSuite2
 ok 3 test1 # SKIP
 ok 4 test2 # SKIP
