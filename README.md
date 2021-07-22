@@ -288,4 +288,8 @@ If you have any questions, do not hesitate to email me at <aboisiermichaud@gmail
 
 - [ISC](./LICENSE)
 
+## Code of conduct
+
+The code of conduct can be consulted [here](./CODE_OF_CONDUCT.md).
+
 <img src="./img/testy_colour_rgb_transparent.png" alt="Shoutout to Kateryna Jones for that sweet logo!" width="150"> <br> <sub>_Shoutout to [Kateryna Jones](https://www.katerynajones.com/) for that sweet logo!_</sub>
