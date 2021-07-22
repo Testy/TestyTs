@@ -4,7 +4,7 @@ import { TestSuiteInstance } from '../../lib/tests/testSuite';
 import { TestStatus } from '../../lib/testStatus';
 import { Test, TestSuite } from '../../testyCore';
 
-@TestSuite('Tests Suite Testszz')
+@TestSuite('Tests Suite Tests')
 export class TestSuiteTests {
   @Test('get tests, all normal tests')
   getTestsAllNormalTests() {
