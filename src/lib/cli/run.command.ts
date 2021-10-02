@@ -12,13 +12,18 @@ export class RunCommand implements CliCommand {
     return this._tsConfigFile;
   }
 
+  public get testFiles() {
+    return this._testFiles;
+  }
+
   constructor(
     private logger: Logger,
     private testRunnerVisitor: TestVisitor<Report>,
     private jsonLoader: JsonLoader,
     private testLoader: TestsLoader,
     private testyConfig: TestyConfig,
-    private _tsConfigFile
+    private _tsConfigFile,
+    private _testFiles: string[] = null
   ) {}
 
   public async execute() {
@@ -36,7 +41,11 @@ export class RunCommand implements CliCommand {
     }
 
     const tsConfig = await this.jsonLoader.load<tsnode.Options>(tsConfigPath);
-    const testSuites = await this.testLoader.loadTests(process.cwd(), this.testyConfig.include, tsConfig);
+    const testSuites = await this.testLoader.loadTests(
+      process.cwd(),
+      this._testFiles ?? this.testyConfig.include,
+      tsConfig
+    );
 
     if (testSuites == null) {
       this.logger.warn('Test suites instance is null.');
