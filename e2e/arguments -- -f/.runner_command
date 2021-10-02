@@ -1,1 +1,1 @@
-npm test -f src/test.spec.ts
+npm test -- -f src/test.spec.ts
