@@ -4,7 +4,7 @@
 
 ### Improvements
 
-- Add a new cli option (`-files <comma-separated-list-of-glob>`) to allow users to run tests located in files matching a glob pattern, given a list of glob patterns. _(Thanks for the suggestion, Mladen!)_
+- Add a new cli option (`-files <comma-separated-list-of-glob>`) to allow users to run tests located in files matching any of the specified glob patterns. _(Thanks for the suggestion, Mladen!)_
 
 ## 2.0.0-beta.3
 
