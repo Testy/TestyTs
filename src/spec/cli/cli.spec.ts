@@ -133,6 +133,17 @@ export class CliTests {
     this.jsonLoaderMock.verify((x) => x.load(It.isValue(expectedTsConfig || 'tsconfig.json')), Times.once());
   }
 
+  @Test()
+  private async runCommand_specifyFiles_shouldHaveSpecifiedFilesList() {
+    // Act
+    const command = await this.cli.getCommand(['node', '/some/path', '-f', 'a.spec.ts,b.spec.ts']);
+
+    // Assert
+    expect.toBeTrue(command instanceof RunCommand);
+    const runCommand = command as RunCommand;
+    expect.arraysToBeEqual(runCommand.testFiles, ['a.spec.ts', 'b.spec.ts']);
+  }
+
   @Test('testy init')
   private async initCommandTests() {
     // Arrange

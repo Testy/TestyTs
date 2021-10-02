@@ -41,7 +41,8 @@ export class TestyCli {
       program
         .option('-c --config <config>', 'Specify a config file.', './testy.json')
         .option('-t --tsconfig <tsconfig>', 'Specify a tsconfig config file.', undefined)
-        .option('-r --reporter <reporter>', 'Specifies the reporter type', /(standard|TAP)/, undefined);
+        .option('-r --reporter <reporter>', 'Specifies the reporter type', /(standard|TAP)/, undefined)
+        .option('-f --files <paths>', 'A comma-separated list of files.', undefined);
 
       program.parse(args);
 
@@ -56,7 +57,17 @@ export class TestyCli {
       }
 
       const testRunner = this.testVisitorFactory.getRunner(testyConfig);
-      resolve(new RunCommand(this.logger, testRunner, this.jsonLoader, this.testLoader, testyConfig, program.tsconfig));
+      resolve(
+        new RunCommand(
+          this.logger,
+          testRunner,
+          this.jsonLoader,
+          this.testLoader,
+          testyConfig,
+          program.tsconfig,
+          program.files?.split(',')
+        )
+      );
     });
   }
 }
