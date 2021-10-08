@@ -250,7 +250,7 @@ Cli arguments will override config file values.
 -c --config <config> // Specify a testy.json configuration file
 -t --tsconfig <tsconfig> // Specify a tsconfig.json file
 -r --reporter <reporter> // Specify a reporter. Either standard or TAP.
--f --files <files> // Run only tests found in files matching the given glob patterns. A comma-separated list of glob patterns.
+-f --files "<files>" // Run only tests found in files matching the given glob patterns. A comma-separated list of glob patterns.
 ```
 
 ## Run the tests
@@ -261,7 +261,7 @@ To run the tests, use the following command
 $ testyts
 $ testyts --config custom/config/file.json // To specify a custom configuration file
 $ testyts --tsconfig custom/tsconfig.json // To specify a custom typescript configuration file (tsconfig.json)
-$ testyts --files my-first-file.spec.ts,my-folder/**.spec.ts // To run tests in files matching the specified glob patterns
+$ testyts --files "my-first-file.spec.ts,my-folder/**.spec.ts" // To run tests in files matching the specified glob patterns
 ```
 
 ## More documentation
