@@ -12,6 +12,6 @@ export class MyTestSuite {
   }
 
   private wait(timeout: number) {
-    return new Promise((resolve) => setTimeout(() => resolve(), 3000));
+    return new Promise<void>((resolve) => setTimeout(() => resolve(), 3000));
   }
 }
