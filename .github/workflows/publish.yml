@@ -95,7 +95,20 @@ jobs:
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
-      - name: npm publish --access public
+      - name: Extract tag
+        uses: olegtarasov/get-tag@v2.1
+        id: tagName
+        with:
+          tagRegex: "v[0-9]+.[0-9]+.[0-9]+-([^\\.]+)"
+
+      - name: Publish (${{ steps.tagName.outputs.tag }})
+        if: ${{ steps.tagName.outputs.tag != ''}}
+        run: npm publish --access public --tag ${{ steps.tagName.outputs.tag }}
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: Publish (latest)
+        if: ${{ steps.tagName.outputs.tag == ''}}
         run: npm publish --access public
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
