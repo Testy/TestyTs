@@ -6,74 +6,74 @@ on:
       - v**.**.**
 
 jobs:
-  unit-tests:
-    name: Unit tests
-    runs-on: ubuntu-latest
+  # unit-tests:
+  #   name: Unit tests
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node: [8.x, 10.x, 12.x, 14.x, 15.x]
+  #   strategy:
+  #     matrix:
+  #       node: [8.x, 10.x, 12.x, 14.x, 15.x]
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v1
 
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node }}
+  #     - name: Use Node.js ${{ matrix.node }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node }}
 
-      - name: Install dependencies
-        run: npm ci
-        env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+  #     - name: Install dependencies
+  #       run: npm ci
+  #       env:
+  #         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
-      - name: Build
-        run: npm run build --if-present
-        env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+  #     - name: Build
+  #       run: npm run build --if-present
+  #       env:
+  #         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
-      - name: Run unit tests
-        run: npm test
-        env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+  #     - name: Run unit tests
+  #       run: npm test
+  #       env:
+  #         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
-  e2e-tests:
-    name: E2E tests
-    runs-on: ${{ matrix.os }}
+  # e2e-tests:
+  #   name: E2E tests
+  #   runs-on: ${{ matrix.os }}
 
-    strategy:
-      matrix:
-        node: [8.x, 10.x, 12.x, 14.x, 15.x]
-        os: [macos-latest, ubuntu-latest, windows-latest]
-        include:
-          - os: macos-latest
-          - os: windows-latest
-          - os: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node: [8.x, 10.x, 12.x, 14.x, 15.x]
+  #       os: [macos-latest, ubuntu-latest, windows-latest]
+  #       include:
+  #         - os: macos-latest
+  #         - os: windows-latest
+  #         - os: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v1
 
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node }}
+  #     - name: Use Node.js ${{ matrix.node }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node }}
 
-      - name: Build
-        run: npm ci
+  #     - name: Build
+  #       run: npm ci
 
-        env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+  #       env:
+  #         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
-      - name: Run e2e tests
-        run: node ./e2e/runner.js
-        env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+  #     - name: Run e2e tests
+  #       run: node ./e2e/runner.js
+  #       env:
+  #         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish:
     name: Publish to npm
-    needs: [unit-tests, e2e-tests]
+    # needs: [unit-tests, e2e-tests]
     runs-on: ubuntu-latest
 
     steps:
@@ -85,17 +85,32 @@ jobs:
         with:
           node-version: 12.x
 
-      - name: Install dependencies
-        run: npm ci
-        env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+      # - name: Install dependencies
+      #   run: npm ci
+      #   env:
+      #     NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
-      - name: Build
-        run: npm run build:prod --if-present
+      # - name: Build
+      #   run: npm run build:prod --if-present
+      #   env:
+      #     NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: Extract tag
+        uses: olegtarasov/get-tag@v2.1
+        id: tagName
+        with:
+          tagRegex: "v[0-9]+.[0-9]+.[0-9]+-([^\\.]+)"
+
+      - name: npm publish --access public --tag ${{ steps.tagName.outputs.tag }}
+        if: ${{ steps.tagName.outputs.tag != ''}}
+        # run: npm publish --access public --tag ${{ steps.tagName.outputs.tag }}
+        run: echo ${{ steps.tagName.outputs.tag }}
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: npm publish --access public
-        run: npm publish --access public
+        if: ${{ steps.tagName.outputs.tag == ''}}
+        # run: npm publish --access public
+        run: echo ${{ steps.tagName.outputs.tag }}
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
