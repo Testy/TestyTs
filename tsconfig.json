@@ -5,7 +5,7 @@
     "lib": ["es6"],
     "target": "es6",
     "typeRoots": ["node_modules/@types"],
-    "types": ["reflect-metadata", "node"],
+    "types": ["node"],
     "noImplicitAny": false,
     "experimentalDecorators": true,
     "downlevelIteration": true,

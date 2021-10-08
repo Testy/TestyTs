@@ -40,7 +40,7 @@ export class RunCommand implements CliCommand {
       tsConfigPath = 'tsconfig.json';
     }
 
-    const tsConfig = await this.jsonLoader.load<tsnode.Options>(tsConfigPath);
+    const tsConfig = await this.jsonLoader.load<tsnode.TsConfigOptions>(tsConfigPath);
     const testSuites = await this.testLoader.loadTests(
       process.cwd(),
       this._testFiles ?? this.testyConfig.include,

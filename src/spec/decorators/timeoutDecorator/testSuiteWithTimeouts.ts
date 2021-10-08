@@ -13,7 +13,7 @@ export class TestSuiteWithTimeouts {
   @Test()
   @Timeout(0)
   private async test2() {
-    return new Promise((res) => {
+    return new Promise<void>((res) => {
       setTimeout(() => res(), 100);
     });
   }
