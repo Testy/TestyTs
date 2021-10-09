@@ -1,0 +1,5 @@
+# Root
+# MyTestSuite
+ok 1 myTest
+not ok 2 myOtherTest
+1..2

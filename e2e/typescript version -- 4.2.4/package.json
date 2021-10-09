@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "demo-typescript-node-minimal",
+  "version": "0.0.1",
+  "description": "Minimal demo showing TypeScript use in node.js",
+  "scripts": {
+    "test": "testyts"
+  },
+  "dependencies": {
+    "testyts": "file:../../build",
+    "typescript": "4.2.4"
+  }
+}
