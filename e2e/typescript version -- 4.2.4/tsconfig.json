@@ -1,11 +1,10 @@
 {
-  // KEEP THIS COMMENT: This will detect regressions vis-à-vis issue #41
   "compilerOptions": {
     "module": "commonjs",
     "lib": ["es6"],
     "target": "es6",
     "typeRoots": ["node_modules/@types"],
-    "types": ["node"],
+    "types": ["reflect-metadata", "node"],
     "noImplicitAny": false,
     "experimentalDecorators": true,
     "downlevelIteration": true,

@@ -11,7 +11,11 @@ export class TestsLoader {
 
   constructor(private logger?: Logger) {}
 
-  public async loadTests(root: string, patterns: string[], tsconfig: tsnode.Options): Promise<TestSuiteInstance> {
+  public async loadTests(
+    root: string,
+    patterns: string[],
+    tsconfig: tsnode.TsConfigOptions
+  ): Promise<TestSuiteInstance> {
     this.registerTranspiler(tsconfig);
 
     const testSuites = new RootTestSuite();
@@ -37,7 +41,7 @@ export class TestsLoader {
     return testSuiteInstances;
   }
 
-  private registerTranspiler(tsconfig: tsnode.Options) {
+  private registerTranspiler(tsconfig: tsnode.TsConfigOptions) {
     if (TestsLoader.isTsnodeRegistered) return;
 
     tsnode.register(tsconfig);

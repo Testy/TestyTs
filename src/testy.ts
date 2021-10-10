@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import 'reflect-metadata';
 import { LoggerFactory } from './lib/logger/loggerFactory';
 import { TestyCli } from './lib/cli/testyCli';
 import { TestVisitorFactory } from './lib/tests/visitors/testVisitor.factory';

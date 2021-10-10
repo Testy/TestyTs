@@ -1,5 +1,11 @@
 # Changes
 
+## 2.0.0-beta.5
+
+### Improvements
+
+- Updated most dependencies
+
 ## 2.0.0-beta.4
 
 ### Improvements
