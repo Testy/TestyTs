@@ -14,7 +14,7 @@ export class TestVisitorFactory {
 
   public getRunner(config: TestyConfig) {
     let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor(process, config);
-    let reporterConstructors: VisitorConstructor[] = [];
+    const reporterConstructors: VisitorConstructor[] = [];
 
     if (config.reporters != null) {
       for (const reporter in config.reporters) {
