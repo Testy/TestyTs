@@ -43,7 +43,7 @@ export class TapTestReporterDecorator extends TestsVisitorDecorator<Report> {
   }
 
   public async visitRootTestSuite(tests: RootTestSuite): Promise<CompositeReport> {
-    const report = (await this.visitTestSuite(tests)) as CompositeReport;
+    const report = (await this.baseVisitRootTestSuite(tests)) as CompositeReport;
 
     this.logger.info(`1..${report.numberOfTests - report.numberOfSkippedTests}`);
 

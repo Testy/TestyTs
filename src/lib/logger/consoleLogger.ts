@@ -30,6 +30,10 @@ export class ConsoleLogger extends Logger {
       .join(' ');
   }
 
+  public create(): Logger {
+    return new ConsoleLogger();
+  }
+
   private getColorCode(color: Color) {
     switch (color) {
       case Color.Black:

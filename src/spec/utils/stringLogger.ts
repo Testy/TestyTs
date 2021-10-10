@@ -22,4 +22,8 @@ export class StringLogger extends Logger {
   format(message: string, color: Color): string {
     return message;
   }
+
+  create() {
+    return new StringLogger();
+  }
 }

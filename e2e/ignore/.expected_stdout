@@ -1,3 +1,4 @@
+WARNING! The "reporter" configuration is deprecated. Prefer using the "reporters" configuration.
 # Root
 # TestSuite1
 ok 1 test1

@@ -32,4 +32,5 @@ export abstract class Logger {
   abstract warn(message?: string): void;
   abstract error(message?: string): void;
   abstract format(message: string, color: Color, textDecorations?: TextDecoration[]): string;
+  abstract create(): Logger;
 }

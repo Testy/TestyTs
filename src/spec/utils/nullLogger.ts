@@ -8,4 +8,7 @@ export class NullLogger extends Logger {
   format(message: string, color: Color): string {
     return message;
   }
+  create() {
+    return new NullLogger();
+  }
 }

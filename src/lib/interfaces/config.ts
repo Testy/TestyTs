@@ -1,7 +1,10 @@
 export interface TestyConfig {
   tsconfig?: string;
   include: string[];
-  reporter?: 'standard' | 'TAP';
+  reporters?: { [name: string]: unknown };
   timeout?: number;
   setupFile?: string;
+
+  /** @deprecated Use "reporters" instead. */
+  reporter?: 'standard' | 'TAP';
 }

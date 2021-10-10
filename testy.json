@@ -1,3 +1,6 @@
 {
-  "include": ["src/**/*.spec.ts"]
+  "include": ["src/**/*.spec.ts"],
+  "reporters": {
+    "standard": {}
+  }
 }

@@ -65,7 +65,7 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
   }
 
   public async visitRootTestSuite(tests: RootTestSuite): Promise<CompositeReport> {
-    const report = (await this.visitTestSuite(tests)) as CompositeReport;
+    const report = (await this.baseVisitRootTestSuite(tests)) as CompositeReport;
 
     this.logger.info();
     this.printSummary(report);

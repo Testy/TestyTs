@@ -10,26 +10,47 @@ export type ReporterType = 'standard' | 'TAP';
 type VisitorConstructor = (baseVisitor: TestVisitor<Report>, logger: Logger) => TestVisitor<Report>;
 
 export class TestVisitorFactory {
-  private reportersConstructors: Map<ReporterType, VisitorConstructor>;
-
-  constructor(private logger: Logger) {
-    this.reportersConstructors = new Map();
-    this.reportersConstructors.set(
-      'standard',
-      (baseVisitor, logger) => new LoggerTestReporterDecorator(baseVisitor, logger)
-    );
-    this.reportersConstructors.set('TAP', (baseVisitor, logger) => new TapTestReporterDecorator(baseVisitor, logger));
-  }
+  constructor(private logger: Logger) {}
 
   public getRunner(config: TestyConfig) {
     let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor(process, config);
+    let reporterConstructors: VisitorConstructor[] = [];
 
-    const reporterConstructor = this.reportersConstructors.get(config.reporter || 'standard');
+    if (config.reporters != null) {
+      for (const reporter in config.reporters) {
+        const reporterConfig = config.reporters[reporter];
+        reporterConstructors.push(this.getReporterConstructor(reporter, reporterConfig));
+      }
+    }
 
-    if (!reporterConstructor) throw new Error(`The ${config.reporter} reporter is not supported.`);
+    if (config.reporter != null) {
+      this.logger.warn(
+        'WARNING! The "reporter" configuration is deprecated. Prefer using the "reporters" configuration.'
+      );
+      reporterConstructors.push(this.getReporterConstructor(config.reporter || 'standard'));
+    }
 
-    testRunnerVisitor = reporterConstructor(testRunnerVisitor, this.logger);
+    // No reporter specified, use standard
+    if (reporterConstructors.length === 0) {
+      reporterConstructors.push(this.getReporterConstructor('standard'));
+    }
+
+    for (const reporterConstructor of reporterConstructors) {
+      testRunnerVisitor = reporterConstructor(testRunnerVisitor, this.logger.create());
+    }
 
     return testRunnerVisitor;
+  }
+
+  private getReporterConstructor(reporterName: string, config?: unknown): VisitorConstructor {
+    if (reporterName === 'standard') {
+      return (baseVisitor, logger) => new LoggerTestReporterDecorator(baseVisitor, logger);
+    }
+
+    if (reporterName === 'TAP') {
+      return (baseVisitor, logger) => new TapTestReporterDecorator(baseVisitor, logger);
+    }
+
+    throw new Error(`The ${reporterName} reporter is not supported.`);
   }
 }
