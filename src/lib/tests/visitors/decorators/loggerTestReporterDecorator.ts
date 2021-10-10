@@ -96,6 +96,6 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
   }
 
   private format(msg: string, color: Color, textDecorations?: TextDecoration[]): string {
-    return this.config.color === false ? msg : this.logger.format(msg, color, textDecorations);
+    return this.config?.color === false ? msg : this.logger.format(msg, color, textDecorations);
   }
 }
