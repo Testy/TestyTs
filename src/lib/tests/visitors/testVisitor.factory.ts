@@ -1,5 +1,8 @@
 import { TestRunnerVisitor } from './testRunnerVisitor';
-import { LoggerTestReporterDecorator } from './decorators/loggerTestReporterDecorator';
+import {
+  LoggerTestReporterDecorator,
+  LoggerTestReporterDecoratorConfiguration,
+} from './decorators/loggerTestReporterDecorator';
 import { TestVisitor } from './testVisitor';
 import { Report } from '../../reporting/report/report';
 import { Logger } from '../../logger/logger';
@@ -44,7 +47,8 @@ export class TestVisitorFactory {
 
   private getReporterConstructor(reporterName: string, config?: unknown): VisitorConstructor {
     if (reporterName === 'standard') {
-      return (baseVisitor, logger) => new LoggerTestReporterDecorator(baseVisitor, logger);
+      const c = config as LoggerTestReporterDecoratorConfiguration;
+      return (baseVisitor, logger) => new LoggerTestReporterDecorator(baseVisitor, logger, c);
     }
 
     if (reporterName === 'TAP') {
