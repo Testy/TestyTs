@@ -240,7 +240,7 @@ Example configuration file:
   "tsconfig": "./tsconfig.spec.json",
   "reporters": {
      "standard": {
-       "color: true
+       "color": true
      }
   },
   "timeout": 10000
