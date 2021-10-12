@@ -1,4 +1,3 @@
-WARNING! The "reporter" configuration is deprecated. Prefer using the "reporters" configuration.
 # Root
 # MyTestSuite
 ok 1 myTest
