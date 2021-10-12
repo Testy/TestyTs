@@ -223,13 +223,14 @@ export class MyTestSuite {
 
 ## Configuration file
 
-| Key         | Description                                                                                                                                                          | Type                        | Note       |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ---------- |
-| `include`   | The [test loader](src\lib\utils\testsLoader.ts) will look for tests in files that match any of those [glob patterns](https://www.npmjs.com/package/glob#glob-primer) | `string[]`                  | _Required_ |
-| `tsconfig`  | Alternate tsconfig for the test loader to use. If not specified, the loader will use the `tsconfig.json` in the current directory                                    | `string`                    | _Optional_ |
-| `timeout`   | Global test timeout. By default, the global timeout is 2000 ms. The global timeout will be overriden by test-level timeouts.                                         | `number`                    | _Optional_ |
-| `reporter`  | Output format.                                                                                                                                                       | `'standard'` &#124; `'TAP'` | _Optional_ |
-| `setupFile` | A .ts or .js file that will be run before the tests run starts.                                                                                                      | `string`                    | _Optional_ |
+| Key               | Description                                                                                                                                                          | Type                                  | Note         |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------ |
+| `include`         | The [test loader](src\lib\utils\testsLoader.ts) will look for tests in files that match any of those [glob patterns](https://www.npmjs.com/package/glob#glob-primer) | `string[]`                            | _Required_   |
+| `tsconfig`        | Alternate tsconfig for the test loader to use. If not specified, the loader will use the `tsconfig.json` in the current directory                                    | `string`                              | _Optional_   |
+| `timeout`         | Global test timeout. By default, the global timeout is 2000 ms. The global timeout will be overriden by test-level timeouts.                                         | `number`                              | _Optional_   |
+| `setupFile`       | A .ts or .js file that will be run before the tests run starts.                                                                                                      | `string`                              | _Optional_   |
+| `reporters`       | Output format.                                                                                                                                                       | `{[reporter: ReporterName]: object }` | Optional.    |
+| <s>`reporter`</s> | Output format.                                                                                                                                                       | `'standard'` &#124; `'TAP'`           | _Deprecated_ |
 
 Example configuration file:
 
@@ -237,7 +238,11 @@ Example configuration file:
 {
   "include": ["**/*.spec.ts"],
   "tsconfig": "./tsconfig.spec.json",
-  "reporter": "standard",
+  "reporters": {
+     "standard": {
+       "color: true
+     }
+  },
   "timeout": 10000
 }
 ```
@@ -249,8 +254,9 @@ Cli arguments will override config file values.
 ```
 -c --config <config> // Specify a testy.json configuration file
 -t --tsconfig <tsconfig> // Specify a tsconfig.json file
--r --reporter <reporter> // Specify a reporter. Either standard or TAP.
 -f --files "<files>" // Run only tests found in files matching the given glob patterns. A comma-separated list of glob patterns.
+-r --reporter <reporter> // Specify a comma-separated list of reporters. Does not support reporters configs.
+--reporter <reporter> // DEPRECATED. Specify a reporter. Either standard or TAP.
 ```
 
 ## Run the tests

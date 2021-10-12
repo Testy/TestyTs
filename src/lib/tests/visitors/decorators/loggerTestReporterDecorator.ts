@@ -9,10 +9,19 @@ import { TestSuiteInstance } from '../../testSuite';
 import { TestVisitor } from '../testVisitor';
 import { TestsVisitorDecorator } from './testsVisitorDecorator';
 
+export interface LoggerTestReporterDecoratorConfiguration {
+  /** Wether or not the reporter show display colors. Defaults to true. */
+  color: boolean;
+}
+
 export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
   private justPrintedTestSuite: boolean;
 
-  constructor(baseVisitor: TestVisitor<Report>, private logger: Logger) {
+  constructor(
+    baseVisitor: TestVisitor<Report>,
+    private logger: Logger,
+    private config: LoggerTestReporterDecoratorConfiguration
+  ) {
     super(baseVisitor);
   }
 
@@ -23,15 +32,15 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
     let title;
     const details: string[] = [];
     if (report.result === TestResult.Success) {
-      title = `${this.logger.format('√', Color.Green)} ${this.logger.format(test.name, Color.Grey)}`;
+      title = `${this.format('√', Color.Green)} ${this.format(test.name, Color.Grey)}`;
     } else if (report instanceof FailedTestReport) {
-      title = this.logger.format(`x ${test.name} - ${report.message}`, Color.Red, [TextDecoration.Bold]);
+      title = this.format(`x ${test.name} - ${report.message}`, Color.Red, [TextDecoration.Bold]);
 
       if (report.stack?.length) {
-        details.push(...report.stack.split(/[\r\n|\n]/).map((x) => this.logger.format(x, Color.Grey)));
+        details.push(...report.stack.split(/[\r\n|\n]/).map((x) => this.format(x, Color.Grey)));
       }
     } else {
-      title = `${this.logger.format('!', Color.Yellow)} ${this.logger.format(`${test.name}`, Color.Grey)}`;
+      title = `${this.format('!', Color.Yellow)} ${this.format(`${test.name}`, Color.Grey)}`;
     }
 
     this.logger.info(title);
@@ -54,7 +63,7 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
       this.justPrintedTestSuite = true;
     }
 
-    this.logger.info(this.logger.format(tests.name, Color.Black, [TextDecoration.Bold]));
+    this.logger.info(this.format(tests.name, Color.Black, [TextDecoration.Bold]));
     this.logger.increaseIndentation();
 
     const returnValue = await this.baseVisitTestSuite(tests);
@@ -65,7 +74,7 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
   }
 
   public async visitRootTestSuite(tests: RootTestSuite): Promise<CompositeReport> {
-    const report = (await this.visitTestSuite(tests)) as CompositeReport;
+    const report = (await this.baseVisitRootTestSuite(tests)) as CompositeReport;
 
     this.logger.info();
     this.printSummary(report);
@@ -79,10 +88,14 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
     const skipped = tests.numberOfSkippedTests;
     const total = tests.numberOfTests;
 
-    const successMsg = `${success}/${total} ${this.logger.format('passed', success > 0 ? Color.Green : null)}`;
-    const failedMsg = `${failed}/${total} ${this.logger.format('failed', failed > 0 ? Color.Red : null)}`;
-    const skippedMsg = `${skipped}/${total} ${this.logger.format('skipped', skipped > 0 ? Color.Yellow : null)}`;
+    const successMsg = `${success}/${total} ${this.format('passed', success > 0 ? Color.Green : null)}`;
+    const failedMsg = `${failed}/${total} ${this.format('failed', failed > 0 ? Color.Red : null)}`;
+    const skippedMsg = `${skipped}/${total} ${this.format('skipped', skipped > 0 ? Color.Yellow : null)}`;
 
     this.logger.info(`Summary: ${successMsg}, ${failedMsg}, ${skippedMsg}. (${tests.duration / 1000}s)`);
+  }
+
+  private format(msg: string, color: Color, textDecorations?: TextDecoration[]): string {
+    return this.config?.color === false ? msg : this.logger.format(msg, color, textDecorations);
   }
 }

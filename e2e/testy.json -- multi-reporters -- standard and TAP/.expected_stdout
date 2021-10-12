@@ -1,0 +1,9 @@
+Root
+# Root
+  MyTestSuite
+# MyTestSuite
+ok 1 myTest
+    √ myTest
+1..1
+
+Summary: 1/1 passed, 0/1 failed, 0/1 skipped. (0.###s)

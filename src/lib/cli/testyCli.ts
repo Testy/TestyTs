@@ -41,7 +41,8 @@ export class TestyCli {
       program
         .option('-c --config <config>', 'Specify a config file.', './testy.json')
         .option('-t --tsconfig <tsconfig>', 'Specify a tsconfig config file.', undefined)
-        .option('-r --reporter <reporter>', 'Specifies the reporter type', /(standard|TAP)/, undefined)
+        .option('-r --reporters <reporters>', 'List or reporters', undefined)
+        .option('--reporter <reporter>', 'Specifies the reporter type (deprecated)', /(standard|TAP)/, undefined)
         .option('-f --files <paths>', 'A comma-separated list of files.', undefined);
 
       program.parse(args);
@@ -51,6 +52,14 @@ export class TestyCli {
       }
 
       const testyConfig = await this.jsonLoader.load<TestyConfig>(program.config || 'testy.json');
+
+      if (program.reporters != null) {
+        const reporters = program.reporters.split(',').reduce((dict, curr) => {
+          dict[curr] = {};
+          return dict;
+        }, {});
+        testyConfig.reporters = reporters;
+      }
 
       if (program.reporter != null) {
         testyConfig.reporter = program.reporter;

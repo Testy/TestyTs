@@ -1,3 +1,4 @@
+WARNING! The "reporter" configuration is deprecated. Prefer using the "reporters" configuration.
 Root
   MyTestSuite
     x test - Expected NaN to equal 0.

@@ -1,1 +1,1 @@
-npm test -- -r TAP
+npm test -- -reporter TAP
