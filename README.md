@@ -254,8 +254,9 @@ Cli arguments will override config file values.
 ```
 -c --config <config> // Specify a testy.json configuration file
 -t --tsconfig <tsconfig> // Specify a tsconfig.json file
--r --reporter <reporter> // Specify a reporter. Either standard or TAP.
 -f --files "<files>" // Run only tests found in files matching the given glob patterns. A comma-separated list of glob patterns.
+-r --reporter <reporter> // Specify a comma-separated list of reporters. Does not support reporters configs.
+--reporter <reporter> // DEPRECATED. Specify a reporter. Either standard or TAP.
 ```
 
 ## Run the tests
