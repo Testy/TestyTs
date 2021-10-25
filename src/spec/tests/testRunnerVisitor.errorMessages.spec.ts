@@ -20,7 +20,7 @@ export class TestRunnerVisitorErrorMessagesTests {
 
   @Test('Asynchronous tests failures')
   async asyncTestsFailure() {
-    // Arrange
+    // arrange
     const testSuite = TestUtils.getInstance(AsyncTestsFailures);
 
     const expectedReport = new CompositeReport('AsyncTestsFailures');
@@ -28,26 +28,26 @@ export class TestRunnerVisitorErrorMessagesTests {
     expectedReport.addReport(new FailedTestReport('testC', 'Some rejection message!', null, 0));
     expectedReport.addReport(new FailedTestReport('testD', 'Some error!', null, 0));
 
-    // Act
+    // act
     const actualReport = await testSuite.accept(this.testRunnerVisitor);
 
-    // Assert
+    // assert
     TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
     this.processMock.expectFailure();
   }
 
   @Test('Tests failures')
   async testsFailures() {
-    // Arrange
+    // arrange
     const testSuite = TestUtils.getInstance(SyncTestsFailures);
 
     const expectedReport = new CompositeReport('SyncTestsFailures');
     expectedReport.addReport(new FailedTestReport('error', 'Some error!', null, 0));
 
-    // Act
+    // act
     const actualReport = await testSuite.accept(this.testRunnerVisitor);
 
-    // Assert
+    // assert
     TestUtils.expectReportsToBeEqual(actualReport, expectedReport);
     this.processMock.expectFailure();
   }

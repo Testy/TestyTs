@@ -2,14 +2,11 @@ import * as glob from 'glob';
 import * as path from 'path';
 import * as tsnode from 'ts-node';
 import * as tsConfigPaths from 'tsconfig-paths';
-import { Logger } from '../logger/logger';
 import { RootTestSuite } from '../tests/rootTestSuite';
 import { TestSuiteInstance } from '../tests/testSuite';
 
 export class TestsLoader {
   private static isTsnodeRegistered = false;
-
-  constructor(private logger?: Logger) {}
 
   public async loadTests(
     root: string,
@@ -32,8 +29,14 @@ export class TestsLoader {
     const testSuiteInstances: TestSuiteInstance[] = [];
     const importedFile = await import(file);
     for (const key in importedFile) {
+      if (!importedFile.hasOwnProperty(key)) {
+        continue;
+      }
+
       const testSuiteInstance: TestSuiteInstance = importedFile[key].__testSuiteInstance;
-      if (!testSuiteInstance) continue;
+      if (!testSuiteInstance) {
+        continue;
+      }
 
       testSuiteInstances.push(testSuiteInstance);
     }
@@ -42,16 +45,18 @@ export class TestsLoader {
   }
 
   private registerTranspiler(tsconfig: tsnode.TsConfigOptions) {
-    if (TestsLoader.isTsnodeRegistered) return;
+    if (TestsLoader.isTsnodeRegistered) {
+      return;
+    }
 
     tsnode.register(tsconfig);
 
     const compilerOptions = tsconfig?.compilerOptions;
     if (compilerOptions) {
-      /* tslint:disable:no-string-literal */
+      /* eslint-disable dot-notation,@typescript-eslint/dot-notation */
       const baseUrl = compilerOptions['baseUrl'];
       const paths = compilerOptions['paths'];
-      /* tslint:enable:no-string-literal */
+      /* eslint-enable dot-notation,@typescript-eslint/dot-notation */
 
       if (baseUrl != null && paths != null) {
         tsConfigPaths.register({
@@ -79,7 +84,9 @@ export class TestsLoader {
   private async matchFiles(root: string, pattern: string): Promise<string[]> {
     return new Promise<string[]>((resolve, reject) => {
       glob(pattern, { cwd: root, ignore: ['node_modules/**'] }, (err, files) => {
-        if (err) reject(err);
+        if (err) {
+          reject(err);
+        }
         resolve(files);
       });
     });

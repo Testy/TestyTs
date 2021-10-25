@@ -5,7 +5,7 @@ import { TestStatus } from '../testStatus';
 import { getTestSuiteInstance } from './utils';
 
 /**
- * Marks a method inside a @TestSuite decorated class as a focused test.
+ * marks a method inside a @TestSuite decorated class as a focused test.
  * If one or more tests are marked as focused, only those will be ran.
  *
  * @param name Name of the test, displayed in the test report.
@@ -15,7 +15,7 @@ export function FTest(name?: string) {
 }
 
 /**
- * Marks a method inside a @TestSuite decorated class as an ignored test.
+ * marks a method inside a @TestSuite decorated class as an ignored test.
  * Ignored tests will not be ran, but they will still appear in test reports.
  *
  * @param name Name of the test, displayed in the test report.
@@ -31,7 +31,7 @@ interface TestDecorator {
 }
 
 /**
- * Marks a method inside a @TestSuite decorated class as a test.
+ * marks a method inside a @TestSuite decorated class as a test.
  *
  * @param name Name of the test, displayed in the test report.
  */
@@ -40,7 +40,7 @@ function testDecorator(name?: string) {
 }
 
 /**
- * Marks a method inside a @TestSuite decorated class as a focused test.
+ * marks a method inside a @TestSuite decorated class as a focused test.
  * If one or more tests are marked as focused, only those will be ran.
  *
  * @param name Name of the test, displayed in the test report.
@@ -48,14 +48,14 @@ function testDecorator(name?: string) {
 testDecorator.focus = FTest;
 
 /**
- * Marks a method inside a @TestSuite decorated class as an ignored test.
+ * marks a method inside a @TestSuite decorated class as an ignored test.
  * Ignored tests will not be ran, but they will still appear in test reports.
  *
  * @param name Name of the test, displayed in the test report.
  */
 testDecorator.ignore = XTest;
 
-/* tslint:disable:variable-name */
+/* eslint-disable @typescript-eslint/naming-convention,no-underscore-dangle,id-denylist,id-match */
 export const Test: TestDecorator = testDecorator;
 
 /**

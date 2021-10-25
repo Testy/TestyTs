@@ -19,12 +19,18 @@ export class TestUtils {
       expect.toBeEqual(actualReport.message, (expectedReport as FailedTestReport).message);
     }
 
-    if (actualReport instanceof LeafReport) return;
+    if (actualReport instanceof LeafReport) {
+      return;
+    }
 
     const actualChildren = (actualReport as CompositeReport).getChildren();
     const expectedChildren = (expectedReport as CompositeReport).getChildren();
 
     for (const i in actualChildren) {
+      if (!actualChildren.hasOwnProperty(i)) {
+        continue;
+      }
+
       this.expectReportsToBeEqual(actualChildren[i], expectedChildren[i]);
     }
   }

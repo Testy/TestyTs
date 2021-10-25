@@ -10,7 +10,9 @@ import { LeafReport } from '../../reporting/report/leafReport';
 import { RootTestSuite } from '../rootTestSuite';
 
 export class FailedTestsReportVisitor implements TestVisitor<Report> {
-  constructor(private reason: string) {}
+  constructor(private reason: string) {
+    // This is not an empty constructor!
+  }
 
   public async visitTest(test: TestInstance): Promise<Report> {
     const report: LeafReport =

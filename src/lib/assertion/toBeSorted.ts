@@ -12,12 +12,14 @@ export class ToBeSorted {
   }
 
   private toBeOrdered<T>(array: T[], selector: (item: T) => unknown, order: Order, message?: string) {
-    if (!selector) selector = (x) => x;
+    if (!selector) {
+      selector = (x) => x;
+    }
 
     if (this.isOrdered(array, order, selector)) {
       throw new ExpectationError(
         message ||
-          `Expected ${array} to be be sorted ${order === Order.Ascending ? 'from low to high' : 'from high to low'}.`,
+          `Expected ${array} to be be sorted ${order === Order.Ascending ? 'from low to high' : 'from high to low'}.`
       );
     }
   }

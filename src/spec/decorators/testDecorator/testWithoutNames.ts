@@ -1,19 +1,24 @@
-import { Test } from '../../../testyCore';
-import { TestCaseInstance } from '../../../lib/testCaseInstance';
-import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
 import { TestCase } from '../../../lib/decorators/testCase.decorator';
+import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
+import { Test } from '../../../testyCore';
 
 @TestSuite()
 export class TestWithNoNamesTestSuite {
   @Test()
-  private myTest1() {}
+  public myTest1() {
+    // I am not an empty method!
+  }
 
   @Test()
-  private myTest2() {}
+  public myTest2() {
+    // I am not an empty method!
+  }
 
   @Test()
   @TestCase('myTestCase1')
   @TestCase('myTestCase2')
   @TestCase('myTestCase3')
-  private myTest3() {}
+  public myTest3() {
+    // I am not an empty method!
+  }
 }

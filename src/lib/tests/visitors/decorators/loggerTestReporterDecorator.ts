@@ -10,7 +10,7 @@ import { TestVisitor } from '../testVisitor';
 import { TestsVisitorDecorator } from './testsVisitorDecorator';
 
 export interface LoggerTestReporterDecoratorConfiguration {
-  /** Wether or not the reporter show display colors. Defaults to true. */
+  /** wether or not the reporter show display colors. Defaults to true. */
   color: boolean;
 }
 

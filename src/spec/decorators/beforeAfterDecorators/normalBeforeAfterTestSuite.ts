@@ -1,7 +1,7 @@
-import { Test, BeforeAll, BeforeEach, AfterEach, AfterAll, TestCaseInstance } from '../../../testyCore';
 import { XTest } from '../../../lib/decorators/test.decorator';
-import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
 import { TestCase } from '../../../lib/decorators/testCase.decorator';
+import { TestSuite } from '../../../lib/decorators/testSuite.decorator';
+import { AfterAll, AfterEach, BeforeAll, BeforeEach, Test } from '../../../testyCore';
 
 @TestSuite('Normal Before After Test Suite')
 export class NormalBeforeAfterTestSuite {
@@ -11,37 +11,45 @@ export class NormalBeforeAfterTestSuite {
   public numberOfAfterAllExecutions = 0;
 
   @BeforeAll()
-  private beforeAll() {
+  public beforeAll() {
     ++this.numberOfBeforeAllExecutions;
   }
 
   @BeforeEach()
-  private beforeEach() {
+  public beforeEach() {
     ++this.numberOfBeforeEachExecutions;
   }
 
   @AfterEach()
-  private afterEach() {
+  public afterEach() {
     ++this.numberOfAfterEachExecutions;
   }
 
   @AfterAll()
-  private afterAll() {
+  public afterAll() {
     ++this.numberOfAfterAllExecutions;
   }
 
   @Test('a')
-  private a() {}
+  public a() {
+    // I am not an empty method!
+  }
 
   @Test('b')
-  private b() {}
+  public b() {
+    // I am not an empty method!
+  }
 
   @Test('c')
   @TestCase('c.1')
   @TestCase('c.2')
   @TestCase('c.3')
-  private c() {}
+  public c() {
+    // I am not an empty method!
+  }
 
   @XTest('d')
-  private d() {}
+  public d() {
+    // I am not an empty method!
+  }
 }

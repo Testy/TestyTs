@@ -13,7 +13,9 @@ export type ReporterType = 'standard' | 'TAP';
 type VisitorConstructor = (baseVisitor: TestVisitor<Report>, logger: Logger) => TestVisitor<Report>;
 
 export class TestVisitorFactory {
-  constructor(private logger: Logger) {}
+  constructor(private logger: Logger) {
+    // This is not an empty constructor!
+  }
 
   public getRunner(config: TestyConfig) {
     let testRunnerVisitor: TestVisitor<Report> = new TestRunnerVisitor(process, config);
@@ -21,6 +23,10 @@ export class TestVisitorFactory {
 
     if (config.reporters != null) {
       for (const reporter in config.reporters) {
+        if (!config.reporters.hasOwnProperty(reporter)) {
+          continue;
+        }
+
         const reporterConfig = config.reporters[reporter];
         reporterConstructors.push(this.getReporterConstructor(reporter, reporterConfig));
       }
@@ -33,7 +39,7 @@ export class TestVisitorFactory {
       reporterConstructors.push(this.getReporterConstructor(config.reporter || 'standard'));
     }
 
-    // No reporter specified, use standard
+    // no reporter specified, use standard
     if (reporterConstructors.length === 0) {
       reporterConstructors.push(this.getReporterConstructor('standard'));
     }

@@ -14,7 +14,9 @@ export class InitCommand implements CliCommand {
   public async execute(): Promise<void> {
     const path = resolve(process.cwd(), 'testy.json');
     writeFile(path, JSON.stringify(this.defaultConfig), (err) => {
-      if (!err) return;
+      if (!err) {
+        return;
+      }
 
       this.logger.info(err.message);
       process.exit(1);

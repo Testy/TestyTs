@@ -1,4 +1,4 @@
-import { Logger, Color } from '../../lib/logger/logger';
+import { Logger } from '../../lib/logger/logger';
 
 export class StringLogger extends Logger {
   public string: string = '';
@@ -19,7 +19,7 @@ export class StringLogger extends Logger {
     this.string += message + '\n';
   }
 
-  format(message: string, color: Color): string {
+  format(message: string): string {
     return message;
   }
 

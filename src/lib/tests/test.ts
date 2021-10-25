@@ -22,18 +22,24 @@ export class TestInstance {
     private _func: Function,
     private _status: TestStatus,
     private timeout?: number | undefined
-  ) {}
+  ) {
+    // This is not an empty constructor!
+  }
 
   public async run(context, config: TestyConfig) {
     return await new Promise<void>(async (resolve, reject) => {
       try {
-        // The timeout is determined like so:
+        // the timeout is determined like so:
         // 1. If there is a test-level timeout, we use it
         // 2. Otherwise, if there is a global timeout defined in the config, we use it
         // 3. Othersiwe, we default to 2000 ms
         let timeout = 2000;
-        if (config?.timeout != null) timeout = config.timeout;
-        if (this.timeout != null) timeout = this.timeout;
+        if (config?.timeout != null) {
+          timeout = config.timeout;
+        }
+        if (this.timeout != null) {
+          timeout = this.timeout;
+        }
 
         const nodeTimeout = setTimeout(() => reject('Test has timed out.'), timeout);
 

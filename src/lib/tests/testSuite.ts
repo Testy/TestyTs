@@ -3,7 +3,7 @@ import { TestStatus } from '../testStatus';
 import { TestVisitor } from './visitors/testVisitor';
 
 /**
- * Contains a collection of tests and of test suites.
+ * contains a collection of tests and of test suites.
  */
 export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInstance> {
   public name: string;
@@ -20,9 +20,10 @@ export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInsta
   }
 
   /**
-   * Returns a test or a testsuite with its status(es) normalized.
+   * returns a test or a testsuite with its status(es) normalized.
    * This means that if a test has a "Normal" state, but there are focused tests, the test will appear as ignored.
    * If it is a testsuite, all its children will be normalized.
+   *
    * @param key The test's id
    */
   public get(key: string): TestInstance | TestSuiteInstance {
@@ -58,7 +59,7 @@ export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInsta
       return true;
     }
 
-    // This is a workaround. There is currently a problem with typeof extending built-in types: https://bit.ly/2U3Gp39
+    // this is a workaround. There is currently a problem with typeof extending built-in types: https://bit.ly/2U3Gp39
     if (!(testOrTestSuite instanceof Map)) {
       return false;
     }
@@ -81,7 +82,7 @@ export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInsta
   }
 
   /**
-   * Propagates the focused status. This means all tests which are not focused or under a focused test suite will be skipped.
+   * propagates the focused status. This means all tests which are not focused or under a focused test suite will be skipped.
    */
   private propagateFocus(): TestInstance | TestSuiteInstance {
     if (this.status === TestStatus.Focused) {
@@ -109,7 +110,7 @@ export class TestSuiteInstance extends Map<string, TestInstance | TestSuiteInsta
   }
 
   /**
-   * Propagates the ignored status.
+   * propagates the ignored status.
    */
   private propagateIgnored(): TestInstance | TestSuiteInstance {
     const copy = this.clone();

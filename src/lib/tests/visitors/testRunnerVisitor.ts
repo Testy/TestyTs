@@ -19,7 +19,9 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
   private testSuites: TestSuiteInstance[] = [];
   private setupRan = false;
 
-  constructor(private process: NodeJS.Process, private config: TestyConfig) {}
+  constructor(private process: NodeJS.Process, private config: TestyConfig) {
+    // This is not an empty constructor!
+  }
 
   public async visitTestSuite(tests: TestSuiteInstance): Promise<Report> {
     this.testSuites.push(tests);
@@ -72,7 +74,9 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
   }
 
   private async runSetupFile() {
-    if (this.setupRan) return;
+    if (this.setupRan) {
+      return;
+    }
 
     if (this.config?.setupFile?.length) {
       const setupFilePath = path.resolve(process.cwd(), this.config.setupFile);
@@ -117,7 +121,9 @@ export class TestRunnerVisitor implements TestVisitor<Report> {
   private getClosestContext() {
     for (let i = this.testSuites.length - 1; i >= 0; --i) {
       const context = this.testSuites[i].context;
-      if (context !== undefined) return context;
+      if (context !== undefined) {
+        return context;
+      }
     }
   }
 }

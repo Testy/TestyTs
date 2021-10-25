@@ -6,10 +6,14 @@ import { TestSuite } from '../../../../lib/decorators/testSuite.decorator';
 @TestSuite()
 export class DummyTapDecoratorTestSuite {
   @Test()
-  testA() {}
+  testA() {
+    return;
+  }
 
   @Test()
-  testB() {}
+  testB() {
+    return;
+  }
 
   @Test()
   testC() {
@@ -26,7 +30,9 @@ export class DummyTapDecoratorTestSuite {
   }
 
   @XTest('#testE')
-  testE() {}
+  testE() {
+    return;
+  }
 }
 
 export const dummyTapDecoratorTestSuiteExpectedOutput: string[] = [

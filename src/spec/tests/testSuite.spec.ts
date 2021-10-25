@@ -8,7 +8,7 @@ import { Test, TestSuite } from '../../testyCore';
 export class TestSuiteTests {
   @Test('get tests, all normal tests')
   getTestsAllNormalTests() {
-    // Arrange
+    // arrange
     const testcases = new TestSuiteInstance();
     testcases.context = { key: 'somedummycontext' };
     testcases.status = TestStatus.Normal;
@@ -22,7 +22,7 @@ export class TestSuiteTests {
     testsuite.set('b', new TestInstance('b', undefined, TestStatus.Normal));
     testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
-    // Act & Assert
+    // act & Assert
     const actualTestcases = testsuite.get('a') as TestSuiteInstance;
     expect.toBeDefined(actualTestcases.context);
     expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
@@ -35,7 +35,7 @@ export class TestSuiteTests {
 
   @Test('get tests, has top level focused test')
   getTestsTopLevelFocusedTest() {
-    // Arrange
+    // arrange
     const testcases = new TestSuiteInstance();
     testcases.context = { key: 'somedummycontext' };
     testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
@@ -47,7 +47,7 @@ export class TestSuiteTests {
     testsuite.set('b', new TestInstance('b', undefined, TestStatus.Focused));
     testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
-    // Act & Assert
+    // act & Assert
     const actualTestcases = testsuite.get('a') as TestSuiteInstance;
     expect.toBeDefined(actualTestcases.context);
     expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
@@ -60,7 +60,7 @@ export class TestSuiteTests {
 
   @Test('get tests, has nested focused tests')
   getTestsNestedFocusedTests() {
-    // Arrange
+    // arrange
     const testcases = new TestSuiteInstance();
     testcases.context = { key: 'somedummycontext' };
     testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
@@ -72,7 +72,7 @@ export class TestSuiteTests {
     testsuite.set('b', new TestInstance('b', undefined, TestStatus.Normal));
     testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
-    // Act & Assert
+    // act & Assert
     const actualTestcases = testsuite.get('a') as TestSuiteInstance;
     expect.toBeDefined(actualTestcases.context);
     expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
@@ -85,7 +85,7 @@ export class TestSuiteTests {
 
   @Test('get tests, has nested focused test suite')
   getTestsNestedFocusedTestSuite() {
-    // Arrange
+    // arrange
     const testcases = new TestSuiteInstance();
     testcases.context = { key: 'somedummycontext' };
     testcases.status = TestStatus.Focused;
@@ -98,7 +98,7 @@ export class TestSuiteTests {
     testsuite.set('b', new TestInstance('b', undefined, TestStatus.Normal));
     testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
-    // Act & Assert
+    // act & Assert
     const actualTestcases = testsuite.get('a') as TestSuiteInstance;
     expect.toBeDefined(actualTestcases.context);
     expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
@@ -111,7 +111,7 @@ export class TestSuiteTests {
 
   @Test('get tests, is a focused test suite')
   getTestsIsAFocusedTestSuite() {
-    // Arrange
+    // arrange
     const testcases = new TestSuiteInstance();
     testcases.status = TestStatus.Normal;
     testcases.context = { key: 'somedummycontext' };
@@ -125,7 +125,7 @@ export class TestSuiteTests {
     testsuite.set('b', new TestInstance('b', undefined, TestStatus.Normal));
     testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
-    // Act & Assert
+    // act & Assert
     const actualTestcases = testsuite.get('a') as TestSuiteInstance;
     expect.toBeDefined(actualTestcases.context);
     expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
@@ -138,7 +138,7 @@ export class TestSuiteTests {
 
   @Test('get tests, has ignored tests')
   getTestsIgnoredTests() {
-    // Arrange
+    // arrange
     const testcases = new TestSuiteInstance();
     testcases.context = { key: 'somedummycontext' };
     testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
@@ -150,7 +150,7 @@ export class TestSuiteTests {
     testsuite.set('b', new TestInstance('b', undefined, TestStatus.Ignored));
     testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
-    // Act & Assert
+    // act & Assert
     const actualTestcases = testsuite.get('a') as TestSuiteInstance;
     expect.toBeDefined(actualTestcases.context);
     expect.toBeEqual(actualTestcases.context.key, 'somedummycontext');
@@ -163,7 +163,7 @@ export class TestSuiteTests {
 
   @Test('clone')
   clone() {
-    // Arrange
+    // arrange
     const testcases = new TestSuiteInstance();
     testcases.context = { key: 'somedummycontext' };
     testcases.set('a.a', new TestInstance('a.a', undefined, TestStatus.Normal));
@@ -175,10 +175,10 @@ export class TestSuiteTests {
     testsuite.set('b', new TestInstance('b', undefined, TestStatus.Ignored));
     testsuite.set('c', new TestInstance('c', undefined, TestStatus.Normal));
 
-    // Act
+    // act
     const clone = testcases.clone();
 
-    // Assert
+    // assert
     expect.not.toBeEqual(clone, testsuite);
     expect.arraysToBeEqual(clone.testIds, testcases.testIds);
     expect.arraysToBeEqual(clone.beforeAllMethods, testsuite.beforeAllMethods);

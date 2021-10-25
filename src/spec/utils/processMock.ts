@@ -1,5 +1,10 @@
 import { expect } from '../../lib/assertion/expect';
 
+export interface ProcessMock extends NodeJS.Process {
+  expectSuccess(): void;
+  expectFailure(): void;
+}
+
 export function getProcessMock(): ProcessMock {
   const process = {
     exitCode: 0,
@@ -15,9 +20,4 @@ export function getProcessMock(): ProcessMock {
   process.expectFailure = process.expectFailure.bind(process);
 
   return process;
-}
-
-export interface ProcessMock extends NodeJS.Process {
-  expectSuccess(): void;
-  expectFailure(): void;
 }

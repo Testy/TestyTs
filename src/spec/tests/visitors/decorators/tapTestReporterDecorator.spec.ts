@@ -27,14 +27,14 @@ export class TapTestReporterDecoratorTests {
 
   @Test('Test suite output respects the TAP spec')
   async outputRespectsSpec() {
-    // Arrange
+    // arrange
     const testSuite = TestUtils.getInstance(DummyTapDecoratorTestSuite);
 
-    // Act
+    // act
     await testSuite.accept(this.testRunnerVisitor);
 
-    // Assert
-    // We split each line and remove the comments and empty lines
+    // assert
+    // we split each line and remove the comments and empty lines
     const output = this.logger.string.split('\n').filter((x) => !x.trim().startsWith('#') && x.length > 0);
 
     expect.arraysToBeEqual(output, dummyTapDecoratorTestSuiteExpectedOutput);

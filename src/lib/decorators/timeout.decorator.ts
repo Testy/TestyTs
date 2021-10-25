@@ -1,9 +1,10 @@
 /**
- * Specifies the timeout to cause a test to fail.
+ * specifies the timeout to cause a test to fail.
+ *
  * @param timeout The timeout in miliseconds.
  */
 export function Timeout(timeout: number = 2000) {
-  return (target, key, descriptor) => {
+  return (target, key) => {
     if (!target.__timeouts) {
       target.__timeouts = {};
     }

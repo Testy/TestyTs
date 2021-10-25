@@ -24,10 +24,12 @@ export class RunCommand implements CliCommand {
     private testyConfig: TestyConfig,
     private _tsConfigFile,
     private _testFiles: string[] = null
-  ) {}
+  ) {
+    // This is not an empty constructor!
+  }
 
   public async execute() {
-    // We load the tsConfig file. In priority order, we use
+    // we load the tsConfig file. In priority order, we use
     // 1. The tsconfig file specified from the command line
     // 2. The tsconfig file specified in the testy config file
     // 3. The root folder's tsconfig.json file

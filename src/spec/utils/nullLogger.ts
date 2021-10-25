@@ -1,13 +1,26 @@
-import { Logger, Color } from '../../lib/logger/logger';
+import { Logger } from '../../lib/logger/logger';
 
 export class NullLogger extends Logger {
-  debug(message?: string): void {}
-  info(message?: string): void {}
-  warn(message?: string): void {}
-  error(message?: string): void {}
-  format(message: string, color: Color): string {
+  debug(): void {
+    return;
+  }
+
+  info(): void {
+    return;
+  }
+
+  warn(): void {
+    return;
+  }
+
+  error(): void {
+    return;
+  }
+
+  format(message: string): string {
     return message;
   }
+
   create() {
     return new NullLogger();
   }

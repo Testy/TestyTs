@@ -1,5 +1,4 @@
-import { TextDecoder } from 'util';
-import { Logger, Color, TextDecoration } from './logger';
+import { Color, Logger, TextDecoration } from './logger';
 
 export class ConsoleLogger extends Logger {
   private readonly reset = '\x1b[0m';

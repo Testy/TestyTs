@@ -9,6 +9,6 @@ import { TestsLoader } from './lib/utils/testsLoader';
 const logger = LoggerFactory.create();
 const testVisitorFactory = new TestVisitorFactory(logger);
 const jsonLoader = new JsonLoader();
-const testsLoader = new TestsLoader(logger);
+const testsLoader = new TestsLoader();
 const cli = new TestyCli(logger, testVisitorFactory, jsonLoader, testsLoader);
 cli.handle(process.argv);

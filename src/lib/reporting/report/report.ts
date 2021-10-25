@@ -1,7 +1,7 @@
 import { TestResult } from './testResult';
 
 /**
- * Report's interface. Interface of a composite pattern.
+ * report's interface. Interface of a composite pattern.
  */
 export interface Report {
   name: string;

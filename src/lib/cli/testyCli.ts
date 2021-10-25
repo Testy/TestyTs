@@ -14,7 +14,9 @@ export class TestyCli {
     private testVisitorFactory: TestVisitorFactory,
     private jsonLoader: JsonLoader,
     private testLoader: TestsLoader
-  ) {}
+  ) {
+    // This is not an empty constructor!
+  }
 
   public async handle(args: any[]) {
     const command = await this.getCommand(args);

@@ -25,7 +25,7 @@ export class CliTests {
   private jsonLoaderMock: IMock<JsonLoader>;
 
   @BeforeEach()
-  private beforeEach() {
+  public beforeEach() {
     this.logger = new NullLogger();
 
     this.testVisitorMock = Mock.ofType<TestVisitor<Report>>();
@@ -48,8 +48,8 @@ export class CliTests {
   }
 
   @AfterEach()
-  private afterEach() {
-    // Prevents a potential memory leak: https://github.com/tj/commander.js/issues/581
+  public afterEach() {
+    // prevents a potential memory leak: https://github.com/tj/commander.js/issues/581
     program.removeAllListeners();
   }
 
@@ -121,12 +121,12 @@ export class CliTests {
     ['node', '/some/path', '--config', 'alternate/config.json', '--reporter', 'standard'],
     'alternate/config.json'
   )
-  private async runCommandTests(args: any[], expectedConfig: string, expectedTsConfig?: string) {
-    // Act
+  public async runCommandTests(args: any[], expectedConfig: string, expectedTsConfig?: string) {
+    // act
     const command = await this.cli.getCommand(args);
     await command.execute();
 
-    // Assert
+    // assert
     expect.toBeTrue(command instanceof RunCommand);
 
     this.jsonLoaderMock.verify((x) => x.load(It.isValue(expectedConfig)), Times.once());
@@ -134,25 +134,25 @@ export class CliTests {
   }
 
   @Test()
-  private async runCommand_specifyFiles_shouldHaveSpecifiedFilesList() {
-    // Act
+  public async runCommand_specifyFiles_shouldHaveSpecifiedFilesList() {
+    // act
     const command = await this.cli.getCommand(['node', '/some/path', '-f', 'a.spec.ts,b.spec.ts']);
 
-    // Assert
+    // assert
     expect.toBeTrue(command instanceof RunCommand);
     const runCommand = command as RunCommand;
     expect.arraysToBeEqual(runCommand.testFiles, ['a.spec.ts', 'b.spec.ts']);
   }
 
   @Test('testy init')
-  private async initCommandTests() {
-    // Arrange
+  public async initCommandTests() {
+    // arrange
     const args = ['node', '/some/path', 'init'];
 
-    // Act
+    // act
     const command = await this.cli.getCommand(args);
 
-    // Assert
+    // assert
     expect.toBeTrue(command instanceof InitCommand);
   }
 }

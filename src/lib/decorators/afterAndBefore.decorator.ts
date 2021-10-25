@@ -1,7 +1,7 @@
 import { getTestSuiteInstance } from './utils';
 
 /**
- * Method which is executed after all the tests were ran.
+ * method which is executed after all the tests were ran.
  */
 export function AfterAll() {
   return (target, key, descriptor) => {
@@ -10,7 +10,7 @@ export function AfterAll() {
 }
 
 /**
- * Method which is executed after each test is ran.
+ * method which is executed after each test is ran.
  */
 export function AfterEach() {
   return (target, key, descriptor) => {
@@ -19,7 +19,7 @@ export function AfterEach() {
 }
 
 /**
- * Method which is executed before all the tests are ran.
+ * method which is executed before all the tests are ran.
  */
 export function BeforeAll() {
   return (target, key, descriptor) => {
@@ -28,7 +28,7 @@ export function BeforeAll() {
 }
 
 /**
- * Method which is executed before each test is ran.
+ * method which is executed before each test is ran.
  */
 export function BeforeEach() {
   return (target, key, descriptor) => {

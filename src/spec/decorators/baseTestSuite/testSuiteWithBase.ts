@@ -8,22 +8,22 @@ export class BaseTestSuite {
   public afterEachExecuted = [];
 
   @BeforeAll()
-  private beforeAllBase() {
+  public beforeAllBase() {
     this.beforeAllExecuted.push(BaseTestSuite);
   }
 
   @BeforeEach()
-  private beforeEachBase() {
+  public beforeEachBase() {
     this.beforeEachExecuted.push(BaseTestSuite);
   }
 
   @AfterEach()
-  private afterEachBase() {
+  public afterEachBase() {
     this.afterEachExecuted.push(BaseTestSuite);
   }
 
   @AfterAll()
-  private afterAllBase() {
+  public afterAllBase() {
     this.afterAllExecuted.push(BaseTestSuite);
   }
 }
@@ -31,25 +31,27 @@ export class BaseTestSuite {
 @TestSuite('Test Suite')
 export class TestSuiteWithBase extends BaseTestSuite {
   @BeforeAll()
-  private beforeAll() {
+  public beforeAll() {
     this.beforeAllExecuted.push(TestSuiteWithBase);
   }
 
   @BeforeEach()
-  private beforeEach() {
+  public beforeEach() {
     this.beforeEachExecuted.push(TestSuiteWithBase);
   }
 
   @AfterEach()
-  private afterEach() {
+  public afterEach() {
     this.afterEachExecuted.push(TestSuiteWithBase);
   }
 
   @AfterAll()
-  private afterAll() {
+  public afterAll() {
     this.afterAllExecuted.push(TestSuiteWithBase);
   }
 
   @Test('Test')
-  private test() {}
+  public test() {
+    // I am not an empty method!
+  }
 }

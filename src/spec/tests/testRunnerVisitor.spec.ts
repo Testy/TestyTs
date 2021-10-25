@@ -24,11 +24,11 @@ export class TestRunnerVisitorTests {
 
   @Test('Simple test suite')
   async simpleTestSuite() {
-    // Arrange
+    // arrange
     const root = new TestSuiteInstance();
     root.name = 'Root';
-    root.set('A', new TestInstance('A', () => {}, TestStatus.Normal));
-    root.set('B', new TestInstance('B', () => {}, TestStatus.Normal));
+    root.set('A', new TestInstance('A', () => ({}), TestStatus.Normal));
+    root.set('B', new TestInstance('B', () => ({}), TestStatus.Normal));
 
     // prettier-ignore
     const expected =
@@ -37,20 +37,20 @@ export class TestRunnerVisitorTests {
       .success('B')
     );
 
-    // Act
+    // act
     const actual = await root.accept(this.testRunnerVisitor);
 
-    // Assert
+    // assert
     TestUtils.expectReportsToBeEqual(actual, expected);
     this.processMock.expectSuccess();
   }
 
   @Test('Test suite with failure')
   async testSuiteWithFailure() {
-    // Arrange
+    // arrange
     const root = new TestSuiteInstance();
     root.name = 'Root';
-    root.set('A', new TestInstance('A', () => {}, TestStatus.Normal));
+    root.set('A', new TestInstance('A', () => ({}), TestStatus.Normal));
     root.set(
       'B',
       new TestInstance(
@@ -69,21 +69,21 @@ export class TestRunnerVisitorTests {
       .failed('B', 'oops')
     );
 
-    // Act
+    // act
     const actual = await root.accept(this.testRunnerVisitor);
 
-    // Assert
+    // assert
     TestUtils.expectReportsToBeEqual(actual, expected);
     this.processMock.expectFailure();
   }
 
   @Test('Test suite with skipped tests')
   async testSuiteWithSkippedTests() {
-    // Arrange
+    // arrange
     const root = new TestSuiteInstance();
     root.name = 'Root';
-    root.set('A', new TestInstance('A', () => {}, TestStatus.Ignored));
-    root.set('B', new TestInstance('B', () => {}, TestStatus.Normal));
+    root.set('A', new TestInstance('A', () => ({}), TestStatus.Ignored));
+    root.set('B', new TestInstance('B', () => ({}), TestStatus.Normal));
 
     // prettier-ignore
     const expected =
@@ -92,27 +92,27 @@ export class TestRunnerVisitorTests {
         .success('B')
       );
 
-    // Act
+    // act
     const actual = await root.accept(this.testRunnerVisitor);
 
-    // Assert
+    // assert
     TestUtils.expectReportsToBeEqual(actual, expected);
     this.processMock.expectSuccess();
   }
 
   @Test('Skipped and focused')
   async skippedAndFocusedTests() {
-    // Arrange
+    // arrange
     const root = new TestSuiteInstance();
     root.name = 'Root';
-    root.set('A', new TestInstance('A', () => {}, TestStatus.Normal));
-    root.set('B', new TestInstance('B', () => {}, TestStatus.Normal));
+    root.set('A', new TestInstance('A', () => ({}), TestStatus.Normal));
+    root.set('B', new TestInstance('B', () => ({}), TestStatus.Normal));
 
     const sub1 = new TestSuiteInstance();
     sub1.name = 'Sub 1';
     sub1.status = TestStatus.Ignored;
-    sub1.set('C', new TestInstance('C', () => {}, TestStatus.Normal));
-    sub1.set('D', new TestInstance('D', () => {}, TestStatus.Normal));
+    sub1.set('C', new TestInstance('C', () => ({}), TestStatus.Normal));
+    sub1.set('D', new TestInstance('D', () => ({}), TestStatus.Normal));
     root.set('Sub 1', sub1);
 
     // prettier-ignore
@@ -126,16 +126,16 @@ export class TestRunnerVisitorTests {
         )
       );
 
-    // Act
+    // act
     const actual = await root.accept(this.testRunnerVisitor);
 
-    // Assert
+    // assert
     TestUtils.expectReportsToBeEqual(actual, expected);
     this.processMock.expectSuccess();
   }
 }
 
-//#region Helpers
+// #region Helpers
 
 function report(name: string, instructions: (report: ReportBuilder) => ReportBuilder): Report {
   return instructions(_reportBuilder(new CompositeReport(name))).report;
@@ -172,4 +172,4 @@ interface ReportBuilder {
   subReport(name: string, builder: (subReport: ReportBuilder) => ReportBuilder): ReportBuilder;
 }
 
-//#endregion
+// #endregion

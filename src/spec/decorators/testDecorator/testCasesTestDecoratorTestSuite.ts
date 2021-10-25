@@ -1,5 +1,5 @@
-import { Test, TestCaseInstance, TestSuite } from '../../../testyCore';
 import { TestCase } from '../../../lib/decorators/testCase.decorator';
+import { Test, TestSuite } from '../../../testyCore';
 
 @TestSuite('TestCases Test Decorator Test Suite')
 export class TestCasesTestDecoratorTestSuite {
@@ -11,9 +11,15 @@ export class TestCasesTestDecoratorTestSuite {
   @TestCase('My first test', 1)
   @TestCase('My second test', 2)
   @TestCase('My third test', 3)
-  private tests(n: number) {
-    if (n === 1) ++this.numberOfRunsTest1;
-    if (n === 2) ++this.numberOfRunsTest2;
-    if (n === 3) ++this.numberOfRunsTest3;
+  public tests(n: number) {
+    if (n === 1) {
+      ++this.numberOfRunsTest1;
+    }
+    if (n === 2) {
+      ++this.numberOfRunsTest2;
+    }
+    if (n === 3) {
+      ++this.numberOfRunsTest3;
+    }
   }
 }

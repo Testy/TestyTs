@@ -9,13 +9,13 @@ import { BaseTestSuite, TestSuiteWithBase } from './testSuiteWithBase';
 export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
   @Test('the base and the actual test suite before and after methods are called.')
   public async trivialCase() {
-    // Arrange
+    // arrange
     const testSuite = TestUtils.getInstance(TestSuiteWithBase);
 
-    // Act
+    // act
     await testSuite.accept(this.visitor);
 
-    // Assert
+    // assert
     expect.toBeEqual(testSuite.context.beforeAllExecuted[0], BaseTestSuite);
     expect.toBeEqual(testSuite.context.beforeAllExecuted[1], TestSuiteWithBase);
     expect.toBeEqual(testSuite.context.beforeEachExecuted[0], BaseTestSuite);
@@ -28,11 +28,11 @@ export class BeforeAfterDecoratorsTestSuite extends TestSuiteTestsBase {
 
   @Test('base with multiple children')
   public async baseWithMultipleChildren() {
-    // Arrange
+    // arrange
     const a = TestUtils.getInstance(TestSuiteA);
     const b = TestUtils.getInstance(TestSuiteB);
 
-    // Assert
+    // assert
     expect.arraysToBeEqual(a.testIds, ['testA']);
     expect.arraysToBeEqual(b.testIds, ['testB']);
   }

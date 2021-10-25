@@ -14,7 +14,7 @@ import { ThrowsDuringBeforeEachTestSuite } from './throwsDuringBeforeEachTestSui
 
 @TestSuite('Before and After Decorators Test Suite')
 export class BeforeAfterDecoratorsTestSuite {
-  // TODO: This test suite should extend TestSuiteTestsBase when #8 is fixed.
+  // tODO: This test suite should extend TestSuiteTestsBase when #8 is fixed.
   protected visitor: TestVisitor<Report>;
   protected processMock: ProcessMock;
 
@@ -26,13 +26,13 @@ export class BeforeAfterDecoratorsTestSuite {
 
   @Test('beforeAll, beforeEach, afterEach and afterAll are called the right amount of time.')
   private async trivialCase() {
-    // Arrange
+    // arrange
     const testSuite = TestUtils.getInstance(NormalBeforeAfterTestSuite);
 
-    // Act
+    // act
     const report = await testSuite.accept(this.visitor);
 
-    // Assert
+    // assert
     expect.toBeEqual(testSuite.context.numberOfBeforeAllExecutions, 1);
     expect.toBeEqual(testSuite.context.numberOfBeforeEachExecutions, 5);
     expect.toBeEqual(testSuite.context.numberOfAfterEachExecutions, 5);
@@ -47,13 +47,13 @@ export class BeforeAfterDecoratorsTestSuite {
   @TestCase('afterEach throws, should return a failed test report', ThrowsDuringAfterEachTestSuite, 6)
   @TestCase('afterAll throws, should return a failed test report', ThrowsDuringAfterAllTestSuite, 6)
   private async beforeOfAfterMethodFails(testSuiteClass: any, numberOfTests: number) {
-    // Arrange
+    // arrange
     const testSuite = TestUtils.getInstance(testSuiteClass);
 
-    // Act
+    // act
     const report = await testSuite.accept(this.visitor);
 
-    // Assert
+    // assert
     expect.toBeDefined(report);
     expect.toBeEqual(report.result, TestResult.Failure);
     expect.toBeEqual(report.numberOfTests, numberOfTests, 'Expected all tests to be part of the report.');

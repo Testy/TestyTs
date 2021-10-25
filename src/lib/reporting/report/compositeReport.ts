@@ -2,7 +2,7 @@ import { Report } from './report';
 import { TestResult } from './testResult';
 
 /**
- * Represents a collection of reports. Part of a composite pattern.
+ * represents a collection of reports. Part of a composite pattern.
  */
 export class CompositeReport implements Report {
   public get name(): string {
@@ -25,16 +25,22 @@ export class CompositeReport implements Report {
   }
 
   public get result(): TestResult {
-    if (this.children.find((x) => x.result === TestResult.Failure) !== undefined) return TestResult.Failure;
+    if (this.children.find((x) => x.result === TestResult.Failure) !== undefined) {
+      return TestResult.Failure;
+    }
 
-    if (this.children.find((x) => x.result === TestResult.Skipped) !== undefined) return TestResult.Skipped;
+    if (this.children.find((x) => x.result === TestResult.Skipped) !== undefined) {
+      return TestResult.Skipped;
+    }
 
     return TestResult.Success;
   }
 
   private children: Report[] = [];
 
-  constructor(private _name: string) {}
+  constructor(private _name: string) {
+    // This is not an empty constructor!
+  }
 
   public addReport(report: Report) {
     this.children.push(report);

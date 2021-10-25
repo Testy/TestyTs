@@ -3,7 +3,7 @@ import { TestStatus } from '../testStatus';
 import { getTestSuiteInstance } from './utils';
 
 /**
- * Marks a class as a focused test suite. If one or more test suites are marked as focused, only the those will be ran.
+ * marks a class as a focused test suite. If one or more test suites are marked as focused, only the those will be ran.
  *
  * @param name Name of the test suite, displayed in the test report.
  */
@@ -12,7 +12,7 @@ export function FTestSuite<T extends new (...args: any[]) => {}>(name?: string):
 }
 
 /**
- * Marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
+ * marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
  *
  * @param name Name of the test suite, displayed in the test report.
  */
@@ -27,7 +27,7 @@ interface TestSuiteDecorator {
 }
 
 /**
- * Marks a class as a test suite.
+ * marks a class as a test suite.
  *
  * @param name Name of the test suite, displayed in the test report.
  */
@@ -36,20 +36,20 @@ function testSuiteDecorator<T extends new (...args: any[]) => {}>(name?: string)
 }
 
 /**
- * Marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
+ * marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
  *
  * @param name Name of the test suite, displayed in the test report.
  */
 testSuiteDecorator.focus = FTestSuite;
 
 /**
- * Marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
+ * marks a class as an ignored test suite. Its tests will not be ran, but will still show up in the test report.
  *
  * @param name Name of the test suite, displayed in the test report.
  */
 testSuiteDecorator.ignore = XTestSuite;
 
-/* tslint:disable:variable-name */
+/* eslint-disable @typescript-eslint/naming-convention,no-underscore-dangle,id-denylist,id-match */
 export const TestSuite: TestSuiteDecorator = testSuiteDecorator;
 
 /**

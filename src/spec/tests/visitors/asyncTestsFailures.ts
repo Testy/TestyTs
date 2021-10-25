@@ -7,7 +7,9 @@ export class AsyncTestsFailures {
   @Test()
   @Timeout(0)
   async testA() {
-    await new Promise(() => {});
+    await new Promise(() => {
+      return;
+    });
   }
 
   @Test()

@@ -20,15 +20,15 @@ export class TestDecoratorTestSuite {
 
   @Test('One successful test, one timeout')
   private async singleTest() {
-    // Arrange
+    // arrange
     const testSuite = TestUtils.getInstance(TestSuiteWithTimeouts);
 
-    // Act
+    // act
     const report = (await testSuite.accept(this.testRunnerVisitor)) as CompositeReport;
     const successfulTest = report.getChildren()[0];
     const failedTest = report.getChildren()[1];
 
-    // Assert
+    // assert
     expect.toBeEqual(report.numberOfSuccessfulTests, 1);
     expect.toBeTrue(successfulTest instanceof SuccessfulTestReport);
     expect.toBeTrue(failedTest instanceof FailedTestReport);

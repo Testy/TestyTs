@@ -1,25 +1,33 @@
-import { Test, XTest, BeforeEach, TestCaseInstance, TestSuite } from '../../../testyCore';
 import { TestCase } from '../../../lib/decorators/testCase.decorator';
+import { BeforeEach, Test, TestSuite, XTest } from '../../../testyCore';
 
 @TestSuite('Throws During Before Each Test Suite')
 export class ThrowsDuringBeforeEachTestSuite {
   @BeforeEach()
-  private beforeEach() {
+  public beforeEach() {
     throw new Error('This should be handled.');
   }
 
   @Test('a')
-  private a() {}
+  public a() {
+    // I am not an empty method!
+  }
 
   @Test('b')
-  private b() {}
+  public b() {
+    // I am not an empty method!
+  }
 
   @Test('c')
   @TestCase('c.1')
   @TestCase('c.2')
   @TestCase('c.3')
-  private c() {}
+  public c() {
+    // I am not an empty method!
+  }
 
   @XTest('d')
-  private d() {}
+  public d() {
+    // I am not an empty method!
+  }
 }
