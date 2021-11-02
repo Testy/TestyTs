@@ -1,5 +1,17 @@
 # Changes
 
+## 2.0.0-beta.7
+
+- Fix issue with the `testyts init` command _(#57, thanks for reporting, @thgh!)_
+
+## 2.0.0-beta.6
+
+### Improvements
+
+- Refactored reporters in order to
+  - Allow for multiple reporters to work in parallel
+  - Pave the way for external reporters (plugins)
+
 ## 2.0.0-beta.5
 
 ### Improvements
