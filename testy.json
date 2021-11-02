@@ -1,4 +1,5 @@
 {
+  "tsconfig": "tsconfig.spec.json",
   "include": ["src/**/*.spec.ts"],
   "reporters": {
     "standard": {}
