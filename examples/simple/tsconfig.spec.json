@@ -1,0 +1,11 @@
+{
+  // Some comment
+  "compilerOptions": {
+    "target": "es2017",
+    "typeRoots": ["node_modules/@types"],
+    "experimentalDecorators": true,
+    "outDir": "./build",
+    "sourceMap": true
+  },
+  "include": ["src/**/*.spec.ts"]
+}

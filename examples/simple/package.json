@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "test": "testyts"
+  },
+  "devDependencies": {
+    "testyts": "^1.5.0",
+    "typescript": "^4.4.4"
+  }
+}
