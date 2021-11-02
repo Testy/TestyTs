@@ -239,9 +239,9 @@ Example configuration file:
   "include": ["**/*.spec.ts"],
   "tsconfig": "./tsconfig.spec.json",
   "reporters": {
-     "standard": {
-       "color": true
-     }
+    "standard": {
+      "color": true
+    }
   },
   "timeout": 10000
 }
@@ -274,6 +274,7 @@ $ testyts --files "my-first-file.spec.ts,my-folder/**.spec.ts" // To run tests i
 
 The [examples](./examples) folder contains example projects with various use-cases.
 
+- [Simple example](./examples/simple)
 - [Code coverage with NYC](./examples/code-coverage-nyc)
 
 ## Try it out online!
