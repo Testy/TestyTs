@@ -5,7 +5,7 @@ import { CliCommand } from './cli.command';
 import { InitCommand } from './init.command';
 import { RunCommand } from './run.command';
 import { JsonLoader } from '../utils/jsonLoader.service';
-import { TestyConfig } from '../interfaces/config';
+import { defaultTestyConfig, TestyConfig } from '../interfaces/config';
 import { TestsLoader } from '../utils/testsLoader';
 
 export class TestyCli {
@@ -53,7 +53,12 @@ export class TestyCli {
         program.config = program.args[0];
       }
 
-      const testyConfig = await this.jsonLoader.load<TestyConfig>(program.config || 'testy.json');
+      let testyConfig = defaultTestyConfig;
+      try {
+        testyConfig = await this.jsonLoader.load<TestyConfig>(program.config || 'testy.json');
+      } catch (err) {
+        // Stuff happens.
+      }
 
       if (program.reporters != null) {
         const reporters = program.reporters.split(',').reduce((dict, curr) => {

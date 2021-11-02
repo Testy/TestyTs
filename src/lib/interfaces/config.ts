@@ -8,3 +8,7 @@ export interface TestyConfig {
   /** @deprecated Use "reporters" instead. */
   reporter?: 'standard' | 'TAP';
 }
+
+export const defaultTestyConfig: TestyConfig = {
+  include: ['**/*.spec.ts'],
+};
