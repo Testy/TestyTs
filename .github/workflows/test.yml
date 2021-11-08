@@ -21,16 +21,19 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
+        working-directory: packages/testy-cli
         run: npm ci
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Build
+        working-directory: packages/testy-cli
         run: npm run build --if-present
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Run unit tests
+        working-directory: packages/testy-cli
         run: npm test
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -58,12 +61,14 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Build
+        working-directory: packages/testy-cli
         run: npm ci
 
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Run e2e tests
+        working-directory: packages/testy-cli
         run: node ./e2e/runner.js
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -82,12 +87,14 @@ jobs:
           node-version: 12.x
 
       - name: Build
+        working-directory: packages/testy-cli
         run: npm ci
 
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Lint
+        working-directory: packages/testy-cli
         run: npm run lint
 
         env:

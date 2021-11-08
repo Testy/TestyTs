@@ -3,7 +3,7 @@ name: Publish
 on:
   push:
     tags:
-      - v**.**.**
+      - testy-cli/v**.**.**
 
 jobs:
   unit-tests:
@@ -24,16 +24,19 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
+        working-directory: packages/testy-cli
         run: npm ci
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Build
+        working-directory: packages/testy-cli
         run: npm run build --if-present
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Run unit tests
+        working-directory: packages/testy-cli
         run: npm test
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -61,12 +64,14 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Build
+        working-directory: packages/testy-cli
         run: npm ci
 
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Run e2e tests
+        working-directory: packages/testy-cli
         run: node ./e2e/runner.js
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -86,16 +91,19 @@ jobs:
           node-version: 12.x
 
       - name: Install dependencies
+        working-directory: packages/testy-cli
         run: npm ci
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Build
+        working-directory: packages/testy-cli
         run: npm run build:prod --if-present
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Extract tag
+        working-directory: packages/testy-cli
         uses: olegtarasov/get-tag@v2.1
         id: tagName
         with:
@@ -103,12 +111,14 @@ jobs:
 
       - name: Publish (${{ steps.tagName.outputs.tag }})
         if: ${{ steps.tagName.outputs.tag != ''}}
+        working-directory: packages/testy-cli
         run: npm publish --access public --tag ${{ steps.tagName.outputs.tag }}
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Publish (latest)
         if: ${{ steps.tagName.outputs.tag == ''}}
+        working-directory: packages/testy-cli
         run: npm publish --access public
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
