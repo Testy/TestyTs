@@ -2,9 +2,11 @@ name: Test
 
 on:
   push:
-    - 'packages/testy-cli'
+    paths:
+      - 'packages/testy-cli'
   pull_request:
-    - 'packages/testy-cli'
+    paths:
+     - 'packages/testy-cli'
 
 jobs:
   unit-tests:

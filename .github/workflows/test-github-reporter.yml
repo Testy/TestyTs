@@ -2,9 +2,11 @@ name: "[GitHub Reporter] Test"
 
 on:
   push:
-    - "packages/github-reporter"
+    paths:
+      - "packages/github-reporter"
   pull_request:
-    - "packages/github-reporter"
+    paths:
+      - "packages/github-reporter"
 
 jobs:
   unit-tests:
