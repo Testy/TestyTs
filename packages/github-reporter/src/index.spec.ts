@@ -5,9 +5,9 @@ export class GithubReporterTests {
   @Test()
   public test() {
     this.printDebug('Testing 1 2 1 2!');
-    this.printAnnotation('notice', 'README.md', 0, 0, 'Ceci est mon titre', 'Ceci est mon message');
-    this.printAnnotation('warning', 'README.md', 0, 0, 'Ceci est mon titre', 'Ceci est mon message');
-    this.printAnnotation('error', 'README.md', 0, 0, 'Ceci est mon titre', 'Ceci est mon message');
+    this.printAnnotation('notice', 'README.md', 1, 1, 'Ceci est mon titre', 'Ceci est mon message');
+    this.printAnnotation('warning', 'README.md', 1, 1, 'Ceci est mon titre', 'Ceci est mon message');
+    this.printAnnotation('error', 'README.md', 1, 1, 'Ceci est mon titre', 'Ceci est mon message');
   }
 
   private printDebug(message: string) {
