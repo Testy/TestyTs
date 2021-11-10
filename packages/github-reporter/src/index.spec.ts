@@ -4,6 +4,6 @@ import { Test, TestSuite } from 'testyts';
 export class GithubReporterTests {
   @Test()
   public test() {
-    console.log('::error file=readme.md,line=1,title=Buonjiorno::This is a beautiful message z');
+    console.log('::error file=README.md,line=1,title=Buonjiorno::This is a beautiful message z');
   }
 }
