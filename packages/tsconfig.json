@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": ["es6"],
+    "target": "es6",
+    "typeRoots": ["node_modules/@types"],
+    "types": ["node"],
+    "rootDirs": ["."],
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "sourceMap": true,
+    "declaration": true,
+    "baseUrl": "./",
+    "paths": {
+      "@testy/core": ["./testy-cli/src/public-api"]
+    }
+  }
+}

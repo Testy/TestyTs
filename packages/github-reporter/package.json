@@ -1,0 +1,70 @@
+{
+  "name": "testyts",
+  "version": "0.0.1-beta.1",
+  "description": "GitHub Actions Reporter.",
+  "main": "build/index.js",
+  "types": "build/index.d.js",
+  "scripts": {
+    "test": "testyts",
+    "check-coverage": "nyc --reporter=lcov --reporter=html npm run test && nyc report",
+    "prepare": "npm run build:prod",
+    "build": "ttsc -P ./tsconfig.json",
+    "build:prod": "tsc --p tsconfig.prod.json",
+    "start": "node ./build/github-reporter/src/index.js",
+    "lint": "eslint -c .eslintrc.js --ext .ts src",
+    "lint:fix": "eslint --fix -c .eslintrc.js --ext .ts src",
+    "format:fix": "prettier --write src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Testy/TestyTs.git"
+  },
+  "keywords": [
+    "test",
+    "testing",
+    "tdd",
+    "testyts",
+    "github"
+  ],
+  "author": "Antoine Boisier-Michaud",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Testy/TestyTs/issues"
+  },
+  "homepage": "https://github.com/Testy/TestyTs#readme",
+  "devDependencies": {
+    "@types/node": "^16.11.7",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "@zerollup/ts-transform-paths": "^1.7.18",
+    "codecov": "^3.6.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jsdoc": "^36.1.1",
+    "nyc": "^15.1.0",
+    "prettier": "2.2.1",
+    "testyts": "2.0.0-beta.7",
+    "tsconfig-paths": "^3.11.0",
+    "ttypescript": "^1.5.12",
+    "typemoq": "^2.1.0",
+    "typescript": "^4.4.4"
+  },
+  "nyc": {
+    "include": [
+      "src/lib/**/*.ts"
+    ],
+    "exclude": [
+      "src/spec/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "text-summary",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  }
+}

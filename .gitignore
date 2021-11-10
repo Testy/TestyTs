@@ -9,7 +9,7 @@ yarn-error.log*
 *.code-workspace
 
 # Output
-build/
+**/build/
 
 # Runtime data
 pids
@@ -39,8 +39,8 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
-jspm_packages/
+**/node_modules/
+**/jspm_packages/
 
 # TypeScript v1 declaration files
 typings/
