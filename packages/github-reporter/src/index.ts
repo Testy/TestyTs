@@ -27,4 +27,14 @@ export class GitHubActionsReporter extends TestsVisitorDecorator<Report> {
     console.log(test);
     return Promise.resolve(null);
   }
+
+  private printAnnotation(
+    type: 'warning' | 'error',
+    file: string,
+    line: number | null,
+    title: string,
+    message: string
+  ) {
+    console.log(`::${type} file=${file || ''},line=${line || ''},title=${title || ''}::${message}`);
+  }
 }
