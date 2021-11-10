@@ -3,10 +3,11 @@ name: "[GitHub Reporter] Test"
 on:
   push:
     paths:
-      - "packages/github-reporter"
+      - "packages/github-reporter/**"
+      - ".github/workflows/test-github-reporter.yml"
   pull_request:
     paths:
-      - "packages/github-reporter"
+      - "packages/github-reporter/**"
 
 jobs:
   unit-tests:
