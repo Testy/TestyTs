@@ -1,10 +1,10 @@
-name: [GitHub Reporter] Test
+name: "[GitHub Reporter] Test"
 
 on:
   push:
-    - 'packages/github-reporter'
+    - "packages/github-reporter"
   pull_request:
-    - 'packages/github-reporter'
+    - "packages/github-reporter"
 
 jobs:
   unit-tests:
