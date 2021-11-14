@@ -1,13 +1,13 @@
-name: Test
+name: "[Testy Cli] Test"
 
 on:
   push:
     paths:
-      - 'packages/testy-cli/**'
-      - '.github/workflows/test.yml'
+      - "packages/testy-cli/**"
+      - ".github/workflows/test.yml"
   pull_request:
     paths:
-     - 'packages/testy-cli/**'
+      - "packages/testy-cli/**"
 
 jobs:
   unit-tests:
