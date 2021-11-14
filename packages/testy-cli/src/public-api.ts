@@ -1,4 +1,4 @@
-export * from './lib/tests/visitors/decorators/testsVisitorDecorator';
+export * from './lib/tests/visitors/decorators/test-reporter-base.decorator';
 export * from './lib/reporting/report/report';
 export * from './lib/tests/testSuite';
 export * from './lib/tests/test';

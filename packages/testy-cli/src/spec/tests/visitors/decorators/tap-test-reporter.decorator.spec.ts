@@ -3,7 +3,7 @@ import { BeforeEach } from '../../../../lib/decorators/afterAndBefore.decorator'
 import { Test } from '../../../../lib/decorators/test.decorator';
 import { TestSuite } from '../../../../lib/decorators/testSuite.decorator';
 import { Report } from '../../../../lib/reporting/report/report';
-import { TapTestReporterDecorator } from '../../../../lib/tests/visitors/decorators/tapTestReporterDecorator';
+import { TapTestReporter } from '../../../../lib/tests/visitors/decorators/tap-test-reporter.decorator';
 import { TestRunnerVisitor } from '../../../../lib/tests/visitors/testRunnerVisitor';
 import { TestVisitor } from '../../../../lib/tests/visitors/testVisitor';
 import { getProcessMock } from '../../../utils/processMock';
@@ -12,7 +12,7 @@ import { TestUtils } from '../../../utils/testUtils';
 import { DummyTapDecoratorTestSuite, dummyTapDecoratorTestSuiteExpectedOutput } from './dummyTapDecoratorTestSuite';
 
 @TestSuite('Tap Reporter Tests')
-export class TapTestReporterDecoratorTests {
+export class TapTestReporterTests {
   private testRunnerVisitor: TestVisitor<Report>;
   private logger: StringLogger;
   private processMock: NodeJS.Process;
@@ -22,7 +22,7 @@ export class TapTestReporterDecoratorTests {
     this.logger = new StringLogger();
     this.processMock = getProcessMock();
     this.testRunnerVisitor = new TestRunnerVisitor(this.processMock, null);
-    this.testRunnerVisitor = new TapTestReporterDecorator(this.testRunnerVisitor, this.logger);
+    this.testRunnerVisitor = new TapTestReporter(this.testRunnerVisitor, this.logger);
   }
 
   @Test('Test suite output respects the TAP spec')

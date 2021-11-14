@@ -28,7 +28,6 @@ module.exports = {
     ],
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-unused-expressions': 'error',
-    '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/quotes': ['error', 'single'],
     '@typescript-eslint/semi': ['error', 'always'],
     '@typescript-eslint/type-annotation-spacing': 'error',
@@ -93,7 +92,6 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-unused-expressions': 'error',
     'no-unused-labels': 'error',
-    'no-unused-vars': 'error',
     radix: 'error',
     semi: 'error',
     'spaced-comment': [

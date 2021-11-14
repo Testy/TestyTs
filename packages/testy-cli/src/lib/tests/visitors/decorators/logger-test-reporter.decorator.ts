@@ -1,20 +1,19 @@
+import { TestStatus } from 'testy-cli/src/lib/testStatus';
 import { Color, Logger, TextDecoration } from '../../../logger/logger';
 import { CompositeReport } from '../../../reporting/report/compositeReport';
 import { FailedTestReport } from '../../../reporting/report/failedTestReport';
 import { Report } from '../../../reporting/report/report';
 import { TestResult } from '../../../reporting/report/testResult';
-import { RootTestSuite } from '../../rootTestSuite';
-import { TestInstance } from '../../test';
 import { TestSuiteInstance } from '../../testSuite';
 import { TestVisitor } from '../testVisitor';
-import { TestsVisitorDecorator } from './testsVisitorDecorator';
+import { TestReporterDecoratorBase } from './test-reporter-base.decorator';
 
 export interface LoggerTestReporterDecoratorConfiguration {
-  /** wether or not the reporter show display colors. Defaults to true. */
+  // Wether or not the reporter show display colors. Defaults to true.
   color: boolean;
 }
 
-export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
+export class LoggerTestReporter extends TestReporterDecoratorBase {
   private justPrintedTestSuite: boolean;
 
   constructor(
@@ -25,22 +24,45 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
     super(baseVisitor);
   }
 
-  public async visitTest(test: TestInstance): Promise<Report> {
-    this.justPrintedTestSuite = false;
-    const report = await this.baseVisitTest(test);
+  protected beforeRoot(testName: string, testStatus: TestStatus): void | Promise<void> {
+    // Do nothing!
+  }
 
+  protected afterRoot(testName: string, testStatus: TestStatus, report: CompositeReport): void | Promise<void> {
+    this.logger.info();
+    this.printSummary(report);
+  }
+  protected beforeTestSuiteRun(testName: string, testStatus: TestStatus): void | Promise<void> {
+    if (!this.justPrintedTestSuite) {
+      this.logger.info();
+      this.justPrintedTestSuite = true;
+    }
+
+    this.logger.info(this.format(testName, Color.Black, [TextDecoration.Bold]));
+    this.logger.increaseIndentation();
+  }
+
+  protected afterTestSuiteRun(testName: string, testStatus: TestStatus, report: Report): void | Promise<void> {
+    this.logger.decreaseIndentation();
+  }
+
+  protected beforeTestRun(testName: string, testStatus: TestStatus): void | Promise<void> {
+    this.justPrintedTestSuite = false;
+  }
+
+  protected afterTestRun(testName: string, testStatus: TestStatus, report: Report): void | Promise<Report> {
     let title;
     const details: string[] = [];
     if (report.result === TestResult.Success) {
-      title = `${this.format('√', Color.Green)} ${this.format(test.name, Color.Grey)}`;
+      title = `${this.format('√', Color.Green)} ${this.format(testName, Color.Grey)}`;
     } else if (report instanceof FailedTestReport) {
-      title = this.format(`x ${test.name} - ${report.message}`, Color.Red, [TextDecoration.Bold]);
+      title = this.format(`x ${testName} - ${report.message}`, Color.Red, [TextDecoration.Bold]);
 
       if (report.stack?.length) {
         details.push(...report.stack.split(/[\r\n|\n]/).map((x) => this.format(x, Color.Grey)));
       }
     } else {
-      title = `${this.format('!', Color.Yellow)} ${this.format(`${test.name}`, Color.Grey)}`;
+      title = `${this.format('!', Color.Yellow)} ${this.format(`${testName}`, Color.Grey)}`;
     }
 
     this.logger.info(title);
@@ -53,33 +75,6 @@ export class LoggerTestReporterDecorator extends TestsVisitorDecorator<Report> {
 
       this.logger.decreaseIndentation();
     }
-
-    return report;
-  }
-
-  public async visitTestSuite(tests: TestSuiteInstance): Promise<Report> {
-    if (!this.justPrintedTestSuite) {
-      this.logger.info();
-      this.justPrintedTestSuite = true;
-    }
-
-    this.logger.info(this.format(tests.name, Color.Black, [TextDecoration.Bold]));
-    this.logger.increaseIndentation();
-
-    const returnValue = await this.baseVisitTestSuite(tests);
-
-    this.logger.decreaseIndentation();
-
-    return returnValue;
-  }
-
-  public async visitRootTestSuite(tests: RootTestSuite): Promise<CompositeReport> {
-    const report = (await this.baseVisitRootTestSuite(tests)) as CompositeReport;
-
-    this.logger.info();
-    this.printSummary(report);
-
-    return report;
   }
 
   private printSummary(tests: CompositeReport) {

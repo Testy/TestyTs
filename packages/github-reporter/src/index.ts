@@ -1,31 +1,34 @@
-import {
-  Report,
-  RootTestSuite,
-  TestInstance,
-  TestSuiteInstance,
-  TestsVisitorDecorator,
-  TestVisitor,
-  Logger,
-} from '@testy/core';
+import { Logger, Report, TestReporterDecoratorBase, TestVisitor } from '@testy/core';
+import { CompositeReport } from 'testy-cli/src/lib/reporting/report/compositeReport';
+import { TestStatus } from 'testy-cli/src/lib/testStatus';
 
-export class GitHubActionsReporter extends TestsVisitorDecorator<Report> {
+export class GitHubActionsReporter extends TestReporterDecoratorBase {
   constructor(baseVisitor: TestVisitor<Report>, private logger: Logger) {
     super(baseVisitor);
   }
 
-  public async visitTest(test: TestInstance): Promise<Report> {
-    console.log(test);
-    return Promise.resolve(null);
+  protected beforeRoot(testName: string, testStatus: TestStatus): void | Promise<void> {
+    // Do nothing
   }
 
-  public async visitTestSuite(test: TestSuiteInstance): Promise<Report> {
-    console.log(test);
-    return Promise.resolve(null);
+  protected afterRoot(testName: string, testStatus: TestStatus, report: CompositeReport): void | Promise<void> {
+    // Do nothing
   }
 
-  public async visitRootTestSuite(test: RootTestSuite): Promise<Report> {
-    console.log(test);
-    return Promise.resolve(null);
+  protected beforeTestSuiteRun(testName: string, testStatus: TestStatus): void | Promise<void> {
+    // Do nothing
+  }
+
+  protected afterTestSuiteRun(testName: string, testStatus: TestStatus, report: Report): void | Promise<void> {
+    // Do nothing
+  }
+
+  protected beforeTestRun(testName: string, testStatus: TestStatus): void | Promise<void> {
+    // Do nothing
+  }
+
+  protected afterTestRun(testName: string, testStatus: TestStatus, report: Report): void | Promise<Report> {
+    // Do nothing
   }
 
   private printAnnotation(

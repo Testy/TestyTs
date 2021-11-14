@@ -1,12 +1,12 @@
 import { TestRunnerVisitor } from './testRunnerVisitor';
 import {
-  LoggerTestReporterDecorator,
+  LoggerTestReporter,
   LoggerTestReporterDecoratorConfiguration,
-} from './decorators/loggerTestReporterDecorator';
+} from './decorators/logger-test-reporter.decorator';
 import { TestVisitor } from './testVisitor';
 import { Report } from '../../reporting/report/report';
 import { Logger } from '../../logger/logger';
-import { TapTestReporterDecorator } from './decorators/tapTestReporterDecorator';
+import { TapTestReporter } from './decorators/tap-test-reporter.decorator';
 import { TestyConfig } from '../../interfaces/config';
 
 export type ReporterType = 'standard' | 'TAP';
@@ -54,11 +54,11 @@ export class TestVisitorFactory {
   private getReporterConstructor(reporterName: string, config?: unknown): VisitorConstructor {
     if (reporterName === 'standard') {
       const c = config as LoggerTestReporterDecoratorConfiguration;
-      return (baseVisitor, logger) => new LoggerTestReporterDecorator(baseVisitor, logger, c);
+      return (baseVisitor, logger) => new LoggerTestReporter(baseVisitor, logger, c);
     }
 
     if (reporterName === 'TAP') {
-      return (baseVisitor, logger) => new TapTestReporterDecorator(baseVisitor, logger);
+      return (baseVisitor, logger) => new TapTestReporter(baseVisitor, logger);
     }
 
     throw new Error(`The ${reporterName} reporter is not supported.`);
