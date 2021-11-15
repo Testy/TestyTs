@@ -4,7 +4,7 @@ import { Test, TestCase, TestSuite } from '../../testyCore';
 @TestSuite('Expect ArraysToBeEqual Test Suite')
 export class ExpectArraysToBeEqualTestSuite {
   @Test('Arrays to be equal')
-  @TestCase('\'a, b, c\' and \'a, b, c\'', ['a', 'b', 'c'], ['a', 'b', 'c'])
+  @TestCase("'a, b, c' and 'a, b, c'", ['a', 'b', 'c'], ['a', 'b', 'c'])
   @TestCase('empty arrays', [], [])
   @TestCase('arrays with undefined values', [undefined, undefined], [undefined, undefined])
   public equal(actual, expected) {
@@ -19,7 +19,7 @@ export class ExpectArraysToBeEqualTestSuite {
   }
 
   @Test('Arrays to be equal, should fail')
-  @TestCase('\'a, b, c\' to equal \'b, c, a\'', ['a', 'b', 'c'], ['b', 'c', 'a'])
+  @TestCase("'a, b, c' to equal 'b, c, a'", ['a', 'b', 'c'], ['b', 'c', 'a'])
   @TestCase('different lengths', ['a', 'b', 'c', 'd'], ['a', 'b', 'c'])
   @TestCase('different lengths, but the other way around', ['a', 'b', 'c'], ['a', 'b', 'c', 'd'])
   public unequal(actual, expected) {

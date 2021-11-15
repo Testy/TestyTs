@@ -5,8 +5,8 @@ import { Test, TestCase, TestSuite } from '../../testyCore';
 export class ExpectToBeTruthy {
   @Test('To be truthy, should succeed')
   @TestCase('true', true)
-  @TestCase('\'0\'', '0')
-  @TestCase('\'false\'', 'false')
+  @TestCase("'0'", '0')
+  @TestCase("'false'", 'false')
   @TestCase('empty object', {})
   @TestCase('empty array', [])
   @TestCase('empty function', () => {
@@ -31,8 +31,8 @@ export class ExpectToBeTruthy {
 
   @Test('Not to be truthy, should fail')
   @TestCase('true', true)
-  @TestCase('\'0\'', '0')
-  @TestCase('\'false\'', 'false')
+  @TestCase("'0'", '0')
+  @TestCase("'false'", 'false')
   @TestCase('empty object', {})
   @TestCase('empty array', [])
   @TestCase('empty function', () => {

@@ -16,7 +16,7 @@ export class ExpectToBeFalsy {
 
   @Test('To be falsy, should fail')
   @TestCase('true', true)
-  @TestCase('\'0\'', '0')
+  @TestCase("'0'", '0')
   @TestCase('Object', { a: 1 })
   private toBeFalsyFail(arg) {
     expect.toThrow(() => {
@@ -26,7 +26,7 @@ export class ExpectToBeFalsy {
 
   @Test('Not to be falsy, should succeed')
   @TestCase('true', true)
-  @TestCase('\'0\'', '0')
+  @TestCase("'0'", '0')
   @TestCase('Object', { a: 1 })
   private notToBeFalsySuccess(arg) {
     expect.not.toBeFalsy(arg);

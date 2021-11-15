@@ -3,7 +3,7 @@ import { Test, TestSuite } from '../../testyCore';
 
 @TestSuite('Expect ToBeDefined Test Suite')
 export class ExpectToBeDefinedTestSuite {
-  @Test('\'a\' to be defined')
+  @Test("'a' to be defined")
   public aToBeDefined(): void {
     expect.toBeDefined('a');
   }
@@ -15,7 +15,7 @@ export class ExpectToBeDefinedTestSuite {
     });
   }
 
-  @Test('\'a\' not to be defined to fail')
+  @Test("'a' not to be defined to fail")
   public aNotToBeDefinedToFail(): void {
     expect.toThrow(() => {
       expect.not.toBeDefined('a');
