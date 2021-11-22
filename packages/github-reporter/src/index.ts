@@ -1,6 +1,13 @@
-import { Logger, Report, TestReporterDecoratorBase, TestVisitor } from '@testy/core';
-import { CompositeReport } from 'testy-cli/src/lib/reporting/report/compositeReport';
-import { TestStatus } from 'testy-cli/src/lib/testStatus';
+import {
+  CompositeReport,
+  FailedTestReport,
+  Logger,
+  Report,
+  SkippedTestReport,
+  TestReporterDecoratorBase,
+  TestStatus,
+  TestVisitor,
+} from '@testy/core';
 
 export class GitHubActionsReporter extends TestReporterDecoratorBase {
   constructor(baseVisitor: TestVisitor<Report>, private logger: Logger) {
@@ -28,7 +35,11 @@ export class GitHubActionsReporter extends TestReporterDecoratorBase {
   }
 
   protected afterTestRun(testName: string, testStatus: TestStatus, report: Report): void | Promise<Report> {
-    // Do nothing
+    if (report instanceof FailedTestReport) {
+      this.printAnnotation('error', null, null, testName, report.message);
+    } else if (report instanceof SkippedTestReport) {
+      this.printAnnotation('warning', null, null, testName, null);
+    }
   }
 
   private printAnnotation(

@@ -4,26 +4,16 @@ import { Test, TestSuite } from 'testyts';
 export class GithubReporterTests {
   @Test()
   public test() {
-    this.printDebug('Testing 1 2 1 2!');
-    this.printAnnotation('notice', 'README.md', 1, 1, 'Ceci est mon titre', 'Ceci est mon message');
-    this.printAnnotation('warning', 'README.md', 1, 1, 'Ceci est mon titre', 'Ceci est mon message');
-    this.printAnnotation('error', 'README.md', 1, 1, 'Ceci est mon titre', 'Ceci est mon message');
+    throw new Error('Ça a fail pour ça');
   }
 
-  private printDebug(message: string) {
-    console.log(`::debug::${message}`);
+  @Test()
+  public myTestTWo() {
+    console.log('ok!');
   }
 
-  private printAnnotation(
-    type: 'warning' | 'error' | 'notice',
-    file: string,
-    line: number | null,
-    endline: number | null,
-    title: string,
-    message: string
-  ) {
-    console.log(
-      `::${type} file=${file || ''},line=${line || 0},endline=${endline || 0},title=${title || ''}::${message}`
-    );
+  @Test()
+  public otherTest() {
+    // Empty
   }
 }
